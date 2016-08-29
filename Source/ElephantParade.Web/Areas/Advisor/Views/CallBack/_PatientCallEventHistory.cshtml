@@ -1,0 +1,39 @@
+﻿@model IList<NHSD.ElephantParade.Core.Models.CallEventViewModel>
+
+@{
+    var grid = new WebGrid(source: Model,
+        selectionFieldName: "SelectedRow",
+        rowsPerPage: 5, 
+        canPage: true, 
+        canSort: true, 
+        ajaxUpdateContainerId: "callEventGrid", 
+        ajaxUpdateCallback: "callEventGridfixLinks(this)");
+}
+    <script type="text/javascript">
+        function callEventGridfixLinks(link) {
+            $(link).parents('table:first').find('thead a').removeAttr('href');
+            $(link).parents('table:first').find('.footer a').removeAttr('href');
+        }
+    </script>
+    @if (grid.Rows.Count != 0)
+    {
+        <div id="callEventGrid">
+            @grid.GetHtml(
+                    tableStyle: "grid",
+                    headerStyle: "head",
+                    alternatingRowStyle: "alt",
+                    columns: grid.Columns(
+                            grid.Column("EventCode", "Type", @<b> @item.Value.EventCode </b>, null, canSort: false),
+                            grid.Column("Date", "Date", format: (item) => (item.Date == null) ? string.Empty : item.Date),
+                            grid.Column("Text", "Text", format: (item) => (item.Text == null) ? string.Empty : item.Text),
+                            grid.Column("UserID", "Call Handler", format: (item) => (item.UserID == null) ? string.Empty : item.UserID)
+                    ))
+        </div>
+    }
+    else
+    {
+        @Html.Raw("There are no call history for this patient");
+    }
+      
+
+

@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.PageTitle = "Error";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".button").button();
+    });
+</script>
+
+<h2>@ViewBag.ErrorTitle</h2>
+
+
+<p>@ViewBag.ErrorMessage</p>
+
+<div>
+@Html.ActionLink("Back", "CallDetails", "Callback", new
+{
+    callbackID = this.ViewContext.RouteData.Values["CallbackID"]
+}, new { @class = "button" })
+</div>

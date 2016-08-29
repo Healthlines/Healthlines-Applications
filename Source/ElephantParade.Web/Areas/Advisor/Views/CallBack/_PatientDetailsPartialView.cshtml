@@ -1,0 +1,286 @@
+﻿
+@using NHSD.ElephantParade.Web.Helpers
+@model NHSD.ElephantParade.Domain.Models.StudyPatient
+@* javascript Reference  *@
+@*<script src="@Url.Content("~/Scripts/jquery.tools.min.js")" type="text/javascript"></script>*@
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $(".button").button();
+        $(".accordion").accordion({
+            autoHeight: false,
+            animated: true,
+            change: function (event, ui) { $(".button").button(); }
+        });
+        //hide the all of the element with class msg_body
+        $(".msg_body").hide();
+        //toggle the componenet with class msg_body
+        $(".msg_head").click(function () {
+            //the below animation does not seem to work correctly with ie7
+
+            //            $(this).next(".msg_body").slideToggle(500, function () {
+            //                var t = $(this).prev(".msg_head").find("img");
+            //                if (t.hasClass("img-swap")) {
+            //                    t.attr("src", t.attr("src").replace("shrink.png", "expand.png"));
+            //                    t.removeClass("img-swap");
+            //                } else {
+            //                    t.attr("src", t.attr("src").replace("expand.png", "shrink.png"));
+            //                    t.addClass("img-swap");
+            //                }
+            //            });
+
+            //this does work
+            $(this).next(".msg_body").toggle();
+            var t = $(this).find("img");
+            if (t.hasClass("img-swap")) {
+                t.attr("src", t.attr("src").replace("shrink.png", "expand.png"));
+                t.removeClass("img-swap");
+            } else {
+                t.attr("src", t.attr("src").replace("expand.png", "shrink.png"));
+                t.addClass("img-swap");
+            }
+
+        });
+        //setup address dialog
+        setupPatientDemographics();
+        
+
+        //bring dialog box back into form on submit
+        $(".tooltiptriggerAddress").parents("form:first").submit(function () {
+            //distroy dialog and move content into form for validation.
+            $(".addressFormDialog").dialog('destroy').appendTo($("#PatientUpdateResponce"));
+            
+            var $form = $(this);
+            if ($form.valid()) {
+            }
+            else {
+                $(".addressFormDialog").dialog({
+                    title: 'Edit',
+                    autoOpen: false,
+                    modal: false,
+                    minWidth: 315,
+                    buttons: { "Ok": function () {
+                        $(this).dialog("close");
+                    }
+                    }
+                });
+                return false;
+            }
+        });
+
+        //reset password confirmation dialog
+        var restPform;
+        $('#PDrestPasswordForm').submit(function () {
+            restPform = this;
+            $("#PDdialog-restPassword").dialog('open');
+            return false;
+        });
+        $("#PDdialog-restPassword").dialog({
+            resizable: false,
+            modal: true,
+            autoOpen: false,
+            buttons: {
+                "Yes": function () {
+                    restPform.submit();
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+    function handleError(ajaxContext) {
+        var response = ajaxContext.statusText;
+        var statusCode = ajaxContext.status;
+        alert("Sorry, the request failed with status code " + statusCode);
+    }
+    function handlePDSuccess(form) {
+        var e = $("#UpdatePatientDetailsForm .successful");
+        var message = $('#UpdatePatientDetailsForm input[name$="SubmitMessage"]').val();
+        $(e).text(message);
+        $(e).toggle("slow").fadeTo("slow", 1).animate({ opacity: 1.0 }, 1000).fadeTo("slow", 0).toggle("slow");
+        setupPatientDemographics();
+        $.validator.unobtrusive.parse(document);
+    }
+    function handleGPSuccess() {
+        var message = $('#UpdateGPDetailsForm input[name$="SubmitMessage"]').val();
+        $('#UpdateGPDetailsForm .successful').text(message);
+        $('#UpdateGPDetailsForm .successful').toggle("slow").fadeTo("slow", 1).animate({ opacity: 1.0 }, 1000).fadeTo("slow", 0).toggle("slow");
+    }
+    function setupPatientDemographics() {
+        $(".tooltiptriggerAddress").on("click.dialog",function () {
+            $(".addressFormDialog").dialog("open");            
+            return false;
+        });
+        $(".addressFormDialog").dialog({
+            title:'Edit',
+            autoOpen: false,
+            modal: false,
+            minWidth: 315,
+            buttons: { "Ok": function () {
+                $(this).dialog("close");
+            }
+            }
+        });
+    }
+
+    function PSUpdate(sel) {
+        $("#PSUpdate-dialog-confirm").dialog({
+            resizable: false,
+            modal: true,
+            buttons: {
+                "Yes": function () {
+                    $.ajax({ type: "POST",
+                        url: '@Html.Raw(Url.Action("UpdatePatientStatus","CallBack", new { studyID = Model.StudyID,patientID = Model.PatientId }))&patientStatus=' + $(sel).val(),
+                        data: "{}",
+                        cache: false,
+                        dataType: "text",
+                        success: function (data) {
+                            handlePSSuccess();
+                            $("#originalPatientStatus").val($(sel).val());
+                            $("#PSUpdate-dialog-confirm").dialog("close");
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert('error ' + textStatus);
+                            $("#PatientStatus").val($("#originalPatientStatus").val());
+                        }
+                    })
+                },
+                "No": function () {
+                    $("#PatientStatus").val($("#originalPatientStatus").val());
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+    function handlePSSuccess() {
+        $('#UDPStatus').toggle("slow").fadeTo("slow", 1).animate({ opacity: 1.0 }, 1000).fadeTo("slow", 0).toggle("slow");
+    }
+</script>
+    <div id="PSUpdate-dialog-confirm" title="Update Patient Status?" style="display:none;" > 
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span> Update the patient status?</p> 
+    </div>
+    <div>
+        <h3 class="msg_head">
+            <img  class="clickable" src="@Url.Content("~/Content/themes/HealthLines/images/expand.png")" alt="" height="10" />
+            &nbsp;@Html.Encode(@Model.DisplayName)&nbsp;-&nbsp; @Html.Encode(@Model.getPreferedContactNumber())   <a href="@Url.RouteUrl("PatientView",new { area = "", studyid = Model.StudyID, patientID = Model.PatientId,controller="Patient",action="reports" })">(view letters)</a> 
+        </h3>
+        <div class="msg_body" style="display:none;" >
+        
+        <fieldset>            
+            <legend>Patient Details</legend>
+
+            <form>
+                <div style="float:right;">
+                    <input class="button" type="button" title="Change the patient's email address" value="Change Email Address" 
+                    onclick="location.href='@Url.Action("ChangeEmailAddressForUser", "Account", new { email = Model.Email, returnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery, area = "" })'" />
+                </div>
+            </form>
+
+            @using (Html.BeginForm("SendSetPasswordEmailForPatient", "Account", new { email = Model.Email, returnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery, area = "" }, FormMethod.Post, new { id = "PDrestPasswordForm" }))
+            {
+                <div style="float:right;">
+                    <input  class="button"  type="submit" title="Send email for patient to set new password" value="Reset Patient Password" />
+                    <div id="PDdialog-restPassword" title="Reset Password" style="display:none;" > 
+                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Send an email to the patient with instructions to reset their password? </p> 
+                    </div>
+                </div>
+            }
+
+            <div> 
+                <input type="hidden" id="originalPatientStatus" name="originalPatientStatus" value="@Model.Status.ToString()" />
+                <label style="font-weight:bold;" for="PatientStatus">Patient Status:&nbsp;</label>
+                <select id="PatientStatus" name="PatientStatus" onchange="PSUpdate(this);">
+                    @foreach (var item in Enum.GetNames(typeof(NHSD.ElephantParade.Domain.Models.StudyPatient.PatientStudyStatusType)))
+                    {
+                        string sel = Model.Status.ToString() == item ? "selected" : "";
+		                <option @sel >@item</option>
+                    }
+                </select>
+                <h2 id="UDPStatus"  style="display:none;">Updated!</h2>                
+            </div>
+            <br />        
+            
+            <div class="accordion">
+                <h3 style="padding-left:25px; font-size:120%;">Demographics</h3>
+                <div> 
+                <fieldset style="display:none;">
+                    <!-- this hidden fieldset seems to correct an issue with Add Comment in ie7 -->
+                </fieldset> 
+                @using (Ajax.BeginForm("UpdatePatientDetails", "CallBack", new { Area = "Advisor" }, new AjaxOptions()
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "PatientUpdateResponce",
+                    OnFailure = "handleError",
+                    OnSuccess = "handlePDSuccess"
+
+                }, new { id = "UpdatePatientDetailsForm" }))
+                {
+                    @Html.HiddenFor(model => model.PatientId, new { id = "" })
+                    @Html.HiddenFor(model => model.StudyID, new { id = "" })
+                       
+                        <div id="PatientUpdateResponce">                                       
+                            @Html.Partial("~/Areas/Advisor/Views/CallBack/_PatientDemographics.cshtml", Model)
+                        </div>
+                        <br />
+                        <h2 class="successful"  style="display:none;"></h2>
+                            
+                        <input type="submit" class="button" value="Update" title="Update Patient Details"/>                        
+                        @Html.ValidationSummary(true)
+                }
+                </div>
+                @Html.Action("MedicalConditions", "Callback", new { Area = "Advisor", patientID = Model.PatientId, studyID = Model.StudyID })   
+                <h3 style="padding-left:25px; font-size:120%;">GP Details</h3>
+                <div>  
+                @using (Ajax.BeginForm("UpdateGPDetails", "CallBack", new { Area = "Advisor" }, new AjaxOptions()
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "GPUpdateResponce",
+                    OnFailure = "handleError",
+                    OnSuccess = "handleGPSuccess",
+                    OnBegin = ""
+                }, new { id = "UpdateGPDetailsForm" }))
+                {
+                    @Html.HiddenFor(model => model.PatientId, new { id = "" })
+                    @Html.HiddenFor(model => model.StudyID, new { id = "" })
+                      
+                        <div id="GPUpdateResponce">              
+                            @Html.Partial("~/Areas/Advisor/Views/CallBack/_GPDetails.cshtml", Model.GPPractice)
+                        </div>
+                        <br />                           
+                        <h2 class="successful" style="display:none;"></h2>
+                         
+                        <input type="submit" class="button" value="Update" title="Update GP Details"/>                        
+                    
+                }
+                </div>
+                <h3 style="padding-left:25px; font-size:120%;">Healthlines Information</h3>
+                <div>                         
+                    <br />
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td>@Html.LabelFor(m => m.StudyTrialNumber)</td>
+                            <td>@Html.TextBox("StudyTrialNumber", Model.StudyTrialNumber, new { @readonly = "readonly" }) </td>
+                            <td>@Html.LabelFor(m => m.StudySite)</td>
+                            <td>@Html.TextBox("StudySite", Model.StudySite, new { @readonly = "readonly" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(m => m.StudyConsentedDate)</td>
+                            <td>@Html.TextBox("StudyConsentedDate", Model.StudyConsentedDate, new { @readonly = "readonly" })</td>
+                            <td>@Html.LabelFor(m => m.StudyReferralDate)</td>
+                            <td>@Html.TextBox("StudyReferralDate", Model.StudyReferralDate, new { @readonly = "readonly" })</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>@Html.LabelFor(m => m.Education)</td>
+                            <td>@Html.TextBox("Education", Model.Education, new { @readonly = "readonly" })</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </fieldset>        
+        
+        </div>
+    </div>
+

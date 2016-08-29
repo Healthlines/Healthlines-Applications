@@ -1,0 +1,50 @@
+﻿@model Questionnaires.Web.Models.QuestionnaireSetsWrapper
+<script type="text/javascript">
+    //method to fix webgrids moving to top of page onclick
+    function fixLinks(link) {
+        $(link).parents('table:first').find('thead a').removeAttr('href');
+        $(link).parents('table:first').find('.footer a').removeAttr('href');
+    }
+</script> 
+<div>
+    <h2>Previous Sessions</h2>    
+
+    @{ if (@Model.QuestionnaireSessions.Count() == 0)
+    {
+       <b>No Previous Sessions</b>
+    }
+    else
+    {
+        var gridas = new WebGrid(@Model.QuestionnaireSessions.OrderByDescending(m => m.StartDate).ToList(), canPage: true, rowsPerPage: 10, ajaxUpdateContainerId: "QuestionnairePreviousGrid", ajaxUpdateCallback: "fixLinks(this)", pageFieldName: "AS");
+        gridas.Pager(WebGridPagerModes.NextPrevious);
+       
+        <div id="QuestionnairePreviousGrid">
+        @gridas.GetHtml(tableStyle: "grid",
+            htmlAttributes: new { id = "AnswerTable" },
+            headerStyle: "header",
+            alternatingRowStyle: "alt",
+            columns: gridas.Columns(
+                gridas.Column("Qname", "Name", canSort: false, format: @<b>@{
+                    var questionnaire = Model.Questionnaires.Where(q => q.QuestionnaireID.ToString() == @item.QuestionnaireID).FirstOrDefault();
+                    if (questionnaire != null)
+                    {
+                        <text>@questionnaire.Name</text>
+                    }                    
+                }
+                </b>),
+                gridas.Column("Operator"),
+                gridas.Column("StartDate"),
+                gridas.Column("EndDate"),
+                gridas.Column("Status"),
+                gridas.Column("Commands", "", @<b> @{
+                    if (@item.Status == NHSD.ElephantParade.Domain.Models.QuestionnaireSession.State.Completed)
+                    {
+                     @Html.ActionLink("View", "Download", "QuestionnaireSession", new { id = @item.ResultSetID }, null)
+                     }}
+                    </b>)
+            )
+        )
+        </div>
+    }
+    }
+</div>

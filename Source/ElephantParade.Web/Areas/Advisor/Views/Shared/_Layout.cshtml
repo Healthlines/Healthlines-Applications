@@ -1,0 +1,73 @@
+﻿@using NHSD.ElephantParade.Web.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.PageTitle</title>
+    <meta name="keywords" content="" />
+	<meta name="description" content="" />      
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/themes/HealthLines/css/ui-hl-theme/jquery-ui-1.8.20.custom.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
+
+
+    <link href="@Url.Content("~/Content/themes/HealthLines/css/Site.css")" rel="stylesheet" type="text/css" />  
+</head>
+<body>   
+    <div class="page">
+        <div id="header">          
+            <div id="logindisplay">
+                @Html.Partial("_LogOnPartial")
+                @*<div id="NHSDlogo" style="position:relative;">
+                    <img style="position:absolute; right:0px; padding-top:3px;" src="@Url.Content("~/Content/themes/HealthLines/images/NHDDirectS.jpg")" alt="NHS Direct" />
+                </div>   *@    
+            </div>   
+                 
+            <div id="logo">						
+                		
+                <a style="padding-left:20px;" href="@Url.Action("Index", "Home", new { area = "" })"><img src="@Url.Content("~/Content/themes/HealthLines/images/Logo.jpg")" alt="Healthlines" /></a>
+		    </div> 
+		</div>
+        <div id="menucontainer">
+            
+                <ul id="menu">  
+                    @Html.MenuItem( "Home", "Index", "Home") 
+                    @Html.MenuItem("Call Schedule", "PatientList", "CallBack",true)  
+                    @Html.MenuItem("Resources","Resources", "Home") 
+                    @Html.MenuItem("Patient Search", "PatientSearch", "Search") 
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        @Html.MenuItem("Admin","Index","Home",new {area="administration"})
+                    }
+                @*          
+                    @Html.MenuItem("Help", "Help", "Home")   
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Call Schedule", "PatientList", "CallBack")</li>  
+                    <li>@Html.ActionLink("Resources","Resources", "Home")</li> 
+					<li>@Html.ActionLink("Patient Search", "PatientSearch", "Search")</li>                    
+					<li>@Html.ActionLink("Help", "Help","Home")</li>   
+                    *@              
+                </ul>
+            
+            </div>
+        <!-- end #header -->
+		  
+		<!-- end #logo -->
+		<!-- end #header-wrapper -->
+        <!-- table prevents  <div id="main"> from shrinking behind contents-->
+        <table id="mainT">
+            <tr>
+                <td style="padding:0;border:0;">
+                <div id="main">  
+                    @RenderBody()
+                </div>                 
+                </td>
+            </tr>
+        </table>
+        <div id="footer">
+            <span >@Html.ActionLink("Privacy Statement", "Privacy","Home", new { area = "" },null) &nbsp;|&nbsp; @Html.ActionLink("Terms of Use", "Terms", "Home", new { area = "" }, null)</span>
+            <span >&nbsp;|&nbsp;&#64; Copyright @DateTime.Now.Year by NHS Direct - Version: @typeof(NHSD.ElephantParade.Web.Controllers.HomeController).Assembly.GetName().Version.ToString(4)</span>
+        </div>        
+    </div>
+</body>
+</html>

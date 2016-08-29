@@ -1,0 +1,61 @@
+﻿@model IList<NHSD.ElephantParade.Core.Models.PatientCallCommentViewModel>
+<script type="text/javascript">
+    function callCommentGridfixLinks(link) {
+        $(link).parents('table:first').find('thead a').removeAttr('href');
+        $(link).parents('table:first').find('.footer a').removeAttr('href');
+    }
+
+    function deletePatientCallHistory(commentID) {
+        var values = { "commentID": commentID };
+        $.ajax({
+            type: "POST",
+            url: '@Html.Raw(Url.Action("DeletePatientComments", "Callback"))',
+            data: values,
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                reloadPatientCallHistory();
+            },
+            error: function (data) {
+                reloadPatientCallHistory();
+                CommentError("Error deleteing", "");
+            }
+        });
+    }
+</script>
+
+@{
+    var grid = new WebGrid(source: Model,
+        selectionFieldName: "SelectedRow",
+        rowsPerPage: 5,
+        canPage: true,
+        canSort: true,
+        ajaxUpdateContainerId: "callCommentGrid",
+        ajaxUpdateCallback: "callCommentGridfixLinks(this)");
+
+    if (grid.Rows.Count != 0)
+    {
+        <div id="callCommentGrid">
+            @grid.GetHtml(
+                    tableStyle: "grid",
+                    headerStyle: "head",
+                    alternatingRowStyle: "alt",
+                    columns: grid.Columns(
+                            grid.Column("Date", "Date", format: (item) => (item.Date == null) ? string.Empty : item.Date),
+                            grid.Column("Text", "Text", format: (item) => (item.Text == null) ? string.Empty : item.Text),
+                            grid.Column("UserID", "Call Handler", format: (item) => (item.UserID == null) ? string.Empty : item.UserID),
+                            grid.Column("Commands", "", format: item =>
+                            {
+                                if (item.UserID.ToLower() == User.Identity.Name.ToLower())
+                                    return new MvcHtmlString("<button class=\"linktext\" onclick='deletePatientCallHistory(" + item.CommentID + ");' type=\"button\">delete</button>");
+                                else
+                                    return "";
+                            })
+                    ))
+        </div>
+    }
+    else
+    {
+        @Html.Raw("There are no patient call comments for this patient");
+    } 
+}

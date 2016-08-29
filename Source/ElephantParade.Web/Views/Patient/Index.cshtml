@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.PageTitle = "Welcome";
+}
+@model NHSD.ElephantParade.Domain.Models.StudyPatient
+           
+<h2>Welcome  @Model.DisplayName</h2>
+<div style="min-width:830px;">
+    <div>
+        <img src="@Url.Content("~/Content/themes/HealthLines/images/young woman on laptop in red chair.jpg")" alt=""  style="float:left;margin-right:20px; height:260px"  />
+    </div>
+    Welcome to the Healthlines Service. This is a new service designed to help you improve your health from the convenience of your own home.
+    <br />
+    <br />  
+    Healthlines Advisors will provide you with regular advice and support over the telephone. They will help you to make best use of many of the resources available through the internet which are designed to improve health. 
+    <br /><br />
+    The Healthlines Service is designed to support the care you already receive from your GP and practice nurse.
+
+
+    <div style="margin-left:100px; ">
+        <ul id="WelcomeMenu" >  
+            @if (Model.StudyID == "CVD") 
+            {  
+            <li><a href="@Url.Action("Index", "BloodPressure", new { area = "CVD" })"><img src="@Url.Content("~/Content/themes/HealthLines/images/heart.jpg")" alt="" /><br />My Heart Health</a></li>
+            }
+            else if (Model.StudyID == "Depression") 
+            { 
+            <li><a href="@Url.Action("Index", "Depression", new { area = "Depression" })"><img src="@Url.Content("~/Content/themes/HealthLines/images/depression icon.png")" alt="" /><br />Depression</a></li>
+            }
+            <li><a href="@Url.Action("WelcomePack", "Patient")"><img src="@Url.Content("~/Content/themes/HealthLines/images/more-information.png")" alt="" /><br />Welcome Pack</a></li>
+            <li><a href="@Url.Action("PatientArrangeCallback", "PatientCallback")"><img src="@Url.Content("~/Content/themes/HealthLines/images/call back.png")" alt="" /><br />Request a Call Back</a></li>
+            
+            <li><a href="@Url.Action("Reports", "Patient")"><img src="@Url.Content("~/Content/themes/HealthLines/images/mail2.jpg")" alt="" /><br />Letters to my GP</a></li>
+            @*<li><a href="@Url.Action("Details", "Patient")"><img src="@Url.Content("~/Content/themes/HealthLines/images/demographic.png")" alt="" /><br />My Details</a></li>*@
+            <li><a href="@Url.Action("Details", "Patient")"><img src="@Url.Content("~/Content/themes/HealthLines/images/users_folder.png")" alt="" /><br />Change My Details</a></li>
+        </ul>
+    </div>
+    <div class="clear">&nbsp;</div>
+</div>

@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.PageTitle = "About Us";
+}
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.blockUI.js")"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#about-tabs").tabs();
+    });
+
+    $(document).ajaxStop(function () {
+        //$.unblockUI();
+        $("#about-tabs").unblock();
+    });
+
+    $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
+        //$.unblockUI();
+        $("#about-tabs").unblock();
+        $("#about-tabs").html('ERROR!!' + thrownError);
+    });
+
+    function TabItemClicked(a, action) {
+        var container = $("#about-tabs");
+        var resultDiv = $($(a).attr('href'), container);
+        //show wait message if taking longer than half a second
+        var timeout = setTimeout(function () {
+            $("#about-tabs").block({
+                message: '<h2>Please wait...</h2>',
+                css: { border: '3px solid '
+                },
+                centerY: false,
+                showOverlay: true
+            });
+        }, 200);
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: {},
+            beforeSend: function (jqXHR, settings) {
+
+            },
+            success: function (response) {
+                resultDiv.html('');
+                resultDiv.html(response);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                resultDiv.html(errorThrown);
+            },
+
+            complete: function () {
+                clearTimeout(timeout);
+            }
+        });
+    }
+</script>
+
+<h2>Healthlines</h2>
+
+<div id="about-tabs">
+	<ul>
+		<li><a href="#tabs-nhsdhs">About the Healthlines Service</a></li>
+		<li><a href="#tabs-hs" onclick="TabItemClicked(this,'@Url.Action("AboutHealthlinesStudy")');">About the Healthlines Study</a></li>
+    </ul>
+
+    <div id="tabs-nhsdhs">       
+        <fieldset>
+		    <div style="text-align:justify;text-justify:inter-word;" >
+                <h2>About the Healthlines Service</h2>
+
+                <p>The Healthlines Service is part of the Healthlines Study, a research project funded by the National Institute for Health Research.</p>
+                <p>The Healthlines Service aims to provide people with support and encouragement to increase their well-being and live more healthily. The service is being offered to people who:</p>
+
+                <ul>
+                    <li>are feeling low or depressed, or</li>
+                    <li>have an increased risk of heart problems or circulation problems, for example because they have high blood pressure, are obese or smoke.</li>
+                </ul>
+
+                <p>During the period of the research study, the service is being offered to people with these conditions through selected GP practices in:</p>
+
+                <ul>
+                    <li>Bristol and the surrounding area,</li>
+                    <li>Sheffield and the surrounding area, and</li>
+                    <li>Hampshire.</li>
+                </ul>
+
+                <p>People taking part in the Healthlines Service will have regular contact with Healthlines Advisors, who will provide advice and support over the telephone. The advisors can also provide access to other forms of support and information that are available online or over the telephone.</p>
+            </div>
+        </fieldset>
+    </div>
+    <div id="tabs-hs"><div style="height:460px;"></div></div>
+</div>

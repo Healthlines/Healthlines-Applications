@@ -1,0 +1,35 @@
+﻿@model DateTime?
+
+<div>
+@Html.TextBox("",(Model.HasValue?Model.Value.ToShortDateString():string.Empty),new{@class = "datePicker", style="width:100px;"})
+
+Time&nbsp;@Html.DropDownList("timeTextBox", new SelectListItem[]{
+                                                    new SelectListItem{Text=""},
+                                                    new SelectListItem{Text="0:00"},
+                                                    new SelectListItem{Text="1:00"},
+                                                    new SelectListItem{Text="2:00"},
+                                                    new SelectListItem{Text="3:00"},
+                                                    new SelectListItem{Text="4:00"},
+                                                    new SelectListItem{Text="5:00"},
+                                                    new SelectListItem{Text="6:00"},
+                                                    new SelectListItem{Text="7:00"},
+                                                    new SelectListItem{Text="8:00"},
+                                                    new SelectListItem{Text="9:00"},
+                                                    new SelectListItem{Text="10:00"},
+                                                    new SelectListItem{Text="11:00"},
+                                                    new SelectListItem{Text="12:00"},
+                                                    new SelectListItem{Text="13:00"},
+                                                    new SelectListItem{Text="14:00"},
+                                                    new SelectListItem{Text="15:00"},
+                                                    new SelectListItem{Text="16:00"},
+                                                    new SelectListItem{Text="17:00"},
+                                                    new SelectListItem{Text="18:00"},
+                                                    new SelectListItem{Text="19:00"},
+                                                    new SelectListItem{Text="20:00"},
+                                                    new SelectListItem{Text="21:00"},
+                                                    new SelectListItem{Text="22:00"},
+                                                    new SelectListItem{Text="23:00"}
+                                                })   
+
+ @*@Html.TextBox("timeTextBox",(Model.HasValue?Model.Value.ToShortTimeString():string.Empty),new{ style="width:100px;"})*@
+</div>

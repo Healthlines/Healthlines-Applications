@@ -1,0 +1,275 @@
+﻿@model NHSD.ElephantParade.Core.Models.CallbackViewModel
+@{
+    ViewBag.PageTitle = "Scheduling a Call Back";   
+   
+}
+@* javascript for Reference to change the DateTiem Format to date *@
+<script type="text/javascript" language="javascript">
+   
+    //These are the variables for the drop downs AvailbilityTo and AvailibiltyFrom
+    var WeeklytimesAvailableFrom = ["10:00", "10:15", "10:30", "10:45",
+                                    "11:00", "11:15", "11:30", "11:45", 
+                                    "12:00", "12:15", "12:30", "12:45", 
+                                    "13:00", "13:15", "13:30", "13:45", 
+                                    "14:00", "14:15", "14:30", "14:45", 
+                                    "15:00", "15:15", "15:30", "15:45", 
+                                    "16:00", "16:15", "16:30", "16:45", 
+                                    "17:00", "17:15", "17:30", "17:45", 
+                                    "18:00", "18:15", "18:30", "18:45", 
+                                    "19:00", "19:15"];
+    var WeeklytimesAvailableTo = [  "", "10:15", "10:30", "10:45", 
+                                    "11:00", "11:15", "11:30", "11:45", 
+                                    "12:00", "12:15", "12:30", "12:45", 
+                                    "13:00", "13:15", "13:30", "13:45", 
+                                    "14:00", "14:15", "14:30", "14:45", 
+                                    "15:00", "15:15", "15:30", "15:45", 
+                                    "16:00", "16:15", "16:30", "16:45", 
+                                    "17:00", "17:15", "17:30", "17:45", 
+                                    "18:00", "18:15", "18:30", "18:45", 
+                                    "19:00", "19:15", "19:30"];
+    var SatTimesAvailableFrom = [   "10:00", "10:15", "10:30", "10:45", 
+                                    "11:00", "11:15", "11:30", "11:45", 
+                                    "12:00", "12:15", "12:30", "12:45", 
+                                    "13:00", "13:15"];
+    var SatTimesAvailableTo =   [   "", "10:15", "10:30", "10:45", 
+                                    "11:00", "11:15", "11:30", "11:45", 
+                                    "12:00", "12:15", "12:30", "12:45", 
+                                    "13:00", "13:15", "13:30"];
+    var SunTimesAvailableFrom = [""];
+    var SunTimesAvailableTo = [""];
+    var CallOutcomes = ["","Encounter complete", "Encounter incomplete - rescheduled", "No answer from patient", "Telephone fault"];
+
+    
+
+    $(document).ready(function () {
+        $.getJSON("../GetDisabledDates", {
+                studyId: "n/a"
+            },
+            function(data) {
+                //write date values to hidden field for retrieval later.
+                //and to ensure we only have to call server side method once.
+                $('#hiddenDates').val(data.disabledDatesArray);
+             });
+
+        function IsDateAvailable(date) {
+            var dmy = padDate(date.getDate()) + "/" + padDate(date.getMonth()+1) + "/" + date.getFullYear();
+
+            //remove dates in array from datepicker.
+            if (IsDateInUnavailableList(dmy)) {
+                //date exists in list of those not allowed.
+                return [false,"","Unavailable"];               
+            } else {
+                return [true,"","Available"];
+            }
+        }
+
+        //pad out dates, e.g. 1/1/2012 will become 01/01/2012
+        function padDate(i) {
+           return (i < 10) ? "0" + i : "" + i;
+        }
+
+        $("#CallBackDate").datepicker({ dateFormat: 'dd/mm/yy', minDate: 0, beforeShowDay: IsDateAvailable });
+        EnableOrDisableCallbackButton();
+        AddOrRemoveOptionsAvailable();
+        LoadArrayElements($("#JqueryCallOutcome"), CallOutcomes);
+
+        if ($.browser.msie) {
+            $("#CallBackDate").click(function () {
+                this.blur();
+                this.focus();
+            });
+        }
+          @if (Model != null)
+          {
+                <text>var selectedValFrom = '@Model.CallbackStartTime'</text>                   
+                //stored date in variable of format HH:MM:MM we need to convert to HH:MM 
+                <text>var AfterTrimmingSelectedValFrom=selectedValFrom.substring(0,5)</text> 
+                //Preselect the value of user selection
+                <text>$('#JqueryDDownForAvailableFrom').val(AfterTrimmingSelectedValFrom) </text> 
+
+                //Select the user seleccted value  
+                <text>var selectedValTo = '@Model.CallbackEndTime'</text>
+
+                //stored dat in variable of format HH:MM:MM we neeed to convert to HH:MM 
+                <text>var AfterTrimmingSelectedValTo=selectedValTo.substring(0,5)</text> 
+                 
+                //Preselect the value of user selection
+                <text>$('#JqueryDDownForAvailableTo').val(AfterTrimmingSelectedValTo) </text> 
+                <text>$('#JqueryDDownForAvailableTo').val(AfterTrimmingSelectedValTo) </text>   
+                               
+          }
+        $("#CallBackDate").change(function () {
+            EnableOrDisableCallbackButton();
+            AddOrRemoveOptionsAvailable();
+
+        });
+
+        $("#CallbackTypeId").change(function () {
+            EnableOrDisableCallbackButton();
+        });
+
+        // Button Click Selecting the value from Dropdown controls and Assigning back to the hiddel elements so that hidden element can be accessed in Controller
+        $("#SaveCallback").button().click(function () {
+            $("#AvailibilityTo").val($("#JqueryDDownForAvailableTo").val());
+            $("#AvailibilityFrom").val($("#JqueryDDownForAvailableFrom").val());
+            $("#CallOutcome").val($("#JqueryCallOutcome").val());
+        });
+    });
+
+    // Function to populate the DropDown loadimng
+    function LoadArrayElements(selectElement, arrayName) {
+        var list = eval(arrayName)
+        $(list).each(function (i) {
+            if ('@Model.CallOutcome' == list[i])
+                selectElement.append("<option value='" + list[i] + "' selected>" + list[i] + "</option>");
+            else
+                selectElement.append("<option value='" + list[i] + "'>" + list[i] + "</option>");
+        });
+    }
+    // This is function to parse the date.
+    function parseDate(input) {
+        var parts = input.match(/(\d+)/g);
+        // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+        if (parts) return new Date(parts[2], parts[1] - 1, parts[0]); // months are 0-based
+        else return new Date();
+    }
+    //Function to add or remove options in the drop down
+    function AddOrRemoveOptionsAvailable() {
+        var CallbackDateNumber;
+        // check for the value in Date of callback control
+        if (("#CallBackDate") != "") {
+            CallbackDateNumber = parseDate($("#CallBackDate").val()).getDay();
+
+        }
+        else {
+            CallbackDateNumber = new Date().getDay();
+        }
+
+        //if day is normal weekday
+        if (CallbackDateNumber >= 1 && CallbackDateNumber <= 5) {
+            $('#JqueryDDownForAvailableFrom option, #JqueryDDownForAvailableTo option ').remove();
+
+            LoadArrayElements($("#JqueryDDownForAvailableFrom"), WeeklytimesAvailableFrom);
+            LoadArrayElements($("#JqueryDDownForAvailableTo"), WeeklytimesAvailableTo);
+
+        }
+        //if the day is saturday
+        else if (CallbackDateNumber == 6) {
+
+            $('#JqueryDDownForAvailableFrom option, #JqueryDDownForAvailableTo option').remove();
+            LoadArrayElements($("#JqueryDDownForAvailableFrom"), SatTimesAvailableFrom);
+            LoadArrayElements($("#JqueryDDownForAvailableTo"), SatTimesAvailableTo);
+        }
+        // If day is sunday
+        else {
+            $('#JqueryDDownForAvailableFrom option, #JqueryDDownForAvailableTo option').remove();
+            LoadArrayElements($("#JqueryDDownForAvailableFrom"), SunTimesAvailableFrom);
+            LoadArrayElements($("#JqueryDDownForAvailableTo"), SunTimesAvailableTo);
+        }
+    }
+    function IsDateInUnavailableList(date)
+        {
+            //convert hidden field back into an array we can use.
+            var dateValues = $("#hiddenDates").val();
+            var dateArray = dateValues.split(",");
+
+            //check date against dates in array
+            if ($.inArray(date, dateArray) < 0) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    // Function to enable or Disable the SaveCallback Button
+    function EnableOrDisableCallbackButton() {
+        
+
+        //Find the Value in CallbackType Dropdown
+        var callbackTypeSelectedOption = $('#CallbackTypeId').val();
+
+        var callbackDate = $('#CallBackDate').val();
+
+        // Now enable the button if the above two values or not empty
+        if (callbackDate != "" && callbackTypeSelectedOption != "") {
+            
+            //prevent save button click if date selected in list of disallowed dates.
+            if (IsDateInUnavailableList(callbackDate)) {
+                $("#SaveCallback").attr("disabled", true);
+            }
+            else {
+                $("#SaveCallback").attr("disabled", false);
+            }
+        }
+        else {
+            $("#SaveCallback").attr("disabled", true);
+        }
+    }
+
+</script>
+@Html.ValidationSummary()
+<input style="display:none;" id="hiddenDates" name="hiddenDates" />
+
+        <div style="color:Red">@ViewData["CallOutcomeRequiredError"]</div>
+        <table style="width:50%;">
+            <tr>
+                <td>
+                    <div class="Line">
+                        <div class="Label">
+                            @Html.LabelFor(m => m.CallOutcome)
+                        </div>
+                    </div>
+                    <div class="Field">
+                        <div>
+                            <select id="JqueryCallOutcome" name="JqueryCallOutcome">
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" id="CallOutcome" name="CallOutcome" />
+                </td>
+                <td>
+                    <div class="Line">
+                        <div class="Label">
+                            @Html.LabelFor(m => m.CallbackDate)
+                        </div>
+                        <div class="Field">
+                            @*Html.TextBoxFor(m => m.CallbackDate, new { id = "datepicker", @maxlength = 10, style = "width:65px" })*@
+                            @Html.TextBox("CallBackDate", Model.CallbackDate.HasValue ? Model.CallbackDate.Value.ToShortDateString() : string.Empty, new { id = "CallBackDate", @maxlength = 10, style = "width:65px" })
+                            @Html.ValidationMessageFor(m => m.CallbackDate)
+                        </div>
+                    </div>
+                    @* This  are the values used for  Capturing the Availble From and availble To *@
+                    <input type="hidden" id="AvailibilityTo" name="AvailibilityTo" />
+                    <input type="hidden" id="AvailibilityFrom" name="AvailibilityFrom" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="Line">
+                        <div class="Label">
+                            @Html.LabelFor(m => m.CallbackStartTime)
+                        </div>
+                        <div class="Field">
+                            <select id="JqueryDDownForAvailableFrom">
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="Line">
+                        <div class="Label">
+                            @Html.LabelFor(m=> m.CallbackEndTime)
+                        </div>
+                        <div class="Field">
+                            <select id="JqueryDDownForAvailableTo">
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <input type="submit" value="Save Callback" id="SaveCallback" title="Click here to add a comment" />
+        &nbsp;@ViewData["CallbackScheduled"]
+
+      

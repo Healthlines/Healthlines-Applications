@@ -1,0 +1,908 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HealthlinesModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="HealthlinesModelStoreContainer">
+          <EntitySet Name="Callback" EntityType="HealthlinesModel.Store.Callback" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CallbackPatientComments" EntityType="HealthlinesModel.Store.CallbackPatientComments" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CallEvents" EntityType="HealthlinesModel.Store.CallEvents" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContentSectionStatus" EntityType="HealthlinesModel.Store.ContentSectionStatus" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FileData" EntityType="HealthlinesModel.Store.FileData" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Files" EntityType="HealthlinesModel.Store.Files" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GpPracticeAddress" EntityType="HealthlinesModel.Store.GpPracticeAddress" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PageVisitedLog" EntityType="HealthlinesModel.Store.PageVisitedLog" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PasswordResetRequest" EntityType="HealthlinesModel.Store.PasswordResetRequest" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Patient" EntityType="HealthlinesModel.Store.Patient" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PatientEvents" EntityType="HealthlinesModel.Store.PatientEvents" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PatientMedications" EntityType="HealthlinesModel.Store.PatientMedications" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="QuestionnaireActionLetters" EntityType="HealthlinesModel.Store.QuestionnaireActionLetters" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Reading" EntityType="HealthlinesModel.Store.Reading" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ReadingExpected" EntityType="HealthlinesModel.Store.ReadingExpected" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ReadingTarget" EntityType="HealthlinesModel.Store.ReadingTarget" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_CallbackPatientComments_Callback" Association="HealthlinesModel.Store.FK_CallbackPatientComments_Callback">
+            <End Role="Callback" EntitySet="Callback" />
+            <End Role="CallbackPatientComments" EntitySet="CallbackPatientComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FileData_Files" Association="HealthlinesModel.Store.FK_FileData_Files">
+            <End Role="Files" EntitySet="Files" />
+            <End Role="FileData" EntitySet="FileData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionnaireActionLetters_Files" Association="HealthlinesModel.Store.FK_QuestionnaireActionLetters_Files">
+            <End Role="Files" EntitySet="Files" />
+            <End Role="QuestionnaireActionLetters" EntitySet="QuestionnaireActionLetters" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Callback">
+          <Key>
+            <PropertyRef Name="CallbackId" />
+          </Key>
+          <Property Name="CallbackId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="StudyID" Type="nvarchar" MaxLength="100" />
+          <Property Name="CallbackStartTime" Type="datetime" Nullable="false" />
+          <Property Name="CallbackScheduledBy" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="CallbackDate" Type="datetime" Nullable="false" />
+          <Property Name="CallbackEndTime" Type="datetime" />
+          <Property Name="CallbackScheduledDate" Type="datetime" Nullable="false" />
+          <Property Name="LockedTo" Type="nvarchar" MaxLength="50" />
+          <Property Name="LockedDate" Type="datetime" />
+          <Property Name="Completed" Type="bit" Nullable="false" />
+          <Property Name="CallOutcome" Type="nvarchar" MaxLength="100" />
+          <Property Name="Type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CallbackPatientComments">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="StudyID" Type="nvarchar" MaxLength="100" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="CommentsDate" Type="datetime" Nullable="false" />
+          <Property Name="CommentsEnteredBy" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="CallbackID" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="CallEvents">
+          <Key>
+            <PropertyRef Name="EventID" />
+          </Key>
+          <Property Name="EventID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CallbackID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PatientId" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="StudyID" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="UserID" Type="nvarchar" Nullable="false" MaxLength="250" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="EventCode" Type="nvarchar" Nullable="false" MaxLength="25" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContentSectionStatus">
+          <Key>
+            <PropertyRef Name="ContentSectionStatusId" />
+          </Key>
+          <Property Name="ContentSectionStatusId" Type="uniqueidentifier" Nullable="false"  StoreGeneratedPattern="Identity" />
+          <Property Name="StudyId" Type="nvarchar" MaxLength="100" />
+          <Property Name="SectionName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="LastUpdated" Type="datetime" />
+          <Property Name="DateAffected" Type="datetime" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="FileData">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Name="FileID" Type="int" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Files">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Name="FileID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="StudyID" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="PatientID" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="Filename" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Extension" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="FileLength" Type="bigint" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GpPracticeAddress">
+          <Key>
+            <PropertyRef Name="GpPracticeAddressId" />
+          </Key>
+          <Property Name="GpPracticeAddressId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="StudyID" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="GpPracticeAddress1" Type="nvarchar" MaxLength="100" />
+          <Property Name="GpPracticeAddress2" Type="nvarchar" MaxLength="100" />
+          <Property Name="GpPracticeAddress3" Type="nvarchar" MaxLength="100" />
+          <Property Name="GpPostCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="GpPractice" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="PageVisitedLog">
+          <Key>
+            <PropertyRef Name="PageVisitedLogId" />
+          </Key>
+          <Property Name="PageVisitedLogId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="varchar" MaxLength="256" />
+          <Property Name="PageURL" Type="varchar(max)" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="50" />
+          <Property Name="DateVisited" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PasswordResetRequest">
+          <Key>
+            <PropertyRef Name="PasswordResetRequestId" />
+          </Key>
+          <Property Name="PasswordResetRequestId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="DateOfRequest" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="PatientId" />
+          </Key>
+          <Property Name="PatientId" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Lastname" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Telephone1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone3" Type="nvarchar" MaxLength="50" />
+          <Property Name="PreferredContactNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="CallReferenceId" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateAdded" Type="datetime" Nullable="false" />
+          <Property Name="NHSContactedDate" Type="datetime" />
+          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="CallAttempt" Type="int" Nullable="false" />
+          <Property Name="LockedTo" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="GpPractice" Type="nvarchar" MaxLength="50" />
+          <Property Name="GpPracticeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="GpPracticePCT" Type="nvarchar" MaxLength="50" />
+          <Property Name="GpPracticeTelephone" Type="nvarchar" MaxLength="50" />
+          <Property Name="GpPracticeEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReasonFor" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address3" Type="nvarchar" MaxLength="100" />
+          <Property Name="County" Type="nvarchar" MaxLength="100" />
+          <Property Name="PostCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="250" />
+          <Property Name="ScheduleNotes" Type="nvarchar" MaxLength="2500" />
+          <Property Name="BaselineGAD7" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="BaselinePHQ9" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="OnAntidepressants" Type="bit" />
+          <Property Name="NHSNumber" Type="nvarchar" MaxLength="250" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="10" />
+          <Property Name="Ethnicity" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="StudyTrialID" Type="varchar" MaxLength="50" />
+          <Property Name="StudyArm" Type="varchar" MaxLength="50" />
+          <Property Name="StudyReferralDate" Type="datetime" />
+          <Property Name="StudyConsentedDate" Type="datetime" />
+          <Property Name="Education" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PatientEvents">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="StudyID" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="PatientID" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="EventCode" Type="int" Nullable="false" />
+          <Property Name="EventDate" Type="datetime" Nullable="false" />
+          <Property Name="EventUser" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="Value" Type="varchar(max)" />
+          <Property Name="Value2" Type="varchar(max)" />
+          <Property Name="Details" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="PatientMedications">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="StudyID" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="PatientID" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Type" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="250" />
+          <Property Name="Dose" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Frequency" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="QuestionnaireActionLetters">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="StudyID" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="PatientID" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="ResultsSetID" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="LetterID" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Recipient" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ProcessedDate" Type="datetime" />
+          <Property Name="ProcessedBy" Type="nvarchar" MaxLength="250" />
+          <Property Name="FileID" Type="int" />
+        </EntityType>
+        <EntityType Name="Reading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="StudyId" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="ReadingEntered" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="ReadingTypeId" Type="int" Nullable="false" />
+          <Property Name="SubmittedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateOfReading" Type="datetime" Nullable="false" />
+          <Property Name="Valid" Type="bit" Nullable="false" />
+          <Property Name="DateSubmitted" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReadingExpected">
+          <Key>
+            <PropertyRef Name="ReadingExpectedId" />
+          </Key>
+          <Property Name="ReadingExpectedId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ExpectedDate" Type="datetime" Nullable="false" />
+          <Property Name="PatientId" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="StudyId" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="ReadingTypeId" Type="int" Nullable="false" />
+          <Property Name="ReadingGiven" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReadingTarget">
+          <Key>
+            <PropertyRef Name="ReadingTargetId" />
+          </Key>
+          <Property Name="ReadingTargetId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Target" Type="nvarchar" Nullable="false" MaxLength="25" />
+          <Property Name="ReadingTypeId" Type="int" Nullable="false" />
+          <Property Name="PatientId" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="StudyId" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="SubmittedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateEntered" Type="datetime" Nullable="false" />
+          <Property Name="Valid" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CallbackPatientComments_Callback">
+          <End Role="Callback" Type="HealthlinesModel.Store.Callback" Multiplicity="0..1" />
+          <End Role="CallbackPatientComments" Type="HealthlinesModel.Store.CallbackPatientComments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Callback">
+              <PropertyRef Name="CallbackId" />
+            </Principal>
+            <Dependent Role="CallbackPatientComments">
+              <PropertyRef Name="CallbackID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FileData_Files">
+          <End Role="Files" Type="HealthlinesModel.Store.Files" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FileData" Type="HealthlinesModel.Store.FileData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Files">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="FileData">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionnaireActionLetters_Files">
+          <End Role="Files" Type="HealthlinesModel.Store.Files" Multiplicity="0..1" />
+          <End Role="QuestionnaireActionLetters" Type="HealthlinesModel.Store.QuestionnaireActionLetters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Files">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="QuestionnaireActionLetters">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HealthlinesModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="HealthlinesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Callbacks" EntityType="HealthlinesModel.Callback" />
+          <EntitySet Name="CallEvents" EntityType="HealthlinesModel.CallEvent" />
+          <EntitySet Name="CallbackPatientComments" EntityType="HealthlinesModel.CallbackPatientComment" />
+          <EntitySet Name="PatientMedications" EntityType="HealthlinesModel.PatientMedication" />
+          <AssociationSet Name="FK_CallbackPatientComments_Callback" Association="HealthlinesModel.FK_CallbackPatientComments_Callback">
+            <End Role="Callback" EntitySet="Callbacks" />
+            <End Role="CallbackPatientComment" EntitySet="CallbackPatientComments" />
+          </AssociationSet>
+          <EntitySet Name="ReadingTargets" EntityType="HealthlinesModel.ReadingTarget" />
+          <EntitySet Name="Readings" EntityType="HealthlinesModel.Reading" />
+          <EntitySet Name="ReadingExpecteds" EntityType="HealthlinesModel.ReadingExpected" />
+          <EntitySet Name="FileDatas" EntityType="HealthlinesModel.FileData" />
+          <EntitySet Name="Files" EntityType="HealthlinesModel.File" />
+          <AssociationSet Name="FK_FileData_Files" Association="HealthlinesModel.FK_FileData_Files">
+            <End Role="File" EntitySet="Files" />
+            <End Role="FileData" EntitySet="FileDatas" />
+          </AssociationSet>
+          <EntitySet Name="QuestionnaireActionLetters" EntityType="HealthlinesModel.QuestionnaireActionLetter" />
+          <AssociationSet Name="FK_QuestionnaireActionLetters_Files" Association="HealthlinesModel.FK_QuestionnaireActionLetters_Files">
+            <End Role="File" EntitySet="Files" />
+            <End Role="QuestionnaireActionLetter" EntitySet="QuestionnaireActionLetters" />
+          </AssociationSet>
+          <EntitySet Name="PageVisitedLogs" EntityType="HealthlinesModel.PageVisitedLog" />
+          <EntitySet Name="PasswordResetRequests" EntityType="HealthlinesModel.PasswordResetRequest" />
+          <EntitySet Name="PatientEvents" EntityType="HealthlinesModel.PatientEvent" />
+          <EntitySet Name="GpPracticeAddresses" EntityType="HealthlinesModel.GpPracticeAddress" />
+          <EntitySet Name="Patients" EntityType="HealthlinesModel.Patient" />
+          <EntitySet Name="ContentSectionStatus" EntityType="HealthlinesModel.ContentSectionStatus" />
+          </EntityContainer>
+        <EntityType Name="Callback">
+          <Key>
+            <PropertyRef Name="CallbackId" />
+          </Key>
+          <Property Type="Guid" Name="CallbackId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="PatientId" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyID" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CallbackStartTime" Nullable="false" />
+          <Property Type="String" Name="CallbackScheduledBy" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CallbackDate" Nullable="false" />
+          <Property Type="DateTime" Name="CallbackEndTime" />
+          <Property Type="DateTime" Name="CallbackScheduledDate" Nullable="false" />
+          <Property Type="String" Name="LockedTo" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LockedDate" />
+          <Property Type="Boolean" Name="Completed" Nullable="false" />
+          <Property Type="String" Name="CallOutcome" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CallbackPatientComments" Relationship="HealthlinesModel.FK_CallbackPatientComments_Callback" FromRole="Callback" ToRole="CallbackPatientComment" />
+          <Property Type="Int32" Name="Type" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CallEvent">
+          <Key>
+            <PropertyRef Name="EventID" />
+          </Key>
+          <Property Type="Int32" Name="EventID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="CallbackID" Nullable="false" />
+          <Property Type="String" Name="PatientId" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyID" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="String" Name="EventCode" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Message" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CallbackPatientComment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Type="String" Name="PatientId" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyID" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Comments" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CommentsDate" Nullable="false" />
+          <Property Type="String" Name="CommentsEnteredBy" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="CommentID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="CallbackID" />
+          <NavigationProperty Name="Callback" Relationship="HealthlinesModel.FK_CallbackPatientComments_Callback" FromRole="CallbackPatientComment" ToRole="Callback" />
+        </EntityType>
+        <EntityType Name="PatientMedication">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Type="Int32" Name="ItemID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="StudyID" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PatientID" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Dose" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Frequency" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_CallbackPatientComments_Callback">
+          <End Type="HealthlinesModel.Callback" Role="Callback" Multiplicity="0..1" />
+          <End Type="HealthlinesModel.CallbackPatientComment" Role="CallbackPatientComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Callback">
+              <PropertyRef Name="CallbackId" />
+            </Principal>
+            <Dependent Role="CallbackPatientComment">
+              <PropertyRef Name="CallbackID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ReadingTarget">
+          <Key>
+            <PropertyRef Name="ReadingTargetId" />
+          </Key>
+          <Property Type="Int32" Name="ReadingTargetId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Target" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ReadingTypeId" Nullable="false" />
+          <Property Type="String" Name="PatientId" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyId" Nullable="false" />
+          <Property Type="String" Name="SubmittedBy" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateEntered" Nullable="false" />
+          <Property Type="Boolean" Name="Valid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Type="Int32" Name="ReadingId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="PatientId" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyId" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ReadingEntered" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ReadingTypeId" Nullable="false" />
+          <Property Type="String" Name="SubmittedBy" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateOfReading" Nullable="false" />
+          <Property Type="Boolean" Name="Valid" Nullable="false" />
+          <Property Type="DateTime" Name="DateSubmitted" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReadingExpected">
+          <Key>
+            <PropertyRef Name="ReadingExpectedId" />
+          </Key>
+          <Property Type="Int32" Name="ReadingExpectedId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="ExpectedDate" Nullable="false" />
+          <Property Type="String" Name="PatientId" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyId" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ReadingTypeId" Nullable="false" />
+          <Property Type="Boolean" Name="ReadingGiven" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FileData">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Type="Int32" Name="FileID" Nullable="false" />
+          <Property Type="Binary" Name="Data" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="File" Relationship="HealthlinesModel.FK_FileData_Files" FromRole="FileData" ToRole="File" />
+        </EntityType>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Type="Int32" Name="FileID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="StudyID" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PatientID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Extension" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="FileLength" Nullable="false" />
+          <NavigationProperty Name="FileData" Relationship="HealthlinesModel.FK_FileData_Files" FromRole="File" ToRole="FileData" />
+          <Property Type="String" Name="Filename" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="QuestionnaireActionLetters" Relationship="HealthlinesModel.FK_QuestionnaireActionLetters_Files" FromRole="File" ToRole="QuestionnaireActionLetter" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FileData_Files">
+          <End Type="HealthlinesModel.File" Role="File" Multiplicity="1" />
+          <End Type="HealthlinesModel.FileData" Role="FileData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="FileData">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="QuestionnaireActionLetter">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="StudyID" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PatientID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ResultsSetID" Nullable="false" />
+          <Property Type="String" Name="LetterID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ProcessedDate" />
+          <Property Type="String" Name="ProcessedBy" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FileID" />
+          <NavigationProperty Name="File" Relationship="HealthlinesModel.FK_QuestionnaireActionLetters_Files" FromRole="QuestionnaireActionLetter" ToRole="File" />
+          <Property Type="String" Name="Recipient" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_QuestionnaireActionLetters_Files">
+          <End Type="HealthlinesModel.File" Role="File" Multiplicity="0..1" />
+          <End Type="HealthlinesModel.QuestionnaireActionLetter" Role="QuestionnaireActionLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="QuestionnaireActionLetter">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PageVisitedLog">
+          <Key>
+            <PropertyRef Name="PageVisitedLogId" />
+          </Key>
+          <Property Type="Int32" Name="PageVisitedLogId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Username" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PageURL" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="IPAddress" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateVisited" />
+        </EntityType>
+        <EntityType Name="PasswordResetRequest">
+          <Key>
+            <PropertyRef Name="PasswordResetRequestId" />
+          </Key>
+          <Property Type="Guid" Name="PasswordResetRequestId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateOfRequest" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PatientEvent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="StudyID" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PatientID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="EventCode" Nullable="false" />
+          <Property Type="DateTime" Name="EventDate" Nullable="false" />
+          <Property Type="String" Name="EventUser" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Value2" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Details" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GpPracticeAddress">
+          <Key>
+            <PropertyRef Name="GpPracticeAddressId" />
+          </Key>
+          <Property Type="Guid" Name="GpPracticeAddressId" Nullable="false" />
+          <Property Type="String" Name="PatientID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPracticeAddress1" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPracticeAddress2" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPracticeAddress3" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPostCode" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPractice" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="PatientId" />
+          </Key>
+          <Property Type="Guid" Name="PatientId" Nullable="false" />
+          <Property Type="String" Name="Firstname" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Lastname" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Telephone1" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Telephone2" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Telephone3" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PreferredContactNumber" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CallReferenceId" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateAdded" Nullable="false" />
+          <Property Type="DateTime" Name="NHSContactedDate" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="CallAttempt" Nullable="false" />
+          <Property Type="String" Name="LockedTo" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsLocked" Nullable="false" />
+          <Property Type="DateTime" Name="DOB" />
+          <Property Type="String" Name="GpPractice" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPracticeName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPracticePCT" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPracticeTelephone" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GpPracticeEmail" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ReasonFor" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Address" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Address2" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Address3" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="County" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostCode" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EmailAddress" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ScheduleNotes" MaxLength="2500" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="BaselineGAD7" Precision="5" Scale="2" />
+          <Property Type="Decimal" Name="BaselinePHQ9" Precision="5" Scale="2" />
+          <Property Type="Boolean" Name="OnAntidepressants" />
+          <Property Type="String" Name="NHSNumber" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Gender" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Ethnicity" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="String" Name="StudyTrialID" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="StudyArm" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="StudyReferralDate" />
+          <Property Type="DateTime" Name="StudyConsentedDate" />
+          <Property Type="String" Name="Education" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ContentSectionStatus">
+          <Key>
+            <PropertyRef Name="ContentSectionStatusId" />
+          </Key>
+          <Property Type="Guid" Name="ContentSectionStatusId" Nullable="false" />
+          <Property Type="String" Name="StudyId" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SectionName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LastUpdated" />
+          <Property Type="DateTime" Name="DateAffected" />
+          <Property Type="Boolean" Name="Status" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HealthlinesModelStoreContainer" CdmEntityContainer="HealthlinesEntities">
+          <EntitySetMapping Name="Callbacks">
+            <EntityTypeMapping TypeName="HealthlinesModel.Callback">
+              <MappingFragment StoreEntitySet="Callback">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CallOutcome" ColumnName="CallOutcome" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="LockedDate" ColumnName="LockedDate" />
+                <ScalarProperty Name="LockedTo" ColumnName="LockedTo" />
+                <ScalarProperty Name="CallbackScheduledDate" ColumnName="CallbackScheduledDate" />
+                <ScalarProperty Name="CallbackEndTime" ColumnName="CallbackEndTime" />
+                <ScalarProperty Name="CallbackDate" ColumnName="CallbackDate" />
+                <ScalarProperty Name="CallbackScheduledBy" ColumnName="CallbackScheduledBy" />
+                <ScalarProperty Name="CallbackStartTime" ColumnName="CallbackStartTime" />
+                <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="CallbackId" ColumnName="CallbackId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CallEvents">
+            <EntityTypeMapping TypeName="HealthlinesModel.CallEvent">
+              <MappingFragment StoreEntitySet="CallEvents">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="EventCode" ColumnName="EventCode" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="CallbackID" ColumnName="CallbackID" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CallbackPatientComments">
+            <EntityTypeMapping TypeName="HealthlinesModel.CallbackPatientComment">
+              <MappingFragment StoreEntitySet="CallbackPatientComments">
+                <ScalarProperty Name="CallbackID" ColumnName="CallbackID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="CommentsEnteredBy" ColumnName="CommentsEnteredBy" />
+                <ScalarProperty Name="CommentsDate" ColumnName="CommentsDate" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientMedications">
+            <EntityTypeMapping TypeName="HealthlinesModel.PatientMedication">
+              <MappingFragment StoreEntitySet="PatientMedications">
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="Dose" ColumnName="Dose" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReadingTargets">
+            <EntityTypeMapping TypeName="HealthlinesModel.ReadingTarget">
+              <MappingFragment StoreEntitySet="ReadingTarget">
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+                <ScalarProperty Name="SubmittedBy" ColumnName="SubmittedBy" />
+                <ScalarProperty Name="StudyId" ColumnName="StudyId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="ReadingTypeId" ColumnName="ReadingTypeId" />
+                <ScalarProperty Name="Target" ColumnName="Target" />
+                <ScalarProperty Name="ReadingTargetId" ColumnName="ReadingTargetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Readings">
+            <EntityTypeMapping TypeName="HealthlinesModel.Reading">
+              <MappingFragment StoreEntitySet="Reading">
+                <ScalarProperty Name="DateSubmitted" ColumnName="DateSubmitted" />
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="DateOfReading" ColumnName="DateOfReading" />
+                <ScalarProperty Name="SubmittedBy" ColumnName="SubmittedBy" />
+                <ScalarProperty Name="ReadingTypeId" ColumnName="ReadingTypeId" />
+                <ScalarProperty Name="ReadingEntered" ColumnName="ReadingEntered" />
+                <ScalarProperty Name="StudyId" ColumnName="StudyId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReadingExpecteds">
+            <EntityTypeMapping TypeName="HealthlinesModel.ReadingExpected">
+              <MappingFragment StoreEntitySet="ReadingExpected">
+                <ScalarProperty Name="ReadingGiven" ColumnName="ReadingGiven" />
+                <ScalarProperty Name="ReadingTypeId" ColumnName="ReadingTypeId" />
+                <ScalarProperty Name="StudyId" ColumnName="StudyId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+                <ScalarProperty Name="ReadingExpectedId" ColumnName="ReadingExpectedId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileDatas">
+            <EntityTypeMapping TypeName="HealthlinesModel.FileData">
+              <MappingFragment StoreEntitySet="FileData">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Files">
+            <EntityTypeMapping TypeName="HealthlinesModel.File">
+              <MappingFragment StoreEntitySet="Files">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="FileLength" ColumnName="FileLength" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionnaireActionLetters">
+            <EntityTypeMapping TypeName="HealthlinesModel.QuestionnaireActionLetter">
+              <MappingFragment StoreEntitySet="QuestionnaireActionLetters">
+                <ScalarProperty Name="Recipient" ColumnName="Recipient" />
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
+                <ScalarProperty Name="ProcessedBy" ColumnName="ProcessedBy" />
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="LetterID" ColumnName="LetterID" />
+                <ScalarProperty Name="ResultsSetID" ColumnName="ResultsSetID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+		<EntitySetMapping Name="PageVisitedLogs">
+            <EntityTypeMapping TypeName="HealthlinesModel.PageVisitedLog">
+              <MappingFragment StoreEntitySet="PageVisitedLog">
+                <ScalarProperty Name="DateVisited" ColumnName="DateVisited" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="PageURL" ColumnName="PageURL" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="PageVisitedLogId" ColumnName="PageVisitedLogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PasswordResetRequests">
+            <EntityTypeMapping TypeName="HealthlinesModel.PasswordResetRequest">
+              <MappingFragment StoreEntitySet="PasswordResetRequest">
+                <ScalarProperty Name="DateOfRequest" ColumnName="DateOfRequest" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordResetRequestId" ColumnName="PasswordResetRequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientEvents">
+            <EntityTypeMapping TypeName="HealthlinesModel.PatientEvent">
+              <MappingFragment StoreEntitySet="PatientEvents">
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="Value2" ColumnName="Value2" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="EventUser" ColumnName="EventUser" />
+                <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+                <ScalarProperty Name="EventCode" ColumnName="EventCode" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GpPracticeAddresses">
+            <EntityTypeMapping TypeName="HealthlinesModel.GpPracticeAddress">
+              <MappingFragment StoreEntitySet="GpPracticeAddress">
+                <ScalarProperty Name="GpPractice" ColumnName="GpPractice" />
+                <ScalarProperty Name="GpPostCode" ColumnName="GpPostCode" />
+                <ScalarProperty Name="GpPracticeAddress3" ColumnName="GpPracticeAddress3" />
+                <ScalarProperty Name="GpPracticeAddress2" ColumnName="GpPracticeAddress2" />
+                <ScalarProperty Name="GpPracticeAddress1" ColumnName="GpPracticeAddress1" />
+                <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="GpPracticeAddressId" ColumnName="GpPracticeAddressId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="HealthlinesModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="Education" ColumnName="Education" />
+                <ScalarProperty Name="StudyConsentedDate" ColumnName="StudyConsentedDate" />
+                <ScalarProperty Name="StudyReferralDate" ColumnName="StudyReferralDate" />
+                <ScalarProperty Name="StudyArm" ColumnName="StudyArm" />
+                <ScalarProperty Name="StudyTrialID" ColumnName="StudyTrialID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Ethnicity" ColumnName="Ethnicity" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="NHSNumber" ColumnName="NHSNumber" />
+                <ScalarProperty Name="OnAntidepressants" ColumnName="OnAntidepressants" />
+                <ScalarProperty Name="BaselinePHQ9" ColumnName="BaselinePHQ9" />
+                <ScalarProperty Name="BaselineGAD7" ColumnName="BaselineGAD7" />
+                <ScalarProperty Name="ScheduleNotes" ColumnName="ScheduleNotes" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Address3" ColumnName="Address3" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ReasonFor" ColumnName="ReasonFor" />
+                <ScalarProperty Name="GpPracticeEmail" ColumnName="GpPracticeEmail" />
+                <ScalarProperty Name="GpPracticeTelephone" ColumnName="GpPracticeTelephone" />
+                <ScalarProperty Name="GpPracticePCT" ColumnName="GpPracticePCT" />
+                <ScalarProperty Name="GpPracticeName" ColumnName="GpPracticeName" />
+                <ScalarProperty Name="GpPractice" ColumnName="GpPractice" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="LockedTo" ColumnName="LockedTo" />
+                <ScalarProperty Name="CallAttempt" ColumnName="CallAttempt" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="NHSContactedDate" ColumnName="NHSContactedDate" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="CallReferenceId" ColumnName="CallReferenceId" />
+                <ScalarProperty Name="PreferredContactNumber" ColumnName="PreferredContactNumber" />
+                <ScalarProperty Name="Telephone3" ColumnName="Telephone3" />
+                <ScalarProperty Name="Telephone2" ColumnName="Telephone2" />
+                <ScalarProperty Name="Telephone1" ColumnName="Telephone1" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContentSectionStatus">
+            <EntityTypeMapping TypeName="HealthlinesModel.ContentSectionStatus">
+              <MappingFragment StoreEntitySet="ContentSectionStatus">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateAffected" ColumnName="DateAffected" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+                <ScalarProperty Name="StudyId" ColumnName="StudyId" />
+                <ScalarProperty Name="ContentSectionStatusId" ColumnName="ContentSectionStatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Healthlines" ZoomLevel="74">
+        <EntityTypeShape EntityType="HealthlinesModel.Callback" Width="1.5" PointX="6.25" PointY="0.5" Height="3.2357796223958326" />
+        <EntityTypeShape EntityType="HealthlinesModel.CallEvent" Width="1.5" PointX="8.5" PointY="3" Height="2.2496956380208317" />
+        <EntityTypeShape EntityType="HealthlinesModel.CallbackPatientComment" Width="2.5" PointX="8.375" PointY="0.5" Height="2.2496956380208317" />
+        <EntityTypeShape EntityType="HealthlinesModel.PatientMedication" Width="2.125" PointX="0.5" PointY="4.75" Height="2.0853483072916656" />
+        <AssociationConnector Association="HealthlinesModel.FK_CallbackPatientComments_Callback" >
+          <ConnectorPoint PointX="7.75" PointY="1.6248478190104159" />
+          <ConnectorPoint PointX="8.375" PointY="1.6248478190104159" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="HealthlinesModel.ReadingTarget" Width="1.5" PointX="10.75" PointY="6.625" Height="2.2496956380208335" />
+        <EntityTypeShape EntityType="HealthlinesModel.Reading" Width="1.5" PointX="6.25" PointY="6.625" Height="2.4140429687499996" />
+        <EntityTypeShape EntityType="HealthlinesModel.ReadingExpected" Width="1.875" PointX="8.375" PointY="6.625" Height="1.9210009765624996" />
+        <EntityTypeShape EntityType="HealthlinesModel.FileData" Width="1.5" PointX="14.875" PointY="0.5" Height="1.4279589843750031" />
+        <EntityTypeShape EntityType="HealthlinesModel.File" Width="1.5" PointX="12.625" PointY="0.5" Height="2.2496956380208331" />
+        <AssociationConnector Association="HealthlinesModel.FK_FileData_Files" >
+          <ConnectorPoint PointX="14.125" PointY="1.2139794921875016" />
+          <ConnectorPoint PointX="14.875" PointY="1.2139794921875016" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="HealthlinesModel.QuestionnaireActionLetter" Width="2.625" PointX="14.875" PointY="3.75" Height="2.5783902994791656" />
+        <AssociationConnector Association="HealthlinesModel.FK_QuestionnaireActionLetters_Files" >
+          <ConnectorPoint PointX="13.375" PointY="2.7496956380208331" />
+          <ConnectorPoint PointX="13.375" PointY="5.0391951497395828" />
+          <ConnectorPoint PointX="14.875" PointY="5.0391951497395828" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="HealthlinesModel.PageVisitedLog" Width="1.5" PointX="5.125" PointY="4.25" Height="1.7566536458333331" />
+        <EntityTypeShape EntityType="HealthlinesModel.PasswordResetRequest" Width="1.5" PointX="12.625" PointY="6.625" Height="1.4279589843749996" />
+        <EntityTypeShape EntityType="HealthlinesModel.PatientEvent" Width="1.5" PointX="0.875" PointY="7.5" Height="2.4140429687500031" />
+        <EntityTypeShape EntityType="HealthlinesModel.GpPracticeAddress" Width="1.5" PointX="3.375" PointY="9.75" Height="2.2496956380208388" />
+        <EntityTypeShape EntityType="HealthlinesModel.Patient" Width="1.5" PointX="3.125" PointY="0.5" Height="7.5088102213541674" />
+        <EntityTypeShape EntityType="HealthlinesModel.ContentSectionStatus" Width="1.5" PointX="0.75" PointY="0.75" Height="2.1725878906250031" />
+        </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

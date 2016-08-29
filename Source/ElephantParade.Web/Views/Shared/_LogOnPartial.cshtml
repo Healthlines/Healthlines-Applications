@@ -1,0 +1,18 @@
+﻿@if(Request.IsAuthenticated) {
+    <text>Logged in - <strong>
+    @if(Roles.IsUserInRole("CVD") || Roles.IsUserInRole("Depression"))
+    {
+        <a href="@Url.Action("Details", "Patient", new { area = "" })">@Html.Encode(((NHSD.ElephantParade.Web.Authentication.HealthLinesParticipantIdentity)User.Identity).DisplayName)</a>
+    }
+    else
+    {
+        @Html.Encode(((NHSD.ElephantParade.Web.Authentication.HealthLinesParticipantIdentity)User.Identity).DisplayName)
+    }
+        </strong>&nbsp;</text>
+    if (Roles.IsUserInRole("CVD") || Roles.IsUserInRole("Depression"))
+    { <text>[ @Html.ActionLink("Change Password", "ChangePassword", "Account", new { area = "" }, null) ]</text> }
+    <text>[ @Html.ActionLink("Log Off", "LogOff", "Account",new { area = "" },null ) ]</text>
+}
+else {
+    @:[ @Html.ActionLink("Log On", "LogOn", "Account") ]
+}

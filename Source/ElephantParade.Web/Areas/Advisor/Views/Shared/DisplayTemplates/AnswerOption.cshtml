@@ -1,0 +1,31 @@
+﻿@model Questionnaires.Core.Services.Models.AnswerOption
+
+@{
+    @Html.Partial("_Option" + Model.Type.ToString(), Model);
+    @*switch (Model.Type)
+    {
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.radio:            
+            @Html.Partial("_OptionRadio",Model);
+         break;
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.check:
+            @Html.Partial("_OptionCheck",Model);
+         break;
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.date:
+            @Html.Partial("_OptionRadio",Model);
+         break;
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.time:
+         break;
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.datetime:
+         break;
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.textline:
+         break;
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.textarea:
+         break;
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.integer:
+         break;
+        case Questionnaire.Core.Services.Models.AnswerOption.OptionType.@decimal:
+         break;
+        default:
+         break;
+    }*@
+}

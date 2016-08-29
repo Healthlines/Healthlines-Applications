@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.PageTitle = "CVD";
+}
+@model IList<NHSD.ElephantParade.Domain.Models.QuestionnaireSession>
+
+@{
+    var gridas = new WebGrid(@Model.OrderByDescending(m => m.EndDate).ToList(), canPage: true, rowsPerPage: 15, ajaxUpdateContainerId: "QuestionnairePreviousGrid", ajaxUpdateCallback: "fixLinks", pageFieldName: "AS");
+    gridas.Pager(WebGridPagerModes.NextPrevious);        
+}
+<script type="text/javascript">
+    //method to fix webgrids moving to top of page onclick
+    function fixLinks() {
+        //$("#CVDAnswerTable").find('tfoot a').attr("href", "javascript:;");
+        //$("#CVDAnswerTable").find('thead a').attr("href", "javascript:;");
+    }
+    //method to refresh the webgrid
+    function CVDupdateGrid() {
+        try {           
+            //get the loadgrid url code
+            var index = $("#QuestionnairePreviousGridPageIndex").val();
+            //execute
+            eval(index);            
+        } catch (e) {
+            alert('An error has occurred: ' + e.message);
+        }                            
+    }
+
+    $(document).ready(function() {
+        fixLinks();
+    });
+   
+    // Unrem the following to enable auto refresh
+    /*
+    window.setInterval(function() {
+        CVDupdateGrid();        
+    }, 10 * 1000);
+    */
+</script>
+<div>   
+    <h3 style="display:inline;">Blood Pressure History / Targets </h3>
+    @Html.ActionLink("Details", "BloodPressureArea", "BloodPressure", new { Area = "Advisor", patientID = @ViewBag.PatientId, studyID = @ViewBag.StudyID, callbackId = @ViewContext.RouteData.Values["id"] }, new { @class = "button" ,style="margin-left:10px;"})
+    <br />
+    <br />
+    @using (Ajax.BeginForm("ChangePatientReadingFrequency", "BloodPressure", new { Area = "Advisor" }, new AjaxOptions()
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "PatientReadingFrequencyUpdate"
+    }, new { id = "ChangePatientReadingFrequencyForm" }))
+    {
+        <div id="PatientReadingFrequencyUpdate">
+            @Html.Action("ChangePatientReadingFrequency", "BloodPressure", new { patientID = @ViewBag.PatientId, studyID = @ViewBag.StudyID })
+        </div>
+    }
+    <fieldset>
+	    <legend>Current blood pressure targets for this patient</legend>
+	    <br />
+        @Html.Action("BloodPressureTargets", "BloodPressure", new { Area = "Advisor", patientID = @ViewBag.PatientId, studyID = @ViewBag.StudyID, id = @ViewContext.RouteData.Values["id"] }) 
+	</fieldset>
+</div>
+<div>
+    <h3>Previous Sessions <a style="position:absolute; margin-bottom:-5px; margin-left:10px;" title="View Previous Letters" href="@Url.Action("PatientLetters", "Communications", new { studyID = @ViewBag.StudyID, patientID = @ViewBag.PatientId, returnurl = ViewContext.HttpContext.Request.Url.PathAndQuery })"><img width="50" src="@Url.Content("~/Content/themes/HealthLines/images/email-icon.png")" alt="Sent Letters" /></a>  </h3>    
+
+    @if(Model.Where(l=>l.Letters.Where(ltr=>ltr.ProcessedDate==null).Count()>0).Count()>0)
+    {
+        <div class="info clickable" style="display:inline-block; margin:0 0 10px 0;" onclick="location.href='@Url.Action("PatientLetters", "Communications", new { studyID = @ViewBag.StudyID, patientID = ViewBag.PatientID, returnurl = ViewContext.HttpContext.Request.Url.PathAndQuery })';">          
+            <span style="font-weight:bold;">Patient has <span style="color:Red;">@Model.Select(l => l.Letters.Where(ltr => ltr.ProcessedDate == null).Count()).Sum()</span> Outstanding Letters</span>            
+        </div>        
+    } 
+@{ 
+   if (@Model.Count == 0)
+   {
+       <b>No Previous Sessions</b>
+   }
+   else
+   {
+        <div id="QuestionnairePreviousGrid">
+            <input id="QuestionnairePreviousGridPageIndex" type="hidden" name="ASpageindex" value="@Html.Raw(HttpUtility.HtmlDecode(gridas.GetContainerUpdateScript(@Request.Url.ToString()).ToString()))" />        
+            <div style="margin-bottom:10px;">
+                    <a href="javascript:CVDupdateGrid();" >Refresh</a>
+            </div>
+        @gridas.GetHtml(tableStyle: "webGrid",
+            htmlAttributes: new { id = "CVDAnswerTable" },
+            headerStyle: "header",
+            alternatingRowStyle: "alt",
+            columns: gridas.Columns(                    
+                gridas.Column("QuestionnaireTitle", "Name", canSort: true),
+                gridas.Column("Operator"),                
+                gridas.Column("EndDate"),
+                gridas.Column("Commands", "", format: item => @Html.ActionLink("View", "Download", "QuestionnaireSession", new { id = @item.ResultSetID, studyID = @ViewBag.StudyID }, null)),
+                gridas.Column("Letters", "", canSort: false, format: @<a href="@Url.Action("Letters", "Communications", new { studyID = @item.StudyID, patientID = ViewBag.PatientID, resultSetID = @item.ResultSetID,returnurl = ViewContext.HttpContext.Request.Url.PathAndQuery })" @{
+                        
+                    var unprocessed = ((IList<NHSD.ElephantParade.Domain.Models.QuestionnaireLetterAction>)item.Letters).Where(m => m.ProcessedDate == null).Count();
+                        var total = ((IList<NHSD.ElephantParade.Domain.Models.QuestionnaireLetterAction>)item.Letters).Count();
+                        <text>@(unprocessed > 0 ? "class=improw" : "")</text>                        
+                        }>
+                        @{<text>@total </text>if(unprocessed > 0){<text>(@unprocessed)</text>}}
+                        </a>)
+                )
+        )
+        </div>
+   }
+}
+</div>
+<h3>Available Question Sets</h3>
+<strong>Please see Duke application.</strong>

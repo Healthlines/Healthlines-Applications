@@ -1,0 +1,36 @@
+﻿@using NHSD.ElephantParade.Web.Helpers
+@model NHSD.ElephantParade.Domain.Models.MedicalConditionItem
+
+
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ItemID, new { id = "" })
+        <table>
+            <tbody>
+            <tr>
+                <td>@Html.LabelFor(model => model.Type)</td>
+                <td>@Html.EnumDropDownListFor(model => model.Type)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Name)</td>
+                <td>@Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Dose)</td>
+                <td>@Html.EditorFor(model => model.Dose)
+                    @Html.ValidationMessageFor(model => model.Dose)</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Frequency)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Frequency)
+                    @Html.ValidationMessageFor(model => model.Frequency)
+                </td>
+            </tr>
+            </tbody>
+        </table>  
+        
+
+

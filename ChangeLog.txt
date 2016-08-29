@@ -1,0 +1,271 @@
+23/04/2013 17:25 New updates in release 1.4.1 
+•   Put in the functionality to speed up paging of call scheduled lists.
+•   Email functionality for patients to reset passwords.
+
+15/04/2013 8:55 New updates in release 1.4.0
+•   Changes to allow research teams to upload patients.
+•	Re-enable forgotten password for patients (so they can send themselves an email with password link).
+•	Fix problems with emails so links appear clickable (some email clients weren’t showing the reset password link as clickable).
+•	Fix the issue where the Guid is checked against the TryParse function, so that a partial Guid will not just crash the system.
+•	New contents for the CVD pages.
+•	New triggers for the CVD letters.
+
+25/03/2013 16:55 New updates in release 1.3.9
+•   Put in two sets of full stops for 'About NHS Direct' and 'Urgent Help' pages for both CVD and Depression. 
+
+25/03/2013 16:55 New updates in release 1.3.8
+•   Further updates to contents to 'About NHS Direct' and 'Urgent Help' pages for both CVD and Depression. 
+
+25/03/2013 12:20 New updates in release 1.3.7
+•   Further updates to content of the newly created CVD letter
+
+25/03/2013 12:20 New updates in release 1.3.6
+•   Further updates to content of the newly created CVD letter
+
+25/03/2013 10:20 New updates in release 1.3.5
+•   Updated content of the newly created CVD letter
+•   Updated content of 'About NHS Direct' and 'Urgent Help' pages for both CVD and Depression. 
+
+20/03/2013 14:00 New updates in release 1.3.4
+•   Fix the non-validation issue with new password and confirmed password
+•   Created the new CVD letter
+•   Added triggers to the new CVD letter
+•   Updated content of another CVD letter
+
+06/11/2012 10:30 New updates in release 1.2.2
+•   Updated content for CIC issues
+
+02/11/2012 18:00 New updates in release 1.2.1
+•   Made the BP readings to be displayed the 12 most recent ones.
+•   Put in the required blood pressure readings (i.e. 6 of the latest and not reading missed).
+•   Made the required changes for the latest configuration.
+
+01/11/2012 17:25 New updates in release 1.1.5
+•   Added on the other BP status checks (there is no enum for BelowTarget).
+•   Made the required changes for bug 2030.
+•   Remove patients from callback list if they've been deleted, but their callback record remains.
+•   Remove BWW Patient Email trigger from 2.5 - at request of clinical.
+•   Has extended the dates available from 14 days before for retrospective BP reading submission.
+
+01/11/2012 10:10 New updates in release 1.1.4
+•   Update CVD letters - fixed letters that showed incorrect 'generic letter' to specific letter type.
+•   Updated the latest opening hours for Healthlines.
+•   Disable the callback dates that are in bank hoildays (e.g. Christmas Day) when Healthlines is out of service (Patient portal).
+
+31/10/2012 14:00 New updates in release 1.1.3
+•   Update CVD letters - fixed trigger 3.1b to accomodate for non-data capture in 3.3, 3.4 and 3.6. 
+•   Disable the callback dates that are in bank hoildays (e.g. Christmas Day) when Healthlines is out of service (Advisor portal).
+
+26/10/2012 10:00 New updates in release 1.1.2
+•   Update CVD letters - added and fixed triggers, and also added/fixed the format and data retrieval of CVD letters. 
+
+17/10/2012 12:00 New updates in release 1.1.1
+
+•   The massive link on the initial message sent to user has now removed
+•   24 hours time slots and the time reading taken is now hold if there is a validation error.
+•   Defaulting to current day on the date picklist instead of 3 days ahead.
+•   It is now the correct count for valid readings, so therefore the correct average message is now displayed.
+•   Put in the end anchor for the A Href that was missing in the Depression and CVD patient creation emails.
+•   Also fixed the sorting on the 'text' column, by adding the 'text' column to the call event history list as well
+•   The patient notes paging is fixed.
+•   Added the import functionality code for the 12 intervention schedules (not started) to the Duke database.
+•   Added contents from the Healthlines content team for About and Blood Pressure pages.
+•   Set default date for patient requesting a call back.  So therefore it is not disabled.
+•   Added cvd letters and test triggers
+•   Fix for null operator fields within duke DB
+•   Added link to admin area on advisor menu bar if user is advisor and admin
+•   Added user unlock and password reset page 
+•   Fixed the issue where the CVD Patient record has no place to place the GP Practice field data
+•   Took out the unnecessary querystring request for 'CallbackId'.
+•   Made the callbackId persisted to the database.
+•   Add the functionality to import GP Practice address
+•   Update CVD letters
+
+10/08/2012 New Updates in release 1.1.0
+
+•	Security fix for patient details update
+•	Security fix for patient callback scheduling
+•	Add route to allow advisors to view patient letters
+
+08/08/2012 New updates in release 1.0.20
+
+•	updated menu Heart Health menu item to say My Heart Health
+•	removed Introduction title form CVD page
+•	Updated CVD Page Information tab content
+•	Fixed property mapping issue with email address
+
+08/08/2012 New updates in release 1.0.19 
+
+•	Replaced transaction scope with a shared repository context on questionnaire Save Answers method. (fixes issue with the raising of the distributed transaction level causing an error on the live server)
+
+06/08/2012 16:47New updates in release 1.0.18
+
+•	Updated password reset functionality.
+•	Bug fix for close and unlock record.
+
+06/08/2012 12:27 New updates in release 1.0.17
+
+•	Updated medical letter
+•	Updated welcome packs
+
+06/08/2012 New updates in release 1.0.16
+•	Updated letter trigger 18.8g2b
+•	New user email text changes
+•	General content amendments
+•	Added Ajax update messages on call back lists
+
+03 August 2012 11:57 New updates in release 1.0.15
+
+•	Content update on depression page
+•	Added welcome pack page
+•	added ability for GP address updates
+•	updated terms of use
+•	 removed “alt” text from images on homepage
+•	Removed depression page image
+•	Updated “Urgent Help” page
+•	Fixed area location issue with “Change my Details” link on username
+•	Added new user email 
+
+02 August 2012 16:34 New updates in release 1.0.14
+
+•	Updated “Callback” text to “Call Back”
+•	Update Depression page text
+•	Updated images 
+•	Updated menu items
+•	Updated Request a Call Back page text
+•	Added “Proforma for Participant Withdrawal from RCT” document to HIA Resources page
+•	GP Practice added
+•	Change position of next and back buttons to left hand side rather than right.
+•	Updated letter logos
+•	Call back details updated on call back page
+•	Fixed bug with username comparison 
+
+01 August 2012 16:59 New updates in release 1.0.13
+
+•	Updated Questionnaire “Wrap Up” screen to include optional letters
+•	Fixed issue when HIA uses “back” button to change answer options resulting in letter trigger not clearing
+•	Fixed issue with outstanding required letter summary  counting instead of summing the required letters
+•	Updated letter triggers for Question 18.8
+•	Updated Questionnaire document remove HTML tags from question text.
+•	Fixed issue with postcode search
+•	Updated GP address 
+
+01 August 2012 11:25 New updates in release 1.0.12
+
+•	Fixed Action prompts for patient email
+•	Fixed bug with loading some CVD patients (unsupported status)
+•	Amended privacy statement
+•	Turned patients name into a link to the profile page at the top right of page
+•	Added Resources to Advisor area
+•	Fixed letter triggers for tests 11,22,23,47
+
+31 July 2012 17:02 New updates in release 1.0.11
+
+•	Fixed bug loading BP history screen when no records exist
+•	Fixed missing letter header image
+•	Added NHS Number to patient demographics
+•	Made baseline read only under patient demographics
+•	Added letter Titles to provide better names
+•	Renamed Medication to Medicine
+•	Updated Patient homepage text
+•	Removed quotes from  Worsening instructions
+•	Fixed “Finish” button attempting to return to a rescheduled call back record
+•	Added patient details to ‘Wrap up’ page so a patient’s status can be updated.
+•	Added NHS Direct logo
+•	Updated Images
+•	Removed help section (as no content at present)
+•	Fixed issue with suicide letter triggers 
+
+27 July 2012 11:51 New updates in release 1.0.10
+
+•	Added additional letter triggers
+•	Updated Urgent Help graphics
+•	Updated letter signatory to be HIAs first name.
+•	Added minimum page width.
+
+26 July 2012 10:46 New updates in release 1.0.9
+
+•	Added selected menu item mode and style.
+•	Added confirmation dialog to “Reset Patient Password” 
+•	Updated Medications Style to support larger font.
+•	Updated patient emails page with content prompts based on questionnaire results.
+•	Added different call outcome reasons for patient initiated call-backs.
+•	Fixed new call back schedule style when validation fails.
+•	Added ability to delete notes. 
+•	Stopped main container from shrinking behind contents
+•	Moved Call event log history into an expandable area to reduce page clutter
+•	Added Images for patient portal
+•	Updated styles for patient portal
+•	Updated patient details page
+•	Added 500ms delay to “updating” message for AJAX calls on blood pressure tabs
+•	Fixes bug where system would attempt to concatenate null values for patient address
+•	Updated Questionnaire answer options “radio” and “check” so they do not align with other answer option entries
+•	Fix for Blood Pressure Page
+•	Fix for Blood Pressure Targets Tab
+•	Content changes
+•	Addition of graphs for blood pressure readings
+•	Updated patient blood pressure warning message.
+
+17 July 2012 08:47 New updates in release 1.0.8
+
+•	Added PHQ-9 letter and generation rules.
+•	Added filter to Answers List so only the most recent answer to a question is returned (used in letter generation and Questionnaire Review)
+•	Added HTML content support for questions and explanations within encounter questionnaires 
+•	Added “Notes” on questionnaire screens
+•	Added user event logging
+•	Added letter addresses
+•	Added initial Terms and Conditions
+•	Added Patient Email template
+•	Added Letter History to CVD patients
+•	Changed Patient Title from a text box to a drop down selection list
+•	Added Blood Pressure History Report and email
+
+11 July 2012 08:57 New updates in release 1.0.7
+
+•	The encounter Letters “required” attributes are now based on patient scope instead of session (i.e. required if not sent to patient instead of not sent for the current encounter session).
+•	Added notification of required actions
+•	Added Patient Letters page to review all required and sent letters
+•	Added “outdated browser” warnings on the login screen for IE 6 or below 
+•	Added “disabled JavaScript” warnings on the login screen for users with JavaScript disabled
+•	Added browser cookie support detection
+•	Fixed Bug with medication “Edit” during a questionnaire session
+
+
+09 July 2012 09:04 New updates in release 1.0.6
+
+•	Added new questionnaire option type “Label”
+•	Moved Schedule Call back to bottom and expanded the panel so its visible
+•	Update validation to allow multiple route options per question if they are for the same jumper location
+•	Added Letters (GP Generic, GP Medication, GP Initial)
+•	Overdue call back items are now highlighted
+•	Removed Send To GP button and tided  Encounter Wrap Up screen
+•	Fixed page location moving when the “scheduled call back” grids paging for sorting controls are clicked 
+•	Separate History into Notes and History lists
+•	Moved CVD Blood pressure Targets above Session data
+•	Group BP options on BP Targets page
+•	Fixed issue with rescheduling call back items
+•	Add search page to menus (functionality not complete)
+
+06 July 2012 08:43 New updates in release 1.0.5
+
+•	Added letter template framework
+•	Fixed unique checkbox selection bug
+
+04 July 2012 14:51 New updates in release 1.0.4
+
+•	Added “Suspend Call” option at the bottom of questionnaire pages
+•	Added “Call back / Worsening instructions” popup at the bottom of questionnaire pages
+•	Set Encounter resume window to 24 hours
+•	Set the default order by for available question sets to “Name”
+•	Added a new questionnaire answer option of type “Checkbox unique” 
+•	Prevented browser back button navigation on questionnaire to prevent user navigation issues. (questionnaire back button available)
+•	Added website logging 
+
+02 July 2012 09:22 User feature changes included in release 1.0.3
+
+•	Question Text Title changed from “Question” to Dialogue
+•	Addition of Call Details link on bottom of questionnaire
+•	Set question jumper ID:0 to end questionnaires.
+•	Updates to patient blood pressure screen.
+
+  

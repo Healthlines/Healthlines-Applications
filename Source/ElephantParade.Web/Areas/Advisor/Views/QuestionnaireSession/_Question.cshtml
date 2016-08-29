@@ -1,0 +1,59 @@
+﻿@using Questionnaires.Web.Helpers
+
+@model Questionnaires.Core.Services.Models.QuestionSetPageItem
+
+
+<fieldset id="@string.Format("questionfield{0}", Model.QuestionID)" class="quesionSetQuestion @string.Format("{0}", Model.Question.Required ? "required" : "")">
+    <legend>@Model.Question.Label</legend>   
+    <div class="Explanation"> 
+        @{
+            if (@Model.Question.Explanation.Trim().Length > 0)
+            {
+                <h3>Instructions and Information</h3>
+            }
+        }  
+        @*       
+        @MvcHtmlString.Create(Html.Encode(@Model.Question.Explanation).Replace(Environment.NewLine, "<br />"))
+        *@
+        @Html.Raw(@Model.Question.Explanation)
+    </div>
+    <div class="Question"> 
+        @{
+            if (@Model.Question.QuestionText.Trim().Length > 0)
+            {
+                <h3>Dialogue</h3>
+            }
+        }        
+        @*
+        @MvcHtmlString.Create(Html.Encode(@Model.Question.QuestionText).Replace(Environment.NewLine, "<br />"))   
+        *@
+        @Html.Raw(@Model.Question.QuestionText)    
+    </div>
+    <div class="AnswerOptions">
+        @{
+            if (@Model.Question.AnswerOptions.Count > 0)
+            {
+                if (@Model.Question.AnswerOptions.Count > 1)
+                {
+                    <h3>Options</h3>
+                }
+                else{
+                    <br />
+                }
+                <div class="errorList"></div>
+                <table>           
+                @foreach (var item in @Model.Question.AnswerOptions)
+                {
+                    @*@Html.AnswerOptionRender(item)*@
+                    <tr>
+                        @Html.DisplayFor(a => item)
+                    </tr>
+                }  
+                </table>  
+            }
+            }       
+                  
+    </div>
+</fieldset>
+
+

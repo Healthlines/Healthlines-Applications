@@ -1,0 +1,310 @@
+﻿@using NHSD.ElephantParade.Web.Helpers
+@model NHSD.ElephantParade.Domain.Models.StudyPatient
+  
+@{ // check if have a form context - partial views do not have a form context on there own so we will need to create one if rendered from an ajax call...
+    if (ViewContext.FormContext == null)
+    {
+        ViewContext.FormContext = new FormContext();
+    }
+}
+
+           
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajaxSetup({ cache: false });
+        $("#PAddress_Postcode").change(function () {
+            $("#patientAddPostcode").text($(this).val());
+        });
+        $("#PAddress_Line1").change(function () {         
+            $("#patientAddLn1").text($(this).val());
+        });
+        $(".dobPicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-140y:c+nn',
+            maxDate: '-1d'
+        });
+    });
+
+    
+</script>
+
+<table style="width:100%;" >    
+    <tr>
+        <td>
+            <div class="Label">
+                @Html.LabelFor(model => Model.Title)                
+            </div>
+            <div class="Field">
+            @*
+                @Html.TextBoxFor(model => model.Title)
+              *@ 
+                 
+                @{
+                    var tmp = Model.Title ?? "";
+                    var titleList = new List<SelectListItem> { new SelectListItem {Text="", Value = "", Selected =  tmp.Trim().Length ==0},
+                                                            new SelectListItem {Text="Dr",Value = "Dr", Selected = tmp =="Dr"},
+                                                            new SelectListItem {Text="Father",Value = "Father", Selected = tmp =="Father"},
+                                                            new SelectListItem {Text="Lady",Value = "Lady", Selected = tmp =="Lady"},
+                                                            new SelectListItem {Text="Lord",Value = "Lord", Selected = tmp =="Lord"},
+                                                            new SelectListItem {Text="Master",Value = "Master", Selected = tmp =="Master"},
+                                                            new SelectListItem {Text="Miss",Value = "Miss", Selected = tmp =="Miss"},
+                                                            new SelectListItem {Text="Mr",Value = "Mr", Selected = tmp =="Mr"},
+                                                            new SelectListItem {Text="Mrs",Value = "Mrs", Selected = tmp =="Mrs"},
+                                                            new SelectListItem {Text="Ms",Value = "Ms", Selected = tmp =="Ms"},
+                                                            new SelectListItem {Text="Prof",Value = "Prof", Selected = tmp =="Prof"},
+                                                            new SelectListItem {Text="Rev",Value = "Rev", Selected = tmp =="Rev"},
+                                                            new SelectListItem {Text="RH",Value = "RH", Selected = tmp =="RH"},                                                                                        
+                                                            new SelectListItem {Text="Sir",Value = "Sir", Selected = tmp =="Sir"},
+                                                            new SelectListItem {Text="Sister",Value = "Sister", Selected = tmp =="Sister"}
+                                                            };
+                    if (titleList.Where(i => i.Text == tmp).Count() == 0)
+                    {
+                        titleList.Add(new SelectListItem { Text = tmp, Value = tmp, Selected = true });
+                    }                   
+                }
+                               
+                @Html.DropDownListFor(model => model.Title, titleList)
+                <div>@Html.ValidationMessageFor(model=>model.Title)</div>
+            </div>
+        </td>
+        <td>
+            <div class="Label">
+                @Html.LabelFor(model => Model.Forename)
+            </div>
+            <div class="Field">
+                @Html.TextBoxFor(model => model.Forename)
+                <div>@Html.ValidationMessageFor(model=>model.Forename)</div>
+            </div>
+        </td>
+        <td>
+            <div class="Label">
+                @Html.LabelFor(model => model.Surname)
+            </div>
+            <div class="Field">
+                @Html.TextBoxFor(model => model.Surname)
+                <div>@Html.ValidationMessageFor(model=>model.Surname)</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="Label">
+                @Html.LabelFor(model => model.Gender)
+            </div>
+            <div class="Field">
+                @{
+                    var gender = @Model.Gender ?? "";
+                }
+                @Html.DropDownListFor(model => model.Gender, new List<SelectListItem> { new SelectListItem {Text="", Value = "", Selected =  gender.Trim().Length ==0},
+                                                                                        new SelectListItem {Text="Male",Value = "Male", Selected = gender =="Male"},
+                                                                                        new SelectListItem {Text="Female",Value = "Female", Selected = gender =="Female"}})
+                <div>@Html.ValidationMessageFor(model=>model.Gender)</div>
+            </div>
+        </td>
+        <td>
+            <div class="Label">
+                @Html.LabelFor(model => model.Ethnicity)
+            </div>
+            <div class="Field">
+            @*
+                @Html.DropDownListFor(model => model.Ethnicity, new SelectListItem[]{
+                                                                                    new SelectListItem{Text=""},
+                                                                                    new SelectListItem{Text="White"},
+                                                                                    
+                                                                                    new SelectListItem{Text="Mixed – White and Black Caribbean"},
+                                                                                    new SelectListItem{Text="Mixed – White and Black African"},
+                                                                                    new SelectListItem{Text="Mixed – White and Asian"},
+                                                                                    new SelectListItem{Text="Mixed – Any other mixed background"},
+                                                                                    
+                                                                                    new SelectListItem{Text="Asian or Asian British – Indian"},
+                                                                                    new SelectListItem{Text="Asian or Asian British – Pakistani"},
+                                                                                    new SelectListItem{Text="Asian or Asian British – Bangladeshi"},
+                                                                                    new SelectListItem{Text="Asian or Asian British – Chinese"},
+                                                                                    new SelectListItem{Text="Asian or Asian British – Any other Asian background"},
+                                                                                    
+                                                                                    new SelectListItem{Text="Black or Black British -  African"},
+                                                                                    new SelectListItem{Text="Black or Black British -  Caribbean"},
+                                                                                    new SelectListItem{Text="Black or Black British -  Any other Black background"},
+                                                                                    
+                                                                                    new SelectListItem{Text="Other ethnic groups - Arab"},
+                                                                                    new SelectListItem{Text="Other ethnic groups"},
+                                                                                    new SelectListItem{Text="Declined to answer"},                                                                                    
+                                    })       
+                                    *@
+                        @Html.DropDownListFor(model => model.Ethnicity, new SelectListItem[]{
+                                                    new SelectListItem{Text=""},
+                                                    new SelectListItem{Text="White"},
+                                                    new SelectListItem{Text="Mixed"},
+                                                    new SelectListItem{Text="Asian or Asian British"},
+                                                    new SelectListItem{Text="Black or Black British"},
+                                                    new SelectListItem{Text="Other Ethnic Group"},
+                                                    new SelectListItem{Text="Declined to answer"}
+                                                })                     
+                <div>@Html.ValidationMessageFor(model=>model.Ethnicity)</div>
+            </div>
+        </td>
+        <td>
+        <div class="Label">
+                @Html.LabelFor(model => model.DOB)
+            </div>
+            <div class="Field">
+                @Html.TextBox("DOB", Model.DOB.HasValue? Model.DOB.Value.ToShortDateString() : string.Empty, new { @class = "dobPicker" })
+                <div>@Html.ValidationMessageFor(model=>model.DOB)</div>
+            </div>
+        </td>
+    </tr>
+                    
+    <tr>                        
+        <td>                            
+            <div class="Label">
+                @Html.LabelFor(model => model.TelephoneNumber)
+            </div>
+            <div class="Field">
+                @Html.TextBoxFor(model => model.TelephoneNumber)
+                <div>@Html.ValidationMessageFor(model=>model.TelephoneNumber)</div>
+            </div>
+        </td>
+        <td>
+            <div class="Label">
+                @Html.LabelFor(model => model.TelephoneNumberMobile)
+            </div>
+            <div class="Field">
+                @Html.TextBoxFor(model => model.TelephoneNumberMobile)
+                <div>@Html.ValidationMessageFor(model=>model.TelephoneNumberMobile)</div>
+            </div>
+        </td>
+        <td>
+            <div class="Label">
+                @Html.LabelFor(model => model.TelephoneNumberOther)
+            </div>
+            <div class="Field">
+                @Html.TextBoxFor(model => model.TelephoneNumberOther)
+                <div>@Html.ValidationMessageFor(model=>model.TelephoneNumberOther)</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align:top;">@Html.LabelFor(model => model.PrederredContactTime)</td>
+        <td>@Html.TextAreaFor(model => model.PrederredContactTime, 2, 20, null)
+            <div>@Html.ValidationMessageFor(model=>model.PrederredContactTime)</div>
+        </td>
+        <td>
+            <div class="Label">
+                @Html.LabelFor(model => model.PreferredContactNumber)
+            </div>
+            <div class="Field">
+                @Html.EnumDropDownListFor(model => model.PreferredContactNumber)
+                <div>@Html.ValidationMessageFor(model=>model.PreferredContactNumber)</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>@Html.LabelFor(model => model.Email)</div>
+            <div>@Html.TextBoxFor(model => model.Email, new { @readonly= ""  })<div>@Html.ValidationMessageFor(model => model.Email)</div></div>
+        </td>
+        <td>                            
+            <div >  @Html.LabelFor(model => model.Address )
+                    @Html.ValidationMessageFor(model => model.Address.Line1)
+                    @Html.ValidationMessageFor(model => model.Address.Line2)
+                    @Html.ValidationMessageFor(model => model.Address.County)
+                    @Html.ValidationMessageFor(model => model.Address.PostCode)
+            <div>
+                <img src="@Url.Content("~/Content/themes/HealthLines/images/info_16.png")" alt="Address Details" class="tooltiptriggerAddress"/>
+                <div id="PatientAddressdiv" class="tooltip addressFormDialog" style="display:none;white-space:nowrap;">
+                    @*
+                    @Html.EditorFor(m => m.Address)
+                    *@
+                    <table>    
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Address.Line1)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.Address.Line1, new { id = "PAddress_Line1" })
+                            @Html.ValidationMessageFor(model => model.Address.Line1)
+                        </td>        
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Address.Line2)
+                        </td>
+                        <td class="editor-field">
+                            @Html.EditorFor(model => model.Address.Line2)
+                            @Html.ValidationMessageFor(model => model.Address.Line2)
+                        </td>
+                     </tr>
+@*                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Address.Line3)
+                        </td>
+                        <td class="editor-field">
+                            @Html.EditorFor(model => model.Address.Line3)
+                            @Html.ValidationMessageFor(model => model.Address.Line3)
+                        </td>
+                    </tr>
+*@                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Address.County)
+                        </td>
+                        <td class="editor-field">
+                            @Html.EditorFor(model => model.Address.County)
+                            @Html.ValidationMessageFor(model => model.Address.County)
+                        </td>
+                        </tr>
+                     <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Address.PostCode)
+                        </td>
+                        <td class="editor-field">
+                            @Html.TextBoxFor(model => model.Address.PostCode, new { id = "PAddress_Postcode" })
+                            @Html.ValidationMessageFor(model => model.Address.PostCode)
+                        </td>
+                        </tr>
+@*                        <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Address.Country)
+                        </td>
+                        <td class="editor-field">
+                            @Html.EditorFor(model => model.Address.Country)
+                            @Html.ValidationMessageFor(model => model.Address.Country)
+                        </td>
+                        </tr>
+*@                    </table>
+                </div>
+                <span id="patientAddLn1">@Html.DisplayFor(model => model.Address.Line1)</span>
+                </div>
+            </div>
+                            
+        </td>
+        <td>
+            <div>@Html.LabelFor(model => model.Address.PostCode)</div>
+            <div id="patientAddPostcode">@Html.DisplayFor(model => model.Address.PostCode)</div>
+        </td>
+    </tr>
+    @{
+        if (Model.StudyID == NHSD.ElephantParade.Core.DepressionService.DEPRESSION_STUDYID)
+        {
+            
+         <tr>
+            <td><div>@Html.LabelFor(model => model.OnAntidepressants)</div>
+            <div>@Html.DropDownListFor(model => model.OnAntidepressants, new SelectListItem[] { new SelectListItem() { Text = "Yes", Value = "true", Selected = Model.OnAntidepressants }, new SelectListItem() { Text = "No", Value = "false", Selected = !Model.OnAntidepressants } })</div></td>
+            <td><div>@Html.LabelFor(model => model.BaselineGAD7) </div>
+            <div>@Html.TextBoxFor(model => model.BaselineGAD7, new { @readonly= ""  })</div></td>
+            <td><div>@Html.LabelFor(model => model.BaselinePHQ9)</div>
+            <div>@Html.TextBoxFor(model => model.BaselinePHQ9, new { @readonly = "" })</div></td>            
+         </tr>   
+        }
+    }
+    <tr>
+        <td><div>@Html.LabelFor(model => model.NhsNumber)</div>
+        <div>@Html.TextBoxFor(model => model.NhsNumber, new { @readonly= ""  })</div></td>
+        <td></td>
+        <td></td>            
+    </tr>  
+</table>
+
+@Html.Hidden("SubmitMessage", (string)ViewBag.SubmitMessage, new { id = "" })
+

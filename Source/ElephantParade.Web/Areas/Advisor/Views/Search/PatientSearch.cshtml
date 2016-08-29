@@ -1,0 +1,55 @@
+﻿@model NHSD.ElephantParade.Core.Models.PatientSearchViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Search</title>
+</head>
+<body>
+    @using (Ajax.BeginForm("SubmitSearch", "Search", new AjaxOptions()
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "SearchSection"
+    }))
+    {
+    
+        <div>
+            <h1>
+                Search for a specific patient</h1>
+            <p>
+                By entering either the patient's name, postcode, or GP and clicking search, you
+                will be able to search for a patient.</p>
+            <p>
+                You can enter part of the patient's name if you're unsure of their full name</p>
+            <p>
+                You should only enter in <strong><u>one</u></strong> of these boxes to search.</p>
+        </div>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.PatientName)
+                </td>
+                <td>@Html.LabelFor(m => m.PatientPostCode)
+                </td>
+                <td>@Html.LabelFor(m => m.PatientGP)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.TextBoxFor(m => m.PatientName)
+                </td>
+                <td>@Html.TextBoxFor(m => m.PatientPostCode)
+                </td>
+                <td>@Html.TextBoxFor(m => m.PatientGP)
+                </td>
+            </tr>
+        </table>
+        <br />
+        <div>
+            <input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" title="Search for patient"
+                value="Search" />
+        </div>
+        
+        <div id="SearchSection">
+            @Html.Partial("_PatientSearchResults")
+        </div>
+    }
+</body>
+</html>

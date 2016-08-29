@@ -1,0 +1,38 @@
+﻿@using NHSD.ElephantParade.Web.Helpers;
+@{
+    ViewBag.PageTitle = "Patient Requesting a Call Back";
+}
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $("#SaveCallback").button();
+    });
+</script>
+<div class="pageTitle">
+	<img alt="" src="@Url.Content("~/Content/themes/HealthLines/images/call back.png")" style="margin-left: 10px; margin-right: 10px; float: left; height: 80px; " />    
+    <div style="height:20px;"></div>
+    <h2>Request a Call Back</h2>
+</div>
+
+@if (User.IsInRole("CVD"))
+{
+    <p>If you need support or advice urgently, please click  @Html.ActionLink("Urgent Help", "UrgentHelpCVD", "Home", new { area = "" },null).</p>
+}
+@if (User.IsInRole("Depression"))
+{
+    <p>If you need support or advice urgently, please click  @Html.ActionLink("Urgent Help", "UrgentHelpDepression", "Home", new { area = "" },null).</p>
+}
+@{
+       var HlIdentity = User.Identity as NHSD.ElephantParade.Web.Authentication.HealthLinesParticipantIdentity;
+         
+     }  
+@* This is for Schedule/Arrange Callback Partial view*@
+@using (Ajax.BeginForm("ArrangeCallBack", "PatientCallBack", new { PatientId = HlIdentity.PatientId, StudyId = HlIdentity.StudyID }, new AjaxOptions()
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "PartialUpdateSectionForCallBack"
+}))
+{            
+    <div id="PartialUpdateSectionForCallBack">
+      @Html.Partial("_ArrangeCallBackPartialView", (List<NHSD.ElephantParade.Core.Models.CallbackViewModel>)ViewBag.ArrangeCallback)
+    </div>
+}

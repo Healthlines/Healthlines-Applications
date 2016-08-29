@@ -1,0 +1,25 @@
+﻿@model NHSD.ElephantParade.Domain.Models.PatientEmailAddressViewModel
+@{
+    ViewBag.PageTitle = "Change Password";
+}
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $(".button").button();
+    })
+</script>
+
+<h2>Email Address Changed for patient @Model.ExistingEmailAddress</h2>
+
+<p>
+    The email address of the patient with username @Model.ExistingEmailAddress
+    has been changed to @Model.NewEmailAddress
+    <br />
+    <br />
+    A new password and details of how to log-in have been emailed to them.
+    <br />
+    <br />
+    Please confirm this with the patient.
+</p>
+<div>
+   <input class="button" type="button" title="Go back to Call Details page" value="Back to Call Details"  onclick="location.href='@Model.ReturnURL'" />
+</div>

@@ -1,0 +1,38 @@
+﻿@model NHSD.ElephantParade.Web.Areas.Advisor.Models.BloodPressureReadingsWrapper
+@{
+    ViewBag.PageTitle = "Send to GP";
+}
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $("#BPStartDateToSendToGP").datepicker({ dateFormat: 'dd/mm/yy' });
+        $("#previewButton").click(function () {
+            var url = '@Html.Raw(Url.Action("ReviewQuestionnaireLetter", "Communications", new { area = "Advisor", letterID = "CVDGpBloodPressureReadings", studyID = Request.QueryString["StudyID"], patientID = Request.QueryString["PatientId"] }))';
+            url += '&BPStartDateToSendToGP=' + $("#BPStartDateToSendToGP").val() + '&BPEndDateToSendToGP=' + $("#BPEndDateToSendToGP").val();
+            window.open(url);
+        });
+        $("#BPEndDateToSendToGP").datepicker({ dateFormat: 'dd/mm/yy' });
+    });
+</script>
+@using (Html.BeginForm("ViewBPReport", "BloodPressure", new { PatientId = Request.QueryString["PatientId"], StudyId = Request.QueryString["StudyID"] }, FormMethod.Post))
+{
+    @Html.ValidationSummary()
+    <br />
+    <strong>Please select the date range that you want to select BP for:</strong>
+    <br />
+    <strong>Blood pressure from</strong>
+    
+        @Html.LabelFor(m => m.BPStartDateToSendToGP)
+        @Html.TextBox("BPStartDateToSendToGP", Model.BPStartDateToSendToGP.ToShortDateString(), new { id = "BPStartDateToSendToGP", @maxlength = 10, style = "width:65px" })
+        @Html.ValidationMessageFor(m => m.BPStartDateToSendToGP)
+
+        <strong>to</strong>
+
+        @Html.LabelFor(m => m.BPEndDateToSendToGP)
+        @Html.TextBox("BPEndDateToSendToGP", Model.BPEndDateToSendToGP.ToShortDateString(), new { id = "BPEndDateToSendToGP", @maxlength = 10, style = "width:65px" })
+        @Html.ValidationMessageFor(m => m.BPEndDateToSendToGP)
+
+    @Html.Raw("&nbsp;&nbsp;&nbsp;")
+
+    <input class="button" type="submit" title="View patient's blood pressure" value="View" />@Html.Raw("&nbsp;")
+    <input id="previewButton" class="button" type="button" title="Click to preview/update email and send to GP" value="Process Email and Letter to GP" />
+}

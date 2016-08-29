@@ -1,0 +1,165 @@
+﻿@model NHSD.ElephantParade.Core.Models.CallbackViewModel
+@{
+    ViewBag.PageTitle = "CallDetails";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/conditional-validation.js")" type="text/javascript"></script> 
+<script type="text/javascript">
+    //override default date validate
+    jQuery(function ($) {
+        $.validator.addMethod('date',
+            function (value, element) {
+                if (this.optional(element)) {
+                    return true;
+                }
+                var ok = true;
+                try {
+                    $.datepicker.parseDate('dd/mm/yy', value);
+                }
+                catch (err) {
+                    ok = false;
+                }
+                return ok;
+            });
+    });
+</script>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $(".button").button();
+
+        //hightlight webgrid rows       
+        $(".grid tr:has(.improw)").addClass("important");
+        //method to fix webgrids moving to top of page onclick      
+        //$(".grid").find('tfoot a').attr("href", "javascript:;");
+        //$(".grid").find('thead a').attr("href", "javascript:;");
+
+    });
+    function CommentErrorHandler(ajaxContext, status, error) {        
+        var response = ajaxContext.statusText;
+        var statusCode = ajaxContext.status;
+        
+    }
+    function CommentError(response,statusCode)
+    {
+        $("#div-dialog-warning").find(".message").text(response);
+        $("#div-dialog-warning").dialog({
+            autoOpen: true,
+            title: "Error",
+            resizable: false,
+
+            modal: true,
+            buttons: {
+                "Ok": function () {
+                    $(this).dialog("close");
+                }
+            }
+        }).parent().addClass("ui-state-error");
+    }
+    function reloadPatientCallHistory() {
+        $.ajax(
+         { type: "GET",
+             url: '@Html.Raw(Url.Action("PatientCommentsHistory",new {callbackID = Model.CallbackId ,patientID = Model.Patient.PatientId,studyID = Model.Patient.StudyID}))',
+             data: "{}",
+             cache: false,
+             dataType: "html",
+             success: function (data) {
+                 $("#PatientCommentsHistory").html(data);
+                 $("#txtNewCallComment").val('');
+             },
+             error: function (data) {
+                 CommentError("Error refreshing list.", "");
+             }
+
+         });
+    }
+</script>
+
+<div id="div-dialog-warning" style="display:none;"><div class="message">Error </div></div>
+<h2>Call Details</h2>
+
+<div>
+    <span class="msg_head">
+        <img  class="clickable" src="@Url.Content("~/Content/themes/HealthLines/images/expand.png")" alt="" height="10" />    
+    </span>
+    <div class="msg_body" style="display:none; position:absolute; z-index:999;" >
+        <fieldset style="display:inline-block; margin-top:1em;background-color:#fff;">
+            @*<legend>Call Events History</legend>   *@     
+            <div id="PatientCallHistory">
+                @Html.Action("PatientCallEventHistory", new { callbackID = Model.CallbackId, patientID = Model.Patient.PatientId, studyID = Model.Patient.StudyID })
+            </div>
+            <br /> 
+        </fieldset>
+    </div>
+    <b>@Html.LabelFor(m=>m.Type) : </b> @Html.DisplayFor(m => m.Type)&nbsp;&nbsp;
+    <b>Callback Date :</b> @Html.DisplayFor(m=>m.CallbackDate),&nbsp;@Html.DisplayFor(m=>m.CallbackStartTime)&nbsp;@if (Model.CallbackEndTime != null){@Html.Raw("-&nbsp;");@Html.DisplayFor(m=>m.CallbackEndTime)}
+    
+    
+</div>
+
+@* This is for Patient Details Partial view which displays the name patient details detail like name, telephone number,CASID etc. So there is no Postback for this View*@
+@Html.Partial("_PatientDetailsPartialView",Model.Patient)
+
+
+<fieldset style="display:none;">
+  <!-- this hidden fieldset seems to correct an issue with Add Comment on IE7 -->
+</fieldset> 
+
+
+<fieldset>
+    <legend>Patient Notes</legend>        
+    @using (Ajax.BeginForm("UpdatePatientComments", "CallBack", new { id = Model.CallbackId }, new AjaxOptions()
+    {
+        HttpMethod = "POST",
+        OnFailure = "CommentErrorHandler",
+        OnSuccess = "reloadPatientCallHistory()",
+        UpdateTargetId = "PatientCommentArea"
+    }))
+    {
+        @Html.Hidden("PatientId", Model.Patient.PatientId, new { id = "" })
+        @Html.Hidden("StudyID", Model.Patient.StudyID, new { id = "" })
+        @Html.Hidden("CallbackId", Model.CallbackId)
+
+        <div id="PatientCommentArea">
+            @Html.Partial("_AddComment", new NHSD.ElephantParade.Core.Models.PatientCallCommentViewModel())
+        </div>        
+        <input style="margin:10px 0 10px 0;" type="submit" value="Add Note" class="button"  title="Click here to add a note"  /> 
+        <div id="PatientCommentsHistory">
+            @Html.Action("PatientCommentsHistory", new { patientID = Model.Patient.PatientId, studyID = Model.Patient.StudyID })
+        </div>             
+    }
+</fieldset>
+
+<fieldset style="display:none;">
+  <!-- this hidden fieldset seems to correct an issue with the Questionnaire section. -->
+</fieldset> 
+
+<fieldset>
+    <legend>Patient Encounters</legend>
+    @Html.Action("PatientQuestionnairesGet", "QuestionnaireSession", new { patientID = Model.Patient.PatientId, studyID = Model.Patient.StudyID, callbackID = ViewContext.RouteData.Values["id"] })
+</fieldset>
+<fieldset>
+<legend>Reschedule a Callback</legend>
+    <div class="Form">
+        <div >
+            @* This is for Schedule/Arrange Callback Partial view*@
+            @using (Ajax.BeginForm("ArrangeCallBack", "CallBack", new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                UpdateTargetId = "PartialUpdateSectionForCallBack"
+            }))
+            {  
+                @Html.Hidden("PatientId", Model.Patient.PatientId, new { id = "" })
+                @Html.Hidden("StudyID", Model.Patient.StudyID, new { id = "" })
+                @Html.Hidden("CallbackId", this.ViewContext.RouteData.Values["id"], new { id = "" })                          
+                <div id="PartialUpdateSectionForCallBack">
+                    @Html.Partial("_ArrangeCallBackPartialView", (List<NHSD.ElephantParade.Core.Models.CallbackViewModel>)ViewBag.ArrangeCallback)
+                </div> 
+            }
+        </div>
+    </div>
+</fieldset>
+<div>
+    <input class="button" type="button" title="Close and Unlock Record" value="Close and Unlock Record"  onclick="location.href='@Url.Action("CloseAndUnlockRecord", "CallBack", new { CallbackID = @ViewContext.RouteData.Values["id"] })'" />
+</div>

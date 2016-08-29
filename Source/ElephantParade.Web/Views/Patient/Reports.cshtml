@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.PageTitle = "Reports";
+}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".button").button();
+});
+</script>
+@model IList<NHSD.ElephantParade.Domain.Models.PatientFile>
+
+<div class="pageTitle">
+	<img alt="" src="@Url.Content("~/Content/themes/HealthLines/images/mail2.jpg")" style="margin-left: 10px; margin-right: 10px; float: left; height: 80px; " />
+    <div style="height:20px;"></div>
+    <h2>Letters to my GP</h2>
+</div>
+<p>Here you can find a list of all correspondence to your GP regarding your condition.</p>
+@{    
+    if (Model != null && Model.Count > 0)
+    {
+        <table id="filesList">
+            @foreach (var item in Model)
+            {
+		        <tr>
+                    <td>@item.Date</td>
+                    <td>@item.Filename</td>
+                    <td><a href="@Url.Action("Download", new { fileID = item.FileID })"><img class="dlimg" align="middle" src="@Url.Content("~/Content/themes/HealthLines/images/download.png")" alt="download" /></a>  </td>
+                </tr>
+            }
+        </table>
+    }
+}

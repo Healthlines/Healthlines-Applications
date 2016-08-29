@@ -1,0 +1,27 @@
+﻿@model NHSD.ElephantParade.Core.Models.ReadingFrequencyChangeViewModel
+
+@if (ViewBag.SuccessMessage == null)
+{
+    @Html.HiddenFor(m => m.PatientId)
+    @Html.HiddenFor(m => m.StudyId)
+    <fieldset>
+    <legend>Update patient's expected readings</legend>
+        <div>
+        <p>If the patient needs to give another weeks readings of two readings per day, then click Daily.</p>
+        <p>If the patient needs to now give readings once a week, then click Weekly.</p>
+        </div>
+        <div>
+            <input type="submit" name="actionType" value="Daily" class="button" title="Patient should give another week of twice daily blood pressure readings" />
+            <input type="submit" name="actionType" value="Weekly" class="button" title="Patient should start giving once weekly blood pressure readings" />
+        </div>
+    </fieldset>
+}
+else
+{
+    <fieldset>
+        <legend>Update patient's expected readings</legend>
+        <div>
+            @ViewBag.SuccessMessage
+        </div>
+    </fieldset>
+}

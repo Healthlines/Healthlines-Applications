@@ -1,0 +1,15 @@
+﻿@model NHSD.ElephantParade.Domain.Models.BloodPressureTargetViewModel
+@{
+    ViewBag.PageTitle = "Current target BPs";
+}
+
+Systolic Target: @Model.SystolicTarget &nbsp;&nbsp;&nbsp;&nbsp; Diastolic Target: @Model.DiastolicTarget
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+@Html.Hidden("PatientId", Request.QueryString["PatientId"], new { id = "" })
+@Html.Hidden("StudyID", Request.QueryString["StudyID"], new { id = "" })
+
+<br />
+<br />
+<input class="button" type="button" title="Set New Blood Pressure Target" value="Set Blood Pressure Targets" onclick="location.href='@Url.Action("SetNewBPTargets", "BloodPressure", new { ReturnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery, PatientId = Request.QueryString["PatientId"], StudyId = Request.QueryString["StudyID"] })'" />

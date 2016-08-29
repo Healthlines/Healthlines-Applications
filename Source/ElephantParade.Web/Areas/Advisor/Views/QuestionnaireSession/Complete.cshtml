@@ -1,0 +1,72 @@
+﻿@model NHSD.ElephantParade.Web.Areas.Advisor.Models.CloseQuestionnaireWrapper
+@using NHSD.ElephantParade.Web.Helpers
+@{
+    ViewBag.PageTitle = "Questionnaires";    
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".button").button();
+    });
+</script>
+
+
+
+@if(ViewData["Patient"]!=null){
+    @Html.Partial("~/Areas/Advisor/Views/CallBack/_PatientDetailsPartialView.cshtml",ViewData["Patient"])
+}
+<h1>Encounter Complete!</h1>
+<br />
+<fieldset>
+    <legend>Wrap Up</legend>
+    <br />
+    <span>Before closing the call please ensure that</span>
+    <ul>
+        <li>Patient has another call scheduled (if appropriate)</li>
+        <li>Call state is set</li>
+        <li>Wrap up notes are added to the call</li>
+    </ul>
+ 
+
+    @Html.ActionLink("Review Encounter", "Download", "QuestionnaireSession", new { id = Model.AnswerSet.AnswerSetID }, new { @class = "button" })
+    <br /><br />
+    
+    
+</fieldset>
+@if (Model.QuestionnaireAction != null && Model.QuestionnaireAction.LetterActionData != null && Model.QuestionnaireAction.LetterActionData.Count() > 0)
+{
+    <fieldset>
+        <legend>Required Actions</legend>
+        <h4>The following letters are available. </h4>
+        Letters marked in red are required and should be sent.
+        <br /><br />
+        <table>
+            <tbody>
+                @foreach (NHSD.ElephantParade.Domain.Models.ModuleLetter item in Model.QuestionnaireAction.LetterActionData)
+                {
+                    <tr class="@(item.Required?"LetterRequired":"")">    
+                        <td>@(item.Required?"Required":"(Optional)")</td>                  
+                        <td >@item.LetterActionData.LetterTemplate.DescriptionAttribute() </td>
+                        <td>@Html.ActionLink("Process", "ReviewQuestionnaireLetter", "Communications", new { area = "Advisor", letterID = item.LetterActionData.LetterTemplate, studyID = Model.Callback.Patient.StudyID, patientID = Model.Callback.Patient.PatientId, resultSetID = Model.AnswerSet.AnswerSetID }, new { target = "_blank" })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </fieldset>
+}
+
+
+    @using (Ajax.BeginForm("ArrangeCallBackQuestionsCompletedNew", "CallBack", new { studyID = Model.Callback.Patient.StudyID, patientID = Model.Callback.Patient.PatientId,callBackId = this.ViewContext.RouteData.Values["callbackId"] }, new AjaxOptions()
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "PartialUpdateSectionForCallBack"
+    }))
+    {     
+        <fieldset>
+            <legend>Arrange next callback for this patient</legend>       
+            <div id="PartialUpdateSectionForCallBack">            
+                @Html.Action("ArrangeCallBackQuestionsCompleted", "Callback", new { callbackId = Model.Callback.CallbackId })            
+            </div>
+        </fieldset>
+    }
+
+    @Html.ActionLink("Finish", "Calldetails", "Callback", new { id = ViewContext.RouteData.Values["CallbackID"] }, new { @class = "button" })

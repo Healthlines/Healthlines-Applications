@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.PageTitle = "Blood Pressure Readings";
+}
+@model NHSD.ElephantParade.Web.Areas.Advisor.Models.BloodPressureReadingsWrapper
+
+<script type="text/javascript">
+    //method to fix webgrids moving to top of page onclick
+    function fixLinks(link) {
+        $(link).parents('table:first').find('thead a').removeAttr('href');
+        $(link).parents('table:first').find('.footer a').removeAttr('href');
+    }
+</script> 
+
+<div>
+
+
+@{ 
+    if (@Model.BloodPressureReadings.Count == 0)
+    {
+       <b>No blood pressure readings for this patient</b>
+    }
+    else
+    {
+        if (@Model.AverageBPReadingFrequencyText.Contains("less than 4 readings"))
+        {
+            <b>@Model.AverageBPReadingFrequencyText</b>
+        }
+        else if (@Model.AverageSystolicBPReading != "NaN" && @Model.AverageDiastolicBPReading != "NaN")
+        {
+            <b>@Model.AverageBPReadingFrequencyText: &nbsp;@Model.AverageSystolicBPReading / @Model.AverageDiastolicBPReading</b>
+        }
+        else
+        {
+            <b>No average reading as there are no valid blood pressure readings for this patient</b>
+        }
+        
+        <br />
+        <br />
+
+        var gridBp = new WebGrid(@Model.BloodPressureReadings.OrderByDescending(m => m.DateOfReading).ToList(), canPage: true, rowsPerPage: 12, ajaxUpdateContainerId: "BPReadingGrid", ajaxUpdateCallback: "fixLinks(this)", pageFieldName: "AS");
+        gridBp.Pager(WebGridPagerModes.NextPrevious);
+       
+       <div id="BPReadingGrid">
+        @gridBp.GetHtml(tableStyle: "webGrid",
+            htmlAttributes: new { id = "BPReadingTable" },
+            headerStyle: "header",
+            alternatingRowStyle: "alt",
+            columns: gridBp.Columns(
+                gridBp.Column("DateOfReading", "Date and time of reading", item => (item.DateOfReading == null) ? string.Empty : (item.BPHighAndLowReading == null) ? item.DateOfReading.ToShortDateString() : item.DateOfReading, canSort: true),
+                gridBp.Column("BPHighAndLowReading", "Blood pressure reading", item => (item.BPHighAndLowReading == null) ? string.Empty : item.BPHighAndLowReading, canSort: true),
+                gridBp.Column("Status", "Status", item => (item.BPStatus == null) ? string.Empty : item.BPStatus)
+            )
+        )
+        </div>
+   }
+}
+</div>

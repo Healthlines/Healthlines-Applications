@@ -1,0 +1,81 @@
+﻿@model NHSD.ElephantParade.Web.Areas.Administration.Models.ImportResults
+
+<fieldset>
+<legend>Details and Status of Data Import</legend>
+
+    <br />
+    <b>File Name:</b> @Model.Filename
+    <br />
+    <br />
+    <b>
+        Status:
+        <span style="color:forestgreen">Successful: @Model.Created.Count</span>&nbsp;
+        <span style="color:red">Errors: @(Model.FileErrors.Length+Model.ImportErrors.Length)</span>
+    </b>
+</fieldset>
+
+@if (Model.FileErrors.Count() > 0)
+{
+    <fieldset class="error" style="background-image: none">
+    <legend >File Errors</legend>
+    <ul>
+        @foreach (var s in Model.FileErrors)
+        {
+            <li>@s</li>
+        }
+    </ul>
+    </fieldset>
+}
+    
+@if (Model.ImportErrors.Count() > 0)
+{
+    <fieldset class="error" style="background-image: none">
+        <legend >Importing Errors</legend>
+        <ul>
+        @for (int importErrorPos = 0; importErrorPos != Model.ImportErrors.Length; importErrorPos++)
+        {
+            <li>@Model.ImportErrors[importErrorPos]</li>
+        }
+        </ul>
+    </fieldset>
+}
+
+
+@{
+    var grid = new WebGrid(Model.Created, selectionFieldName: "SelectedRow", rowsPerPage: 10, canPage: true, canSort: true);
+    if (Model.Created != null && Model.Created.Count != 0)
+    {  
+        <fieldset>
+            <legend>Records Added/Imported to the Database</legend>
+            <p>
+                <div id="grid">
+                @grid.GetHtml(tableStyle: "grid",
+                              headerStyle: "head",
+                              alternatingRowStyle: "alt",
+                              columns: grid.Columns(
+                                  grid.Column("Email", "Email", item => (item.Email == null) ? string.Empty : item.Email),
+                                  grid.Column("StudyId", "StudyId", item => (item.StudyId == null) ? string.Empty : item.StudyId),
+                                  grid.Column("Patient Id", "PatientId", item => (item.PatientId == null) ? string.Empty : item.PatientId)
+                                  )
+                     )
+                </div>
+            </p>
+        </fieldset>
+    }
+}
+
+@* javascript for Implementing tool tip , this uses attribute title for displaying the tooltip for textbox, dropdown and button  *@
+<script type ="text/javascript"  language ="javascript" >
+    $(document).ready(function () {
+        $('input:text[title],select[title],input:button[title],input:submit[title],a[title]').qtip(
+        {
+            position: {
+                corner: {
+                    target: 'topRight',
+                    tooltip: 'bottomLeft'
+                }
+            }
+        }
+        );
+    });
+</script>
