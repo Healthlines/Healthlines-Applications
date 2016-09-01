@@ -1,0 +1,26 @@
+﻿
+@model NHSD.ElephantParade.Domain.Models.GeneralPractitioner
+<table>
+<tr>
+    <td>@Html.LabelFor(m=>m.Name)</td>
+    <td>@Html.EditorFor(m=>m.Name)<div>@Html.ValidationMessageFor(m=>m.Name)</div></td>
+    <td>@Html.LabelFor(m=>m.EmailAddress)</td>
+    <td>@Html.EditorFor(m=>m.EmailAddress)<div>@Html.ValidationMessageFor(m=>m.EmailAddress)</div></td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(m=>m.Practice)</td>
+    <td>@Html.EditorFor(m=>m.Practice)</td>
+    @*<td rowspan="3">@Html.LabelFor(m=>m.Address)</td>*@
+    <td colspan="2" rowspan="3">@Html.EditorFor(m=>m.Address)</td>
+</tr>
+<tr>
+    <td>@Html.LabelFor(m=>m.TelephoneNumber)</td>
+    <td>@Html.EditorFor(m=>m.TelephoneNumber)<div>@Html.ValidationMessageFor(m=>m.TelephoneNumber)</div></td>
+    
+</tr>
+<tr>
+    <td>@Html.LabelFor(m=>m.PrimaryCareTrust)</td>
+    <td>@Html.EditorFor(m=>m.PrimaryCareTrust)<div>@Html.ValidationMessageFor(m=>m.PrimaryCareTrust)</div></td>    
+</tr>
+</table>
+@Html.Hidden("SubmitMessage", (string)ViewBag.SubmitMessage, new {id=""})

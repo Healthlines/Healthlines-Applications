@@ -1,0 +1,32 @@
+﻿@model NHSD.ElephantParade.Core.Models.UserViewModel
+<script type="text/javascript">
+    $(document).ready(function () {
+        //set button below to be styled as JQuery Button.
+        $(".button").button();
+    });
+</script>
+
+<h2>Create Advisor</h2>
+
+@using (Html.BeginForm("CreateUser", "Administration", FormMethod.Post))
+{
+    @Html.ValidationSummary()
+    
+    <p>Please enter the full user name of the person you want to add - e.g. FirstName.LastName</p>
+    <p>Then enter their email address - e.g. FirstName.LastName@nhsdirect.nhs.uk</p>
+    <p>If they are a supervisor, or an administrator, then check the relevant checkbox.</p>
+    
+    <div>@Html.LabelFor(m => m.UserName)</div>
+    <div>@Html.EditorFor(m => m.UserName)</div>
+    <br />
+    <div>@Html.LabelFor(m => m.EmailAddress)</div>
+    <div>@Html.EditorFor(m => m.EmailAddress)</div>
+    <br />
+    <div>@Html.LabelFor(m => m.Administrator)
+    @Html.CheckBoxFor(m => m.Administrator)</div>
+    <br />
+    <div>@Html.LabelFor(m => m.Supervisor)
+    @Html.CheckBoxFor(m => m.Supervisor)</div>
+    <br />
+    <input type="submit" value="Add User" id="AddUser" class="button" />
+}

@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Users";
+}
+@model IEnumerable<System.Web.Security.MembershipUser>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //set button below to be styled as JQuery Button.
+            $(".button").button();
+        });
+    </script>
+<h2>Users</h2>
+
+@using (Html.BeginForm("Users","Administration",FormMethod.Get)) {
+
+    <p>Please enter the full user name of the person you wish to search for.</p>
+    
+<span>Search:</span>@Html.TextBox("search") 
+<input type="submit" value="Search" class="button" />
+}
+
+<br/>
+@{
+    var grid = new WebGrid(source: Model,
+                            selectionFieldName: "SelectedRow",
+                            rowsPerPage: 10, 
+                            canPage: true, 
+                            canSort: true); //,fieldNamePrefix: "CallLockedGrid");
+    
+    if (grid.Rows.Count == 0)
+    {
+        <p>No result to display, please enter the full user name of the user.</p>
+    }                                          
+    else
+    {
+        @grid.GetHtml(htmlAttributes: new { id = "SearchWebGrid" },
+                                tableStyle: "grid",
+                                headerStyle: "head",
+                                alternatingRowStyle: "alt",
+                                mode: WebGridPagerModes.All,
+                                columns: grid.Columns(
+                                            grid.Column("UserName", "UserName", format: (item) => (item.UserName)),
+                                                      grid.Column("IsLockedOut", "locked", format: (item) => (item.IsLockedOut)),
+                                            grid.Column(header: "", format: @<text>@item.GetSelectLink("Change Password or Unlock User")</text>)
+                                            )
+                                );
+        if(grid.HasSelection)
+        {
+            var user = (MembershipUser)grid.SelectedRow.Value;
+            using (Html.BeginForm("SetPassword","Administration",FormMethod.Post)){
+                <h2>@user.UserName</h2>
+                if(user.IsLockedOut)
+                {
+                    <p>@Html.ActionLink("Unlock User", "UnlockUser", new { username = user.UserName })</p>
+                }
+                @Html.Hidden("username", user.UserName)
+                <span>New Password:</span>@Html.Password("password")
+                <input type="submit" name="SetPassword" value="Save" class="button" />
+            }
+        }
+    }
+}

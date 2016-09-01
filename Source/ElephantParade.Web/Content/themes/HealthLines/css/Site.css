@@ -1,0 +1,619 @@
+﻿/*----------------------------------------------------------
+http://findicons.com
+----------------------------------------------------------*/
+body 
+{
+    /*background-image: url(../images/headerbg.png);*/
+    background-repeat:repeat-x;
+    background-color: #FFFFFF;
+    background-position:top;
+    font-size: 14px;
+    font-family: arial,sans-serif; /*"Trebuchet MS", Verdana, Helvetica, Sans-Serif;*/
+    margin: 0;
+    padding: 0;
+    color: #696969;
+    min-width:1050px;    
+}
+
+a:link {
+    color: #03A751;
+    text-decoration: underline;
+    outline: none;
+}
+
+a:visited {
+    color: #027739;
+}
+
+a:hover {
+    color: #202020;
+    text-decoration: none;
+}
+
+a:active {
+    color: #12eb87;
+}
+
+a img {
+    outline : none;
+    border:none;
+}
+
+p, ul {
+    margin-bottom: 20px;
+    line-height: 1.6em;
+}
+
+header,
+footer,
+nav,
+section {
+    display: block;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6 {
+    font-size: 1.5em;
+    color: #202020;
+}
+
+h1 {
+    font-size: 2em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+h2 {
+    padding: 0 0 10px 0;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+/* you can specify a greater or lesser percentage for the 
+page width. Or, you can specify an exact pixel width. */
+.page {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    min-width:860px;
+}
+
+header, #header {
+    position: relative;
+    margin-bottom: 0px;
+    color: #000;
+    padding: 0;
+}
+
+
+
+#logo a
+{
+    color: #FFFFFF;
+    text-decoration:none;
+}
+
+header h1, #header h1 {
+    font-weight: bold;
+    padding: 5px 0;
+    margin: 0;
+    color: #fff;
+    border: none;
+    line-height: 2em;
+    font-size: 32px !important;
+    text-shadow: 1px 1px 2px #111;
+}
+
+#main 
+{
+    margin:20px 0 3px;
+    padding: 20px 30px 15px 30px;
+    background-color: #fff;
+    border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border: 1px solid #83AB28;    
+    
+}
+#mainT 
+{
+    width:100%;
+    border-collapse: collapse;
+    border:0;
+}
+
+.container 
+{    
+    margin-top:20px;
+    padding: 20px 20px 15px 20px;
+    background-color: #fff;
+    border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border: 1px solid #83AB28;
+}
+
+
+footer, 
+#footer {
+    background-color: #fff;
+    color: #999;
+    padding: 10px 0;
+    text-align: center;
+    line-height: normal;
+    margin: 0 0 30px 0;
+    font-size: .9em;
+    border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+}
+
+/* TAB MENU   
+----------------------------------------------------------*/
+ul#menu {
+    border-bottom: 2px #83AB28 solid;
+    border-top: 2px #83AB28 solid;
+    padding: 5px 0 5px;
+    position: relative;
+    margin: 0;
+    text-align: left;
+}
+
+ul#menu li {
+    display: inline;
+    list-style: none;
+}
+
+ul#menu li#greeting {
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    color: #fff;
+}
+
+ul#menu li a {
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    /*background-color: #c0f07d;
+    color: #03A751;
+    border: 1px solid #327E04;*/
+    border: 1px solid #ffffff
+}
+
+ul#menu li a:hover {
+    background-color: #03A751;
+    text-decoration: none;
+    /*color: #c0f07d;*/
+    color: #ffffff;
+    border: 1px solid #327E04;
+}
+
+ul#menu li a:active {
+    background-color: #a6e2a6;
+    text-decoration: none;
+}
+
+ul#menu li.selected a {
+    background-color: #EEF2ED;    
+    border: 1px solid #327E04;
+    border-top: 0px;
+    border-bottom:0px;
+    color:#000;
+}
+ul#menu li.selected a:hover {
+    background-color: #03A751;
+    text-decoration: none;
+    /*color: #c0f07d;*/
+    color: #ffffff;
+    border: 1px solid #327E04;
+}
+
+
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+fieldset {
+    border: 1px solid #ddd;
+    padding: 1em 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea {
+    min-height: 40px;
+}
+
+input[type="text"], 
+input[type="password"] {
+    border: 1px solid #ccc;
+    padding: 2px;
+    /*font-size: 1.2em;*/
+    color: #444;
+    width: 200px;
+}
+
+select {
+    border: 1px solid #ccc;
+    padding: 2px;
+    /*font-size: 1.2em;*/
+    color: #444;
+}
+
+input[type="submit"],
+input[type="button"] {
+    /*font-size: 1.2em;*/
+    padding: 5px;
+}
+
+/* TABLE
+----------------------------------------------------------*/
+
+table {
+    border: solid 1px #e8eef4;
+    border-collapse: collapse;
+}
+
+table td {
+    padding: 5px;
+    border: solid 1px #e8eef4;
+}
+
+table th {
+    padding: 6px 5px;
+    text-align: left;
+    background-color: #EEF2ED;
+    border: solid 1px #EEF2ED;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #ff0000;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #ff0000;
+}
+.validation-summary-errors ul {
+    font-weight:normal;
+    font-size:  0.9em; 
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/* Styles for editor and display helpers
+----------------------------------------------------------*/
+.display-label, 
+.editor-label {
+    margin: 1em 0 0 0;
+}
+
+.display-field, 
+.editor-field {
+    margin: 0.5em 0 0 0;
+}
+
+.text-box {
+    width: 30em;
+}
+
+.text-box.multi-line {
+    height: 6.5em;
+}
+
+.tri-state {
+    width: 6em;
+}
+
+/* MISC  
+----------------------------------------------------------*/
+.clear {
+    clear: both;
+}
+
+.error {
+    color: Red;
+}
+
+nav, 
+#menucontainer {
+    margin: 7px 0 7px 0;
+    border-bottom:2px solid #03A751;
+    border-top:2px solid #03A751;
+    padding-bottom:0px;
+    padding-top:0px;
+}
+
+div#title {
+    display: block;
+    float: left;
+    text-align: left;
+}
+
+#logindisplay {
+    font-size: 1.1em;
+    display: block;
+    text-align: right;
+    margin: 10px;
+    color: #202020;
+    float:right;
+}
+
+#logindisplay a:link {
+    color: #03A751;
+    text-decoration: underline;
+}
+
+#logindisplay a:visited {
+    color: #03A751;
+    text-decoration: underline;
+}
+
+#logindisplay a:hover {
+    color: #202020;
+    text-decoration: none;
+}
+
+
+
+ul#WelcomeMenu
+{
+
+}
+ul#WelcomeMenu li {
+    float:left;
+
+    list-style: none;
+    padding-right: 18px;
+    text-align:center;
+}
+ul#WelcomeMenu li img:first-child 
+{
+    width:80px;
+}
+
+#bp-tabs
+{
+    min-width:1025px;
+}
+
+.pageTitle
+{
+    margin-left:-30px;
+}
+
+/* Styles for Questionnaire 
+---------------------------------------------------*/
+
+#QuestionForm .Explanation
+{
+    padding-top:10px;
+}
+#QuestionForm table {
+    border: solid 1px #e8eef4;
+    border-collapse: collapse;
+    border-style:none;
+}
+
+#QuestionForm table td {
+    padding: 5px;
+    border: solid 1px #e8eef4;
+    border-style:none;
+}
+
+#QuestionFormtable th {
+    padding: 6px 5px;
+    text-align: left;
+    background-color: #e8eef4;
+    border: solid 1px #e8eef4;
+    border-style:none;
+}
+
+.questionerror
+{
+    background-color: #FFF0F0;
+}
+
+.clickable
+{
+    cursor:pointer;
+}
+
+.tooltip
+{
+    background-color:white;
+    z-index:100;
+}
+
+
+fieldset table {
+    border: 0px;
+    }
+    
+
+fieldset table td {    
+    border: 0px;
+}
+
+fieldset table th {
+    border: solid 0px;
+}
+
+/* corrects style of a:link overriding jquery button style*/
+.button > span
+{
+    color: #FFFFFF;
+}
+
+.AnswerOptions textarea
+{
+    width:300px;
+    height:50px;
+}
+
+
+/* Blood Pressure Css 
+---------------------------------------------------*/
+legend.Warning
+{	
+	height:30px;	
+	background-image: url('../images/Knob Cancel.png');
+	padding: 0 0 0 35px; 
+	background-repeat: no-repeat; 
+	background-position: 5px 0 0 35px;
+}
+
+
+/*  Styles for Reports / Corrospondence 
+---------------------------------------------------*/
+
+.ui-widget-content .grid ,.ui-widget-content fieldset
+{
+    background:#fff;
+}
+
+.filename{margin-right:10px;}
+
+.dlimg
+{
+    width:40px;    
+}
+
+#filesList
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	background: #fff;
+	margin: 45px;
+	text-align: left;
+	border: 0px;
+}
+#filesList th
+{
+	font-size: 14px;
+	font-weight: normal;
+	color: #039;
+	padding: 5px 3px;
+	border-bottom: 2px solid #6678b1;
+}
+#filesList td
+{
+    border-left: 0px;
+    border-top: 0px;
+    border-right: 0px;
+	border-bottom: 1px solid #ccc;
+	color: #669;
+	padding: 3px 5px;
+}
+#filesList tbody tr:hover td
+{
+	color: #009;
+}
+
+tr.LetterRequired
+{
+    color:Red;
+}
+
+tr.important
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.advisorImageMenuItem
+{
+	display:inline-block;
+	margin:5px;
+	/* line below fixes inlineblock for ie*/
+	zoom:1; *display: inline; _height: 30px;
+}
+
+.info, .success, .warning, .error, .validation 
+{ 
+    border: 1px solid; padding:13px 13px 13px 48px; background-repeat: no-repeat; background-position: 8px center;
+}
+
+.info { color: #4E6C9E; background-color: #F0F3FA; background-image: url('../images/Knob Info.png'); }
+.success { color: #4F8A10; background-color: #DFF2BF; background-image:url('../images/Knob Valid Green.png'); }
+.warning { color: #9F6000; background-color: #FEEFB3; background-image: url('../images/Knob Attention.png'); }
+.error { color: #D8000C; background-color: #FFCDCD; background-image: url('../images/Knob Cancel.png'); }
+.updating { background-image: url('../images/ajax-loader.gif'); background-repeat: no-repeat; margin: 10px 10px; padding-left:50px; height:25px; vertical-align:middle; display:inline-block; }
+
+fieldset.info, fieldset.success, fieldset.warning, fieldset.error, fieldset.validation 
+{
+    padding: 1em 1.4em 1.4em 1.4em;
+}
+fieldset.error
+{    
+    background-color: #FFF5F5;
+}
+
+/*  Styling button elements to look like links
+*   http://www.456bereastreet.com/archive/201110/styling_button_elements_to_look_like_links/
+==============================================*/
+
+.linktext {
+    overflow:visible; /* Shrinkwrap the text in IE7- */
+    margin:0;
+    padding:0;
+    border:0;
+    color:#8f1f08; /* Match your link colour */
+    background:transparent;
+    font:inherit; /* Inherit font settings (doesn’t work in IE7-) */
+    line-height:normal; /* Override line-height to avoid spacing issues */
+    text-decoration:underline; /* Make it look linky */
+    cursor:pointer; /* Buttons don’t make the cursor change in all browsers */
+    -moz-user-select:text; /* Make button text selectable in Gecko */
+}
+/* Make sure keyboard users get visual feedback */
+.linktext:hover,
+.linktext:focus {
+    color:#800000;
+    background-color:#e3e0d1;
+}
+/* Remove mystery padding in Gecko browsers.
+ * See https://bugzilla.mozilla.org/show_bug.cgi?id=140562
+ */
+.linktext::-moz-focus-inner {
+    padding:0;
+    border:0;
+}
+
+/*
+==========================================*/

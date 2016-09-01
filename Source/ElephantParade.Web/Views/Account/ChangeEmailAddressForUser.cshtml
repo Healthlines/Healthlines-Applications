@@ -1,0 +1,29 @@
+﻿@model NHSD.ElephantParade.Domain.Models.PatientEmailAddressViewModel
+@{
+    ViewBag.PageTitle = "Change Password";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //set button below to be styled as JQuery Button.
+        $(".button").button();
+    });
+</script>
+
+<h2>Change user's email address</h2>
+
+@using (Html.BeginForm("ChangeEmailAddressForUser", "Account", 
+    new { email = Request.QueryString["Email"], returnUrl = Request.QueryString["returnUrl"] }, FormMethod.Post))
+{
+    @Html.ValidationSummary()
+    
+    <p>Please enter their existing email address - e.g. FirstName.LastName@nhsdirect.nhs.uk</p>
+    
+    <div><strong>@Html.LabelFor(m => m.ExistingEmailAddress)</strong></div>
+    <div>@Html.EditorFor(m => m.ExistingEmailAddress, new { @Value = Request.QueryString["Email"] })</div>
+    <br />   
+    <div><strong>@Html.LabelFor(m => m.NewEmailAddress)</strong></div>
+    <div>@Html.EditorFor(m => m.NewEmailAddress)</div>
+    <br />
+    <br />
+    <input type="submit" value="Change Email Address" id="ChangeEmailAddress" class="button" />
+}

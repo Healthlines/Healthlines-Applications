@@ -1,0 +1,62 @@
+﻿@model NHSD.ElephantParade.Domain.Models.BloodPressureTargetViewModel
+@*<script src="@Url.Content("~/Scripts/jquery-1.5.1.js")" type="text/javascript"></script>*@
+@{
+    ViewBag.PageTitle = "Current target BPs";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    //override default date validate
+    jQuery(function ($) {
+        $.validator.addMethod('date',
+            function (value, element) {
+                if (this.optional(element)) {
+                    return true;
+                }
+                var ok = true;
+                try {
+                    $.datepicker.parseDate('dd/mm/yy', value);
+                }
+                catch (err) {
+                    ok = false;
+                }
+                return ok;
+            });
+    });
+</script>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $(".button").button();
+        $("#submitlnk").click(function () {
+            $("#SubmitNewTargetFrm").submit();
+        });
+    });
+</script>
+
+@using (Html.BeginForm("SetNewBPTargets", "BloodPressure", new { ReturnUrl = (string)ViewBag.ReturnUrl, patientId = Model.Patient.PatientId, studyId = Model.Patient.StudyID }, FormMethod.Post, new {id="SubmitNewTargetFrm", name = "SubmitNewTargetFrm" }))
+{        
+    @Html.ValidationSummary(false, "Please correct the errors and click save.")
+    <fieldset>
+        <legend>Blood Pressure - Set New Targets</legend>
+        <p>Please fill out the details and click Save.</p>
+        @Html.LabelFor(m => m.SystolicTarget)
+        <div>
+            @Html.TextBoxFor(m => m.SystolicTarget)
+            @Html.ValidationMessageFor(m => m.SystolicTarget)
+        </div>
+        <br />
+        @Html.LabelFor(m => m.DiastolicTarget)
+        <div>
+            @Html.TextBoxFor(m => m.DiastolicTarget, new { text = string.Empty })
+            @Html.ValidationMessageFor(m => m.DiastolicTarget)
+        </div>
+        <br />      
+        <a href="#" id="submitlnk" class="button" >Save</a> 
+        @if (!String.IsNullOrEmpty(ViewBag.ReturnUrl))
+        {
+            <a  class="button" href="@ViewBag.ReturnUrl">Cancel</a>
+        }
+        &nbsp;
+        @TempData["BPTargetSaveStatus"]
+    </fieldset>
+}

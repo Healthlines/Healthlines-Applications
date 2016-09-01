@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.PageTitle = "Letters";
+}
+@model  IList<NHSD.ElephantParade.Domain.Models.QuestionnaireLetterAction>
+@using NHSD.ElephantParade.Web.Helpers      
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".button").button();
+    });
+    var processWindow = null;
+    function OpenWindow(target) {
+        processWindow = window.open(target, "", "");
+        processWindow.onbeforeunload = WindowCloseHanlder;
+        
+    }
+    function WindowCloseHanlder() {
+        if (processWindow != null) {
+            //do this once ajax is implemented  on the ProcessLetter.cshtml page
+            //window.location.reload();
+        }
+    }
+</script>
+@if (ViewData["Patient"] != null)
+{
+    @Html.Partial("~/Areas/Advisor/Views/CallBack/_PatientDetailsPartialView.cshtml", ViewData["Patient"])
+}     
+<h2>Patient Letters</h2>
+@if (Model.Where(l=>l.ProcessedDate==null).Count() > 0)
+{
+    <fieldset>
+    <legend>Required Letters</legend>    
+    @*<a href="javascript:window.location.reload()" >Refresh</a>*@        
+    <table>
+        <tbody>
+        @{
+        foreach (NHSD.ElephantParade.Domain.Models.QuestionnaireLetterAction item in Model.Where(l => l.ProcessedDate == null).ToList())
+        {                
+            <tr >                
+                <td style="color:Red;">@item.LetterTemplate.DescriptionAttribute()</td>
+                <td><a href="#" onclick="OpenWindow('@Url.Action("ReviewQuestionnaireLetter", "Communications", new { area = "Advisor", letterID = item.LetterTemplate, studyID = item.StudyID, patientID = item.PatientID, resultSetID = item.ResultSetID })')">Process</a></td>
+            </tr>
+        }
+        }
+        </tbody>
+    </table>
+    </fieldset>
+}
+<fieldset>
+    <legend>Sent Letters</legend>
+    @if (Model.Where(l => l.ProcessedDate != null).Count() > 0)
+    {
+    <table>
+        <tbody>
+        @{
+        foreach (var item in Model.Where(l => l.ProcessedDate != null))
+        {
+            <tr class="">                
+                <td>@item.LetterTemplate.DescriptionAttribute()</td>                    
+                <td>@(item.ProcessedBy==null?"":item.ProcessedBy)</td>
+                <td>@(item.ProcessedDate==null?"":item.ProcessedDate.Value.ToShortDateString())</td>
+                <td>@if (item.FileID != null)
+                    {                        
+                        <a href="@Url.Action("DownloadFile", "Communications", new { area = "Advisor", fileID = item.FileID.Value })">View</a>
+                    } 
+                </td>
+            </tr>
+        }
+        }
+        </tbody>
+    </table>
+    }
+</fieldset>
+<a href="@ViewData["returnUrl"]" class="button">Back</a>

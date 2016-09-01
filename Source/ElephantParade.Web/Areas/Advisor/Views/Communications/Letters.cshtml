@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.PageTitle = "Letters";
+}
+@model  NHSD.ElephantParade.Domain.Models.QuestionnaireActions
+@using NHSD.ElephantParade.Web.Helpers     
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".button").button();
+    });
+    var processWindow = null;
+    function OpenWindow(target) {
+        processWindow = window.open(target, "", "");
+        processWindow.onbeforeunload = WindowCloseHanlder;
+        
+    }
+    function WindowCloseHanlder() {
+        if (processWindow != null) {
+            //do this once ajax is implemented  on the ProcessLetter.cshtml page
+            //window.location.reload();
+        }
+    }
+</script>
+            
+<h2>Letters</h2>
+<fieldset>
+    <legend>Available Letters</legend>
+    @if (Model.LetterActionData.Count() > 0)
+    {
+        
+    <h4>Letters marked in red are required and should be sent.</h4>
+       @*<a href="javascript:window.location.reload()" >Refresh</a>*@
+        
+    <table>
+        <tbody>
+        @{
+        foreach (NHSD.ElephantParade.Domain.Models.ModuleLetter item in Model.LetterActionData)
+        {
+            string iR ="";
+            //var sent = Model.Letters.Where(l => l.LetterTemplate == item.LetterActionData.LetterTemplate && l.ProcessedDate == null).FirstOrDefault();
+            if (item.Required && Model.Letters.Where(l => l.LetterTemplate == item.LetterActionData.LetterTemplate && l.ProcessedDate==null).Count() > 0)
+            {
+                iR = "LetterRequired";
+            }
+                <tr class="@iR">
+                    <td>@(iR!=""?"Required ":"(Optional)")</td>
+                    <td>@item.LetterActionData.LetterTemplate.DescriptionAttribute()</td>
+                    <td><a href="#" onclick="OpenWindow('@Url.Action("ReviewQuestionnaireLetter", "Communications", new { area = "Advisor", letterID = item.LetterActionData.LetterTemplate, studyID = Model.StudyID, patientID = ViewData["PatientID"], resultSetID = Model.ResultSetID })')">Process</a></td>
+                </tr>
+        }
+        }
+        </tbody>
+    </table>
+    }
+    
+    
+</fieldset>
+
+<fieldset>
+    <legend>Sent Letters</legend>
+    @if (Model.Letters.Where(l => l.ProcessedDate != null).Count() > 0)
+    {
+    <table>
+        <tbody>
+        @{
+        foreach (var item in Model.Letters.Where(l=>l.ProcessedDate!=null))
+        {         
+            //var sent = Model.Letters.Where(l => l.LetterTemplate == item.LetterActionData.LetterTemplate && l.ProcessedDate == null).FirstOrDefault();
+
+            <tr class="">
+                <td>Letter</td>
+                <td>@item.LetterTemplate.ToString()</td>                    
+                <td>@(item.ProcessedBy==null?"":item.ProcessedBy)</td>
+                <td>@(item.ProcessedDate==null?"":item.ProcessedDate.Value.ToShortDateString())</td>
+                <td>@if (item.FileID != null)
+                    {                        
+                        <a href="@Url.Action("DownloadFile", "Communications", new { area = "Advisor", fileID = item.FileID.Value })">View</a>
+                    } 
+                </td>
+            </tr>
+        }
+        }
+        </tbody>
+    </table>
+    }
+</fieldset>
+<a href="@ViewData["returnUrl"]" class="button">Back</a>

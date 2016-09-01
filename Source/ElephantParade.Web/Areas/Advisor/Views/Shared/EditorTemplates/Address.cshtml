@@ -1,0 +1,49 @@
+﻿@model NHSD.ElephantParade.Domain.Models.Address
+
+
+
+    @Html.ValidationSummary(true)
+ 
+    <table>
+    
+    <tr>
+        <td>
+            @Html.LabelFor(model => model.Line1)
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Line1)
+            @Html.ValidationMessageFor(model => model.Line1)
+        </td>        
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(model => model.Line2)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.Line2)
+            @Html.ValidationMessageFor(model => model.Line2)
+        </td>
+     </tr>    
+    <tr>
+        <td>
+            @Html.LabelFor(model => model.County)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.County)
+            @Html.ValidationMessageFor(model => model.County)
+        </td>
+        </tr>
+     <tr>
+        <td>
+            @Html.LabelFor(model => model.PostCode)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.PostCode)
+            @Html.ValidationMessageFor(model => model.PostCode)
+        </td>
+        </tr>        
+    </table>
+
+
+
+

@@ -1,0 +1,20 @@
+﻿@model dynamic
+@{
+    <script type="text/javascript">
+        var newPatientsListPageUrl = '@Url.Content("~/Advisor/Callback/NewPatientsList")';
+        var newPatientsListDivId = "#divNewPatientsList";
+        var newPatientsListTable = "#NewPatientsListTable";
+
+        // call the function to create the callbacklist and paging with the required values
+        returnPagingAndHtml(newPatientsListPageUrl, newPatientsListDivId, newPatientsListTable);
+    </script>
+}
+@if ((int)ViewData["NumberOfNewPatientsCallbacks"] > 0)
+{
+    <div class="container">
+        <h2>
+            New Patients Callback List
+        </h2>
+        <div id="divNewPatientsList"></div>
+    </div>
+}

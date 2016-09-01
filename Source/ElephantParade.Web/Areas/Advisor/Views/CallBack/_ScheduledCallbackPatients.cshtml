@@ -1,0 +1,20 @@
+﻿@model dynamic
+@{
+    <script type="text/javascript">
+        var scheduledCallbacksPageUrl = '@Url.Content("~/Advisor/Callback/ScheduledCallbacks")';
+        var scheduledCallbackDivId = "#divScheduledCallbackData";
+        var scheduledCallbackTableDivId = "#ScheduledCallbacksTable";
+
+        // call the function to create the callbacklist and paging with the required values
+        returnPagingAndHtml(scheduledCallbacksPageUrl, scheduledCallbackDivId, scheduledCallbackTableDivId);
+    </script>
+}
+@if ((int)ViewData["NumberOfScheduledCallbacks"] > 0)
+{
+    <div class="container">
+        <h2>
+            Scheduled Callbacks
+        </h2>
+        <div id="divScheduledCallbackData"></div>
+    </div>
+}

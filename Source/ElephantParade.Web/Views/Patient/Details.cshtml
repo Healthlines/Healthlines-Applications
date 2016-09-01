@@ -1,0 +1,136 @@
+﻿@using NHSD.ElephantParade.Web.Helpers
+@model NHSD.ElephantParade.Domain.Models.StudyPatient
+@{
+    ViewBag.PageTitle = "Patient Details";
+}
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $(".button").button();
+
+        //setup address dialog
+        setupPatientDemographics();
+        //bring dialog box back into form on submit
+        $(".tooltiptriggerAddress").parents("form:first").submit(function () {
+            $(".addressFormDialog").dialog('destroy').appendTo($("#PatientUpdateResponce"));
+        });
+    });
+
+    function handleError(ajaxContext) {
+        var response = ajaxContext.statusText;
+        var statusCode = ajaxContext.status;
+        alert("Sorry, the request failed with status code " + statusCode);
+    }
+    function handlePDSuccess(form) {
+        var e = $("#UpdatePatientDetailsForm .successful");
+        var message = $('#UpdatePatientDetailsForm input[name$="SubmitMessage"]').val();
+        $(e).text(message);
+        $(e).toggle("slow").fadeTo("slow", 1).animate({ opacity: 1.0 }, 1000).fadeTo("slow", 0).toggle("slow");
+        setupPatientDemographics();
+    }
+
+    function setupPatientDemographics() {
+        $(".tooltiptriggerAddress").on("click.dialog", function () {
+            $(".addressFormDialog").dialog("open");
+            return false;
+        });
+        $(".addressFormDialog").dialog({
+            title: 'Edit',
+            autoOpen: false,
+            modal: false,
+            minWidth: 315,
+            buttons: { "Ok": function () {
+                $(this).dialog("close");
+            }
+            }
+        });
+    }
+</script>
+<div class="pageTitle">
+	@*<img alt="" src="@Url.Content("~/Content/themes/HealthLines/images/demographic.png")" style="margin-left: 10px; margin-right: 10px; float: left; height: 80px; " />*@
+    <img alt="" src="@Url.Content("~/Content/themes/HealthLines/images/users_folder.png")" style="margin-left: 10px; margin-right: 10px; float: left; height: 80px; " />    
+    <div style="height:20px;"></div>
+    <h1>Change My Details</h1>
+</div>
+
+<br />
+<p>If any of your details below are incorrect, please amend them and click Update.</p>
+
+    
+            
+        <div> 
+        <fieldset style="display:none;">
+            <!-- this hidden fieldset seems to correct an issue with Add Comment in ie7 -->
+        </fieldset> 
+        @using (Ajax.BeginForm("UpdatePatientDetails", "Patient", new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            UpdateTargetId = "PatientUpdateResponce",
+            OnFailure = "handleError",
+            OnSuccess = "handlePDSuccess"
+
+        }, new { id = "UpdatePatientDetailsForm" }))
+        {
+            @Html.HiddenFor(model => model.PatientId, new { id = "" })
+            @Html.HiddenFor(model => model.StudyID, new { id = "" })
+            <fieldset class="ui-widget-content ui-corner-all" >
+                <legend>Personal Details</legend>   
+                <div id="PatientUpdateResponce">              
+                    @Html.Partial("_Demographics", Model)
+                </div>
+                <br />
+                <h2 class="successful"  style="display:none;"></h2>
+                            
+                <input style="float:right;"type="submit" class="button" value="Update" title="Update Patient Details"/>                        
+                @Html.ValidationSummary(true)
+            </fieldset>
+        }
+
+        <fieldset class="ui-widget-content ui-corner-all">
+    <legend>GP Details</legend>
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.GPPractice.Name)
+            </td>
+            <td>
+                @Html.DisplayTextFor(model => model.GPPractice.Name)                
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.GPPractice.Practice)</td>
+            <td>@Html.DisplayTextFor(model => model.GPPractice.Practice)</td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.GPPractice.TelephoneNumber)
+            </td>
+            <td>
+                @Html.DisplayTextFor(model => model.GPPractice.TelephoneNumber)                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.GPPractice.EmailAddress)
+            </td>
+            <td>
+                @Html.DisplayTextFor(model => model.GPPractice.EmailAddress)                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.GPPractice.Address)
+            </td>
+            <td>
+                @Html.DisplayTextFor(model => model.GPPractice.Address)                
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model=>model.StudyReferralDate)</td>
+            <td>@Html.DisplayTextFor(model=>model.StudyReferralDate)</td>
+        </tr>
+    </table>
+    </fieldset>
+
+        </div>
+       
+         

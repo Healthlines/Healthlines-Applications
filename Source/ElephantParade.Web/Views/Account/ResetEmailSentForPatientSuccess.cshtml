@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.PageTitle = "Change Password";
+}
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $(".button").button();
+    })
+</script>
+
+<h2>Email has been sent for user @Request.QueryString["UserName"] to change password!</h2>
+
+<p>
+    Email has been sent for patient with username @Request.QueryString["UserName"] successfully.
+
+    Please confirm this with the user.
+</p>
+<div>
+   <input class="button" type="button" title="Go back to Call Details page" value="Back to Call Details"  onclick="location.href='@Request.QueryString["returnUrl"]'" />
+</div>

@@ -1,0 +1,10 @@
+﻿@using Questionnaires.Web.Helpers
+@model Questionnaires.Core.Services.Models.AnswerOption
+@{      
+    var id = QuestionReader.Prefix + Model.QuestionID + QuestionReader.Delimiter + Model.AnswerOptionID;   
+}
+<td>
+@Model.Label</td>
+<td>
+<input id="@id" type="text" value="@Model.DefaultValue" name="@string.Format("{0}{1}{2}", QuestionReader.CreateName(Model), QuestionReader.Delimiter, Model.AnswerOptionID)" class="datePicker" />
+</td>

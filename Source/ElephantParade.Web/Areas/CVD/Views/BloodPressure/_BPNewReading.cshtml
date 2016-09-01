@@ -1,0 +1,120 @@
+﻿@model NHSD.ElephantParade.Domain.Models.BloodPressureReadingViewModel
+@*<script src="@Url.Content("~/Scripts/jquery-ui-timepicker-addon.js")" type="text/javascript"></script>*@
+<script type="text/javascript" language="javascript">
+
+    var TimeReadingTaken = ["-Please Select-",
+                            "00:00", "00:15", "00:30", "00:45", 
+                            "01:00", "01:15", "01:30", "01:45", 
+                            "02:00", "02:15", "02:30", "02:45", 
+                            "03:00", "03:15", "03:30", "03:45", 
+                            "04:00", "04:15", "04:30", "04:45",
+                            "05:00", "05:15", "05:30", "05:45", 
+                            "06:00", "06:15", "06:30", "06:45", 
+                            "07:00", "07:15", "07:30", "07:45", 
+                            "08:00", "08:15", "08:30", "08:45", 
+                            "09:00", "09:15", "09:30", "09:45", 
+                            "10:00", "10:15", "10:30", "10:45", 
+                            "11:00", "11:15", "11:30", "11:45", 
+                            "12:00", "12:15", "12:30", "12:45", 
+                            "13:00", "13:15", "13:30", "13:45", 
+                            "14:00", "14:15", "14:30", "14:45", 
+                            "15:00", "15:15", "15:30", "15:45", 
+                            "16:00", "16:15", "16:30", "16:45", 
+                            "17:00", "17:15", "17:30", "17:45", 
+                            "18:00", "18:15", "18:30", "18:45", 
+                            "19:00", "19:15", "19:30", "19:45", 
+                            "20:00", "20:15", "20:30", "20:45", 
+                            "21:00", "21:15", "21:30", "21:45", 
+                            "22:00", "22:15", "22:30", "22:45", 
+                            "23:00", "23:15", "23:30", "23:45"];
+
+    $(document).ready(function () {
+        $("#DateOfReading").datepicker({ dateFormat: 'dd/mm/yy', minDate: -120, maxDate: 0 });
+        $("#DateOfReading").attr("title", "Date of reading");
+
+        LoadArrayElements($("#JqueryDDownForTimeReadingTaken"), TimeReadingTaken);
+
+        @if (Model != null)
+        {
+            <text>var selectedVal = '@Model.DateOfReading';</text>
+            //stored time in variable of format HH:MM:MM we need to convert to HH:MM 
+            <text>var AfterTrimmingSelectedVal = selectedVal.substring(11, 16);</text>
+            //Preselect the value of user selection
+            <text>$('#JqueryDDownForTimeReadingTaken').val(AfterTrimmingSelectedVal);</text>
+        }
+
+        $("#SaveBPReading").button().click(function () {
+            $("#TimeReadingTaken").val($("#JqueryDDownForTimeReadingTaken").val());
+        });
+    });
+
+    // Function to populate the DropDown loadimng
+    function LoadArrayElements(selectElement, arrayName) {
+        var list = eval(arrayName)
+        $(list).each(function (i) {
+            selectElement.append("<option value='" + list[i] + "'>" + list[i] + "</option>");
+        });
+    }
+
+
+</script>
+
+<div>
+    @Html.ValidationSummary(false, "Please correct the errors and click save.")
+</div>
+<fieldset>
+    <img alt="" src="@Url.Content("~/Content/themes/HealthLines/images/bp.jpg")" style="margin-left: 10px; margin-right: 10px; float: left; width:200px;" />
+    <div  style="margin-left: 210px;   margin-right: auto;">        
+        <p>Use this page to enter your Blood Pressure reading and the date and time that you take it. Remember that you will need to take two readings, but you only need to enter the second reading.</p>
+    </div>
+
+    <input type="hidden" id="TimeReadingTaken" name="TimeReadingTaken" />
+
+    <div class="container" style="width:500px;margin-left: 210px; margin-right: auto;">            
+        <table>
+            <tr>
+                <td colspan="2">To enter the date, click in box 1 to display the calendar, then select the date that you took the reading.</td>
+            </tr>
+            <tr>
+                <td><strong>1.</strong> @Html.LabelFor(m => m.DateOfReading):</td>
+                <td>@Html.TextBoxFor(m => m.DateOfReading, new { @class = "datepicker", title = "Date of Blood Pressure Reading" })
+                    @Html.ValidationMessageFor(m => m.DateOfReading)</td>
+            </tr>
+            <tr>
+                <td colspan="2">To enter the time, click in box 2 to display a list of times, then select the time that you took the reading.</td>
+            </tr>
+            <tr>
+                <td><strong>2.</strong> @Html.LabelFor(m => m.TimeOfReading):</td>
+                <td>
+                    <select id="JqueryDDownForTimeReadingTaken">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    Enter your Blood Pressure reading in boxes 3 and 4 – only enter your second reading.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>3.</strong> @Html.Label("Systolic – enter the top number on your monitor (SYS):")&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.Systolic, new { @class = "numeric" , maxlength=3})
+                    <div>@Html.ValidationMessageFor(m => m.Systolic)</div></td>
+            </tr>
+            <tr>
+                <td><strong>4.</strong> @Html.Label("Diastolic – enter the middle number on your monitor (DIA):")</td>
+                <td>@Html.TextBoxFor(m => m.Diastolic, new { @class = "numeric" , maxlength=3})
+                    <div>@Html.ValidationMessageFor(m => m.Diastolic)</div></td>
+            </tr>
+            <tr>
+                <td colspan="2">Please note: the bottom number on your monitor shows your pulse. You do not need to enter this information here.</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>5.</strong> Click the Save button to record your reading:
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="submit" id="SaveBPReading" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" title="Save Blood Pressure reading" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</fieldset>

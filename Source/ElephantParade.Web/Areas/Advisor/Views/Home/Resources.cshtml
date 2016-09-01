@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.PageTitle = "Resources";
+}
+
+<h2>Resources</h2>
+
+<strong>Here you will find resources and content to help you.</strong>
+@*@{
+    
+    DirectoryInfo dirInfo = new DirectoryInfo(Server.MapPath(@"~/Areas/Advisor/Resources"));
+
+    <h1>Downloads</h1>
+    <table>
+
+    @foreach (var item in dirInfo.GetFiles())
+    {
+        if(item.Extension != ".config")
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Content("~/Areas/Advisor/Resources/" + item.Name)">@item.Name </a>                   
+                </td>
+            </tr>
+        }
+    }
+
+    </table>
+
+}*@
+
+    <h1>Downloads</h1>
+<ul>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/LLTTFiworkbook1.pdf")">LLTTFi Workbook 1: Introduction and Why Do I Feel So Bad? </a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/LLTTFiworkbook2.pdf")">LLTTFi Workbook 2: Unhelpful Thoughts and Behaviours </a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/LLTTFiworkbook3.pdf")">LLTTFi Workbook 3: Unhelpful Thoughts and Behaviours II </a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/LLTTFiworkbook4.pdf")">LLTTFi Workbook 4: Challenging Unhelpful Thoughts </a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/LLTTFiworkbook5.pdf")">LLTTFi Workbook 5: Sleep and Healthy Living</a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/LLTTFiworkbook6.pdf")">LLTTFi Workbook 6: Summary and Review</a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/Process-ManagingSuicideAlertsWithinLLTTFi-Depression.pdf")">Process for managing suicide alerts from within LLTTFi - Depression</a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/Proforma for Participant Withdrawal from RCT - depression.docx")">Proforma for Participant Withdrawal from RCT - depression</a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/About_antidepressant_medicines_module.pdf")">About antidepressant medicines module</a> </li>
+    <li> <a target="_blank" href="@Url.Content("~/Areas/Advisor/Resources/GP-caveat-depression.pdf")">GP Caveat Depression</a> </li>
+</ul>

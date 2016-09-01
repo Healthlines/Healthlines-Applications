@@ -1,0 +1,119 @@
+﻿@model Questionnaires.Web.Models.QuestionnaireSetsWrapper
+<script type="text/javascript">
+    //method to fix webgrids moving to top of page onclick
+    function fixLinks(link) {
+        $(link).parents('table:first').find('thead a').removeAttr('href');
+        $(link).parents('table:first').find('.footer a').removeAttr('href');
+    }
+</script> 
+<div>
+    <h3>Previous Sessions 
+        <a style="position:absolute; margin-bottom:-5px; margin-left:10px;" title="View Previous Letters" href="@Url.Action("PatientLetters", "Communications", new { studyID = Model.StudyID, patientID = Model.PatientID, returnurl = ViewContext.HttpContext.Request.Url.PathAndQuery })"><img width="50" src="@Url.Content("~/Content/themes/HealthLines/images/email-icon.png")" alt="Sent Letters" /></a>   
+    </h3>    
+
+    @if(Model.QuestionnaireSessions.Where(l=>l.Letters.Where(ltr=>ltr.ProcessedDate==null).Count()>0).Count()>0)
+    {
+        <div class="warning clickable" style="display:inline-block; margin:0 0 10px 0;" onclick="location.href='@Url.Action("PatientLetters", "Communications", new { studyID = Model.StudyID, patientID = Model.PatientID, returnurl = ViewContext.HttpContext.Request.Url.PathAndQuery })';">          
+            <span style=" font-weight:bold;">Patient has <span style="color:Red;">@Model.QuestionnaireSessions.Select(l => l.Letters.Where(ltr => ltr.ProcessedDate == null).Count()).Sum()</span> Outstanding Letters</span>            
+        </div>        
+    }
+    
+
+    @{ if (@Model.QuestionnaireSessions.Count() == 0)
+    {
+       <b>No Previous Sessions</b>
+    }
+    else
+    {
+        var gridas = new WebGrid(@Model.QuestionnaireSessions.OrderByDescending(m => m.StartDate).ToList(), canPage: true, rowsPerPage: 10, ajaxUpdateContainerId: "QuestionnairePreviousGrid", ajaxUpdateCallback: "fixLinks(this)", pageFieldName: "AS");
+        gridas.Pager(WebGridPagerModes.NextPrevious);
+       
+        <div id="QuestionnairePreviousGrid">
+        @gridas.GetHtml(tableStyle: "grid",
+            htmlAttributes: new { id = "AnswerTable" },
+            headerStyle: "header",
+            alternatingRowStyle: "alt",
+            columns: gridas.Columns(
+                //gridas.Column("QuestionnaireID", "ID", canSort: false),
+                gridas.Column("Qname", "Name", canSort: false, format: @<b>@{
+                    var questionnaire = Model.Questionnaires.Where(q => q.QuestionnaireID.ToString() == @item.QuestionnaireID).FirstOrDefault();
+                    if (questionnaire != null)
+                    {
+                        <text>@questionnaire.Name</text>
+                    }                    
+                }
+                </b>),
+                gridas.Column("Operator"),
+                gridas.Column("StartDate"),
+                gridas.Column("EndDate"),
+                gridas.Column("Status"),
+                gridas.Column("Commands", "", @<b> @{
+                    if (@item.Status == NHSD.ElephantParade.Domain.Models.QuestionnaireSession.State.Completed)
+                    {
+                     @Html.ActionLink("View", "Download", "QuestionnaireSession", new { id = @item.ResultSetID }, null)}
+                    }</b>),
+                gridas.Column("Letters", "Letters", canSort: false, format: @<a @{
+                        //var processed = ((IList<NHSD.ElephantParade.Domain.Models.QuestionnaireLetterAction>)item.Letters).Where(m => m.ProcessedDate != null).Count();
+                        var unprocessed = ((IList<NHSD.ElephantParade.Domain.Models.QuestionnaireLetterAction>)item.Letters).Where(m => m.ProcessedDate == null).Count();
+                        var total = ((IList<NHSD.ElephantParade.Domain.Models.QuestionnaireLetterAction>)item.Letters).Count();
+                        if (unprocessed > 0)
+                        {
+                            <text>class="improw"</text> //hightlight the row as important (jquery looks for tr elements containing improw class elements) 
+                            <text>title="@unprocessed out of @total required letters outstanding" </text>
+                        }
+                        else
+                        {
+                            <text>title="@total Letters Processed" </text>
+                        }
+                    } href="@Url.Action("Letters", "Communications", new { studyID = Model.StudyID, patientID = Model.PatientID, resultSetID = @item.ResultSetID, returnurl = ViewContext.HttpContext.Request.Url.PathAndQuery })">
+                    @{<text>@total </text>if(unprocessed >0){<text>(@unprocessed)</text>}}
+                    </a>)
+            )
+        )
+        </div>
+    }
+    }
+</div>
+<div>
+    <h3>Available Question Sets</h3>    
+    @{         
+        var gridq = new WebGrid(Model.Questionnaires, rowsPerPage: 10, ajaxUpdateContainerId: "QuestionnaireSessionsGrid", ajaxUpdateCallback: "fixLinks(this)", pageFieldName: "QS");
+        gridq.Pager(WebGridPagerModes.NextPrevious);        
+    }
+    <div id="QuestionnaireSessionsGrid">
+        @gridq.GetHtml(tableStyle: "grid",
+            htmlAttributes: new { id = "QuestionnaireTable" },
+            headerStyle: "header",
+            footerStyle: "footer",
+            alternatingRowStyle: "alt",
+            columns: gridq.Columns(
+                //gridq.Column("QuestionnaireID", "ID"),
+                gridq.Column("Name", canSort: true),
+                gridq.Column("Status", "", format: @<b> @{
+                    var answerSet = Model.QuestionnaireSessions.Where(a => a.QuestionnaireID == @item.QuestionnaireID.ToString() && a.Status == NHSD.ElephantParade.Domain.Models.QuestionnaireSession.State.Open).FirstOrDefault();
+                    if (answerSet == null)
+                    {
+                        @*
+                        @Html.ActionLink("Start", "Start", new { questionnaireID = @item.QuestionnaireID, participantID = Model.ParticipantID }, null)
+                        *@
+                        @Html.RouteLink("Start", "CallbackQuestionnaire", new { callbackID = ViewBag.callbackID, action = "Start", questionnaireID = @item.QuestionnaireID, participantID = Model.ParticipantID })
+                    }
+                    else if (answerSet.Status == NHSD.ElephantParade.Domain.Models.QuestionnaireSession.State.Open)
+                    {
+                        @*
+                        @Html.ActionLink("Restart", "Start", new { questionnaireID = @item.QuestionnaireID, participantID = Model.ParticipantID }, null)<text>&nbsp;</text>@Html.ActionLink("Resume", "Resume", "QuestionnaireSession", new { id = answerSet.AnswerSetID }, null) 
+                        *@
+                        @Html.RouteLink("Restart", "CallbackQuestionnaire", new { callbackID = ViewBag.callbackID, action = "Start", questionnaireID = @item.QuestionnaireID, participantID = Model.ParticipantID })
+                        
+                        if (answerSet.StartDate > DateTime.Now.AddHours(-24))
+                        {
+                            <text>&nbsp;</text>@Html.RouteLink("Resume", "CallbackQuestionnaire", new { callbackID = ViewBag.callbackID, action = "Resume", id = answerSet.ResultSetID })
+                        }
+                    }
+                }
+                </b>)
+            )
+        )
+    </div>
+</div>
+

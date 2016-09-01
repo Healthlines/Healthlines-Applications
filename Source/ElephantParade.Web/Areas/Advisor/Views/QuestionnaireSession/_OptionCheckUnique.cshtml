@@ -1,0 +1,12 @@
+﻿@using Questionnaires.Web.Helpers
+@model Questionnaires.Core.Services.Models.AnswerOption
+           
+@{      
+    var id = QuestionReader.Prefix + Model.QuestionID + QuestionReader.Delimiter + Model.AnswerOptionID;
+    string chkvalue = Model.DefaultValue == "checked" ? "checked" : "";
+}
+
+<td colspan="2">
+<input id="@id" type="checkbox" class="checkunique" value="@string.Format("{0}{1}{2}", Model.DefaultValue, QuestionReader.Delimiter, Model.AnswerOptionID)" name="@QuestionReader.CreateName(Model)" @chkvalue />
+@Model.Label</td>
+

@@ -1,0 +1,225 @@
+﻿@using NHSD.ElephantParade.Web.Helpers
+@*
+@model NHSD.ElephantParade.Domain.Models.PatientMedicalConditions
+  *@
+  
+  @model NHSD.ElephantParade.Web.Areas.Advisor.Models.MedicationWrapper               
+@{if (Model.PatientMedicalConditions != null && Model.PatientMedicalConditions.MedicationsConditions != null)
+  {                   
+        <h3 style="padding-left:25px; font-size:120%;" >Medicines / Conditions</h3>
+        <div> 
+        <table>
+            <tr>
+                <td style="vertical-align:top;">
+                    <div  style="float:left;margin-right:10px;">
+                        @using (Ajax.BeginForm("MedicalConditionAdd", "CallBack", new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            OnFailure = "handleError",
+                            //UpdateTargetId = "MedicalConditionSaveForm",
+                            OnSuccess = "MCSaveComplete",
+                            LoadingElementId = "loadingimg"
+                        }))
+                        {   
+                            @Html.Hidden("PatientId", Model.PatientId, new { id = "" });
+                            @Html.Hidden("StudyID", Model.PatientId, new { id = "" });                  
+                            <fieldset>
+                                <legend>Add</legend>
+                                <div id="MedicalConditionSaveForm">
+                                @{
+                                    ViewDataDictionary<NHSD.ElephantParade.Domain.Models.MedicalConditionItem> dataDictionary = new ViewDataDictionary<NHSD.ElephantParade.Domain.Models.MedicalConditionItem>(Model.NewMedicalConditionItem);
+                                    dataDictionary.TemplateInfo.HtmlFieldPrefix = "NewMedicalConditionItem";    
+                                    @Html.Partial("_MedicalConditionItem", Model.NewMedicalConditionItem, dataDictionary)  
+                                }
+                                </div>   
+                                <br />
+                                <div id="loadingimg" style="display:none;">
+                                    <img src="@Url.Content("~/Content/themes/Healthlines/images/ajax-loader.gif")" alt="Please Wait..." />
+                                    Please Wait...
+                                </div>
+                                <input class="button" style="float:right;" type="submit" value="Create" />                  
+                            </fieldset>                          
+                        }                        
+                    </div>
+                </td>
+                <td style="vertical-align:top;">
+                @{
+                        var grid = new WebGrid(Model.PatientMedicalConditions.MedicationsConditions,
+                                                        rowsPerPage: 5,
+                                                        canPage: true,
+                                                        fieldNamePrefix: "mcgrid",
+                                                        selectionFieldName: "SelectMC",
+                                                        ajaxUpdateContainerId: "PatientMedicalConditionsGrid",
+                                                        ajaxUpdateCallback: "McUpdateCallback");                                    
+                }
+                    <script type="text/javascript">
+                        function MCSaveComplete(result){
+                            MCupdateGrid();
+                            if (result.success) {
+                                //$("#MedicalConditionSaveForm").html(
+                                $("#MedicalConditionSaveForm").find("input").val("");
+                                //reset validation format
+                                $("#MedicalConditionSaveForm").find('.field-validation-error').removeClass('field-validation-error').addClass('field-validation-valid');
+                                $("#MedicalConditionSaveForm").find('.input-validation-error').removeClass('input-validation-error').addClass('valid');
+                            }
+                            else{
+                                alert(result.errormessage);                                
+                            }
+                        }
+
+                        $(document).ready(function(){                            
+
+                            //setup edit item dialog
+                            $("#MedicalConditionItemEditDialog").dialog({ 
+                                autoOpen: false
+                                ,width:310
+                                ,modal: true
+                                ,title: "Edit"
+                                ,buttons: [
+                                    {
+                                        text: "Save",
+                                        click: function() {
+                                            var f = $("#MedicalConditionDialogEditForm");  
+                                            f.validate();                                         
+                                            if($(f).valid()){                                                    
+                                                $(this).find('form:first').submit();
+                                            }                                          
+                                        }
+                                    },
+                                    {
+                                        text:"Close",
+                                        click: function(){
+                                            $(this).dialog("close");                               
+                                        }
+                                    }
+
+                                ]
+                            }); 
+                        });
+                        
+                        //on webgrid callback 
+                        function McUpdateCallback() {                               
+                            //check id a function mode has been set             
+                            if($("#MCmode").val() == "edit")
+                            {
+                                //take the edit form data from grid and put in dialog form
+                                $("#MedicalConditionUpdateForm").html($("#McEdititemContainer").html());
+                                //open dialog
+                               $("#MedicalConditionItemEditDialog").dialog("open");
+                            }
+                        }
+                        //delete an item
+                        function PMCdelete(id)
+                        {
+                            $( "#MCdialog-confirm" ).dialog({
+                                resizable: false,                                
+                                modal: true,
+                                buttons: {
+                                    "Yes": function() {                                        
+                                        $.ajax({ type: "GET",
+                                            url: '@Html.Raw(Url.Action("MedicalConditionDelete", new { studyID = Model.StudyID }))&itemID=' + id,
+                                            data: "{}",
+                                            cache: false,
+                                            dataType: "text",
+                                            success: function (data) {                                       
+                                                MCupdateGrid();
+                                                $("#MCdialog-confirm").dialog("close");
+                                            },
+                                            error: function(jqXHR, textStatus, errorThrown) {
+                                                alert('error ' + textStatus);
+                                            }
+                                        })                                           
+                                    },
+                                    "No": function() {
+                                        $( this ).dialog( "close" );
+                                    }
+                                }
+                            });                            
+                        }
+                        //method to refresh the webgrid
+                        function MCupdateGrid() {
+                            try {
+                                @{
+                                    //check if are apending to querystring or createing a querystring *@                                    
+                                    var sym =Request.QueryString.Count>0?"&":"?";
+                                }
+                                @Html.Raw(HttpUtility.HtmlDecode(grid.GetContainerUpdateScript(@Request.Url.ToString() + sym + grid.PageFieldName + "=" + (grid.PageIndex + 1)).ToString()))
+                            } catch (e) {
+                                alert('An error has occurred: '+e.message)
+                            }                            
+                        }
+                        //on success of submit check for validation messages set by the server call.
+                        function MCitemSuccess()
+                        {
+                            var errs = $("#MedicalConditionUpdateForm").find(".input-validation-error");
+                            if(errs.length == 0 )
+                            {
+                                $("#MedicalConditionItemEditDialog").dialog("close");
+                                MCupdateGrid();
+                            }
+                        }
+                    </script>
+                    <div id="PatientMedicalConditionsGrid">                        
+                        @grid.GetHtml(
+                        tableStyle: "grid", 
+                        mode: WebGridPagerModes.All,
+                        headerStyle: "head",
+                        alternatingRowStyle: "alt",
+                        columns: grid.Columns(
+                            grid.Column("Type", "Type", format: item => item.Type == NHSD.ElephantParade.Domain.Models.MedicalConditionItem.ItemType.Condition?"C":"M", canSort: false),
+                            grid.Column("Name", "Name", format: item => item.Name),
+                            grid.Column("Dose", "Dose", format: item => item.Dose),
+                            grid.Column("Frequency", "Frequency", format: item => item.Frequency),
+                            grid.Column(header: "", format: @<text>@item.GetSelectLink("edit")</text>),
+                            grid.Column(header: "", format: @<text><a href="" onclick="PMCdelete(@item.itemID);return false;">delete</a> </text>)
+                            )
+                        )
+
+                        @{
+                        NHSD.ElephantParade.Domain.Models.MedicalConditionItem condition = new NHSD.ElephantParade.Domain.Models.MedicalConditionItem();
+                        if (grid.HasSelection)
+                        {
+                            condition = (NHSD.ElephantParade.Domain.Models.MedicalConditionItem)grid.SelectedRow.Value;
+                                <input id="MCmode" type="hidden" name="MCmode" value="edit" />
+                        }
+                        else
+                        {
+                                <input id="MCmode" type="hidden" name="MCmode" value="" />
+                        }
+                            <div id="McEdititemContainer" style="display:none;" >
+                                @* this partial is rendered twice to allow for the ajax call to the grid to render the partial view. 
+                                It is then moved into the dialog box after the call is completed.
+                                This is needed to enable client side validation *@
+                                @Html.Partial("_MedicalConditionItem", condition) 
+                            </div>
+                        }    
+                    </div>
+                    <div id="MedicalConditionItemEditDialog" style="display:none;">
+                        @using (Ajax.BeginForm("MedicalConditionSave", new { }, new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            OnFailure = "handleError",
+                            UpdateTargetId = "MedicalConditionUpdateForm",
+                            OnSuccess = "MCitemSuccess"
+                        }, new { id = "MedicalConditionDialogEditForm" }))
+                        {
+                            @Html.HiddenFor(m => m.PatientId);
+                            @Html.HiddenFor(m => m.StudyID);                   
+                            <div id="MedicalConditionUpdateForm">
+                                @*
+                                @Html.Partial("_MedicalConditionItem", condition) 
+                                *@
+                            </div> 
+                            
+                        }
+                    </div>   
+                    <div class="clear"></div>
+                </td>
+            </tr>
+        </table>            
+        <div id="MCdialog-confirm" title="Delete the item?" style="display:none;" > 
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be deleted. Are you sure?</p> 
+        </div>
+        </div>  
+  }
+}

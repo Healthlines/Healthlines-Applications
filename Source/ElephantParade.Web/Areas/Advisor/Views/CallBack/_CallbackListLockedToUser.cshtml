@@ -1,0 +1,20 @@
+﻿@model dynamic
+@{
+    <script type="text/javascript">
+        var lockedCallbacksListToUserPageUrl = '@Url.Content("~/Advisor/Callback/LockedCallbacksToUserList")';
+        var lockedCallbacksToUserListDivId = "#divLockedCallbacksToUserList";
+        var lockedCallbacksToUserListTable = "#lockedCallbacksToUserListTable";
+
+        // call the function to create the callbacklist with the required values
+        returnPagingAndHtml(lockedCallbacksListToUserPageUrl, lockedCallbacksToUserListDivId, lockedCallbacksToUserListTable);
+    </script>
+}
+@if ((int)ViewData["NumberOfCallbacksLockedToUser"] > 0)
+{
+    <div class="container">
+        <h2>
+            Locked by you
+        </h2>
+        <div id="divLockedCallbacksToUserList"></div>
+    </div>
+}

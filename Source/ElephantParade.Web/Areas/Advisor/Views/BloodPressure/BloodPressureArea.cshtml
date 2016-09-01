@@ -1,0 +1,272 @@
+﻿@model NHSD.ElephantParade.Web.Areas.Advisor.Models.BloodPressureReadingsWrapper
+@{
+    ViewBag.PageTitle = "Blood Pressure Readings";
+}
+
+@*<script src="@Url.Content("~/Scripts/highcharts/highcharts.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/highcharts/modules/exporting.js")" type="text/javascript"></script>*@
+<script src="@Url.Content("~/Scripts/highstocks/highstock.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/highstocks/modules/exporting.js")" type="text/javascript"></script>
+<script type="text/javascript" language="javascript">
+    var chart;
+    $(document).ready(function () {
+        @{
+                var readings = Json.Encode(Model.BloodPressureReadings.OrderBy(r=>r.DateOfReading).Select(r=> new{
+                                                                                    r.Systolic,r.Diastolic ,
+                                                                                    r.DateOfReading,
+                                                                                    SystolicTarget = r.Target==null?null:r.Target.SystolicTarget,
+                                                                                    DiastolicTarget = r.Target==null?null:r.Target.DiastolicTarget}));
+        }
+        var systolic = @Html.Raw(readings);
+
+        var seriesOptions = [],sData = [],dData = [],sTData = [],dTData = [];
+
+        $.each(systolic,function(itemIndex,item){        
+            if(item.SystolicTarget!==null){
+                sTData.push([parseInt(item.DateOfReading.substr(6)),parseInt(item.SystolicTarget)]); 
+            } 
+            if(item.DiastolicTarget!==null){
+                dTData.push([parseInt(item.DateOfReading.substr(6)),parseInt(item.DiastolicTarget)]); 
+            }  
+            if(item.Systolic!==null && item.Systolic > 0){
+                sData.push([parseInt(item.DateOfReading.substr(6)),item.Systolic]); 
+            }            
+            if(item.Diastolic!==null && item.Diastolic>0){
+                dData.push([parseInt(item.DateOfReading.substr(6)),item.Diastolic]); 
+            }            
+        });
+
+        seriesOptions[0] = {
+            name: "Systolic Target",
+            color: '#F76E6A',
+            data: sTData
+        };
+        seriesOptions[1] = {
+            name: "Diastolic Target",
+            color: '#85BDFF',
+            data: dTData
+        };
+        seriesOptions[2] = {
+            name: "Systolic Reading",
+            color: '#AA4643',
+            lineWidth: 4,
+            data: sData
+        };
+        seriesOptions[3] = {
+            name: "Diastolic Reading",
+            color: '#4572A7',
+            lineWidth: 4,
+            data: dData
+        };
+        
+        
+        var chart = new Highcharts.StockChart({
+            chart: {
+                renderTo: 'BloodPressureHistoryChart',
+                marginRight: 150,
+                marginBottom: 25,
+                marginLeft: 35
+            },
+            credits: {
+                enabled: 1,
+                text: "NHS Direct",
+                href:"#"
+            },
+            rangeSelector: {            
+		        selected: 4,
+                buttons: [{
+	                type: 'month',
+	                count: 1,
+	                text: '1 m'
+                }, {
+	                type: 'month',
+	                count: 3,
+	                text: '3 m'
+                }, {
+	                type: 'month',
+	                count: 6,
+	                text: '6 m'
+                }, {
+	                type: 'year',
+	                count: 1,
+	                text: '1 year'
+                }, {
+	                type: 'all',
+	                text: 'All'
+                }],
+                buttonSpacing : 0,
+                buttonTheme: { // styles for the buttons
+                    fill: 'none',
+                    stroke: '#91B399',
+                    width: 50,
+                    style: {
+                        color: '#000',
+                        fontWeight: 'bold'
+                    },
+                    states: {
+                        hover: {
+                            fill: '#D8E8DC',
+                            style: {
+                                color: '#000'
+                            }
+                        },
+                        select: {
+                            style: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                },
+                inputStyle: {
+                    color: '#000',
+                    fontWeight: 'bold'
+                },
+                labelStyle: {
+                    color: 'silver',
+                    fontWeight: 'bold'
+                },
+                inputBoxStyle: {
+                    right: '70px'
+                }
+		    },
+            yAxis: {
+                title:{text: " "},
+		        labels: {  
+                    x: -25,
+		    	    formatter: function() {
+		    		    return Highcharts.numberFormat(this.value, 0);
+		    	    }
+		        },                
+		        plotLines: [{
+		    	    value: 0,
+		    	    width: 2,
+		    	    color: 'silver'
+		        }]
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                y: 35,
+                x: 10,
+                floating: true,
+                borderWidth: 0,
+                enabled: true
+            },
+            tooltip: {
+		        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> <br/>',
+		        valueDecimals: 2
+		    },
+            series: seriesOptions
+        }, function(thechart){
+            // apply the date pickers
+            setTimeout(function() {
+                $('input.highcharts-range-selector', $('#' + thechart.options.chart.renderTo))
+                    .datepicker();
+            }, 0);
+        });
+
+        chart.redraw();
+    });
+    
+    function CommentErrorHandler(ajaxContext, status, error) {
+        var response = ajaxContext.statusText;
+        var statusCode = ajaxContext.status;
+    }
+
+    function CommentError(response, statusCode) {
+        $("#div-dialog-warning").find(".message").text(response);
+        $("#div-dialog-warning").dialog({
+            autoOpen: true,
+            title: "Error",
+            resizable: false,
+
+            modal: true,
+            buttons: {
+                "Ok": function () {
+                    $(this).dialog("close");
+                }
+            }
+        }).parent().addClass("ui-state-error");
+    }
+    
+    function reloadBloodPressureReadings() {
+        $.ajax(
+            {
+                type: "GET",
+                url: '@Html.Raw(Url.Action("BloodPressureReadingsForPatient", new { @patientId = Request.QueryString["PatientId"], @studyId = Request.QueryString["StudyID"] }))',
+                data: "{}",
+                cache: false,
+                dataType: "html",
+                success: function(data) {
+                    $("#BloodPressureHistory").html(data);
+                },
+                error: function(data) {
+                    CommentError("Error refreshing list.", "");
+                }
+            });
+    }
+
+</script>
+
+<h2>Blood Pressure</h2>
+
+<fieldset>
+@* This is for Patient Details Partial view which displays the name patient details detail like name, telephone number,CASID etc. So there is no Postback for this View*@
+@Html.Action("PatientDetailsOnly", "CallBack", new { @patientId = Request.QueryString["PatientId"], @studyId = Request.QueryString["StudyID"] })
+</fieldset> 
+<fieldset style="display:none">
+</fieldset>
+<fieldset>
+    <legend>Blood Pressure</legend>
+    <fieldset>
+        <legend>Current Targets</legend>
+        <br />
+        
+        @Html.Action("BloodPressureTargets", "BloodPressure", new { patientID = Request.QueryString["PatientId"], @studyId = Request.QueryString["StudyID"], callbackID = @Request.QueryString["CallbackID"] }) 
+        
+        
+    </fieldset>
+    <fieldset>
+        <legend>Patient Readings</legend>
+        <br />
+        When the patient has changed medications, clicking 'New Medication' will reset their reading average
+        <br />
+        @using (Ajax.BeginForm("NewMedication", "BloodPressure", new AjaxOptions()
+        {
+            HttpMethod = "POST", 
+            OnFailure = "CommentErrorHandler",
+            OnSuccess = "reloadBloodPressureReadings()"
+        }))
+        {
+            @Html.Hidden("PatientId", Request.QueryString["PatientId"], new { id = "" })
+            @Html.Hidden("StudyID", Request.QueryString["StudyID"], new { id = "" })
+
+            <input type="submit" value="New Medication" class="button"  title="Click here to reset the average for the patient"  />        
+        }
+
+
+        <div id="BloodPressureHistoryChart" style="min-width: 100px; min-height: 200px; margin-top: 10px;"></div>
+
+	    
+        <div id="BloodPressureHistory">
+            @*
+            @Html.Action("BloodPressureReadingsForPatient", "BloodPressure", new { @patientId = Request.QueryString["PatientId"], @studyId = Request.QueryString["StudyID"] })
+            *@
+            @Html.Partial("_PatientReadings",Model)
+        </div> 
+        <br />
+    </fieldset>
+
+    <fieldset>
+        <legend>Send to GP</legend>
+        
+        @Html.Action("SendPatientBloodPressuresToGP", "BloodPressure", new { @patientId = Request.QueryString["PatientId"], @studyId = Request.QueryString["StudyID"] })
+    </fieldset>
+    @if (!String.IsNullOrWhiteSpace(@ViewBag.ReturnUrl))
+    {
+    <div>
+        <input class="button" type="button" title="Go back to Call Details page" value="Back to Call Details"  onclick="location.href='@ViewBag.ReturnUrl'" />
+    </div>
+    }
+</fieldset>

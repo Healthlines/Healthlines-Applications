@@ -1,0 +1,63 @@
+﻿@using Questionnaires.Web.Helpers
+@model Questionnaires.Core.Services.Models.AnswerOption
+           
+@{      
+    var id = QuestionReader.Prefix + Model.QuestionID + QuestionReader.Delimiter + Model.AnswerOptionID;
+    var func = QuestionReader.Prefix + Model.AnswerOptionID;
+    var func2 = QuestionReader.Prefix + Model.AnswerOptionID + "2";
+}
+
+<td><script>function @(func)() {
+    var n = document.getElementById('day@(id)').value;
+    var d = 0;
+    if (!isNaN(parseFloat(n)) && isFinite(n)) 
+        d = parseInt(n);
+    document.getElementById('@id').value= Math.floor((
+        (d / 7) +
+        parseInt(document.getElementById('week@(id)').options[document.getElementById('week@(id)').selectedIndex].value) +
+        (parseInt(document.getElementById('month@(id)').options[document.getElementById('month@(id)').selectedIndex].value) * 4) +
+        (parseInt(document.getElementById('year@(id)').options[document.getElementById('year@(id)').selectedIndex].value)*52)
+    ));
+}
+function @(func2)(evt) 
+{
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    
+    return true;
+}</script>&nbsp;</td>
+<td ><div style="display:inline-block;*display: inline;zoom:1;width:3em">Years</div>
+    
+    <select id="year@(id)"onchange="@(func)();">
+        @for (int i = 0; i < 26; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+    Months
+    <select id="month@(id)"onchange="@(func)();">
+        @for (int i = 0; i < 12; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+    Weeks
+    <select id="week@(id)" onchange="@(func)();">
+        @for (int i = 0; i < 52; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+    Days
+    <input type="text" id="day@(id)" value="0" style="width:45px;" onkeypress="return @(func2)(event);" onkeyup="@(func)();" onchange="@(func)();"/>
+    <br/>
+    
+    <div style="display:inline-block;*display: inline;zoom:1;width:3em">Total</div>
+    <input id="@id" type="text" style="width:50px" value="@Model.DefaultValue" name="@string.Format("{0}{1}{2}", QuestionReader.CreateName(Model), QuestionReader.Delimiter, Model.AnswerOptionID)" class="numericDecimal"
+    onchange="document.getElementById('year@(id)').selectedIndex=0;document.getElementById('month@(id)').selectedIndex=0;document.getElementById('week@(id)').selectedIndex=0;" />
+    weeks
+</td>
+

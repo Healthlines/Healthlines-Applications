@@ -1,0 +1,51 @@
+﻿@model NHSD.ElephantParade.Core.Models.SubmittedBloodPressureViewModel
+
+@if (Model != null)
+{
+    if (Model.Readings.BPStatus == NHSD.ElephantParade.Domain.Models.BPStatus.AboveCriticalLimit || Model.Readings.BPStatus == NHSD.ElephantParade.Domain.Models.BPStatus.BelowCriticalLimit)
+    {
+        <fieldset class="error">
+            <legend class="Warning">Warning</legend>
+            @if (Model.Readings.BPStatus == NHSD.ElephantParade.Domain.Models.BPStatus.AboveCriticalLimit){
+                <p>
+                    Please repeat your blood pressure now on two more occasions half an hour apart (this is in addition to your usual readings). If the readings remain at or above 180 (systolic) or 110 (diastolic), please contact your GP today to arrange an appointment within the next 24 hours.
+                </p>
+                <p>
+                    HOWEVER – If you have symptoms of headache, nosebleeds, visual symptoms, palpitations, or feel unwell, please call NHS 111 <strong>immediately</strong> for advice and assessment by dialling 111 from any landline or mobile phone free of charge.
+                </p>
+            }else
+            {
+                
+                <p>
+                    Please repeat your blood pressure now on two more occasions half an hour apart (this is in addition to your usual readings). If the readings remain at 100 or below (systolic), please contact your GP today to arrange an appointment within the next 24 hours.
+                </p>
+                <p>
+                    HOWEVER – If you have symptoms of chest pain, feeling faint or short of breath, or feel unwell, please call NHS 111 <strong>immediately</strong> for advice and assessment by dialling 111 from any landline or mobile phone free of charge.
+                </p>
+            }
+        </fieldset>
+    }
+    <fieldset>
+        <legend>Next reading due</legend>
+        @Model.DateOfNextReading
+    </fieldset>
+    if (Model.Readings.Target != null && Model.Readings.Target.DiastolicTarget != null && Model.Readings.Target.SystolicTarget != null)
+    {
+        <fieldset>
+            <legend>Your Blood Pressure Targets</legend>
+            @Model.Readings.Target.SystolicTarget&nbsp;/&nbsp;@Model.Readings.Target.DiastolicTarget
+        </fieldset>
+    }
+    if (Model.Readings != null && Model.Readings.Diastolic != null && Model.Readings.Systolic != null)
+    {
+        <fieldset>
+           <legend>The Blood Pressure reading just entered</legend>
+            <div>
+            @Model.Readings.Systolic&nbsp;/&nbsp;@Model.Readings.Diastolic
+            </div>
+            <div>
+            @NHSD.ElephantParade.Domain.PascalCaseWordSplittingEnumConverter.SplitString(Model.Readings.BPStatus.ToString())
+            </div>
+        </fieldset>
+    }
+}

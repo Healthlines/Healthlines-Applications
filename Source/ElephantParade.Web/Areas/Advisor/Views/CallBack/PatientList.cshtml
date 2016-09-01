@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.PageTitle = "List of Patients";
+}
+<script src="@Url.Content("~/Scripts/callbacksListAndPagingFooter.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.blockUI.js")"></script>
+<h1>Callbacks</h1>
+@{  
+    @* Partial View for Patient list locked by user *@
+    @Html.Partial("_CallbackListLockedToUser")
+    
+    @Html.Partial("_CallbackListNotCalledPatients")
+    
+    @Html.Partial("_ScheduledCallbackPatients")
+
+    @* Partial View for Patient List currently open *@
+    @Html.Partial("_CallbackListLocked")
+}

@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.PageTitle = "Study Patient Data Upload";
+}
+@model NHSD.ElephantParade.Web.Areas.Administration.Models.ImportResults
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $(".button").button();
+    });
+</script>
+
+<h2>Patient Spreadsheet Import</h2>
+<p>Please use the browse button below to select the spreadsheet of patients on your computer.</p>
+<p>Clicking 'Import patient data' will add the patients on the spreadsheet into the system.</p>
+<p>You will get a confirmation message of who has been added, and if any corrections are needed to patients who couldn't be imported.</p>
+
+@using (Html.BeginForm("StudyPatientDataUpload", "Administration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <br />
+    <br />
+    <input class="button" type="submit" title="Click to upload to the database" value="Import patient data" />   
+}
+<br />
+@if (Model != null)
+{
+    @Html.Partial("_ImportResults", Model) 
+}
+

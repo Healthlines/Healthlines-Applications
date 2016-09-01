@@ -1,0 +1,251 @@
+﻿@{
+    ViewBag.PageTitle = "Blood Pressure Readings";
+}
+
+@using NHSD.ElephantParade.Web.Helpers
+@model NHSD.ElephantParade.Web.Areas.Advisor.Models.BloodPressureReadingsWrapper
+
+@{
+    var readings = Json.Encode(Model.BloodPressureReadings.OrderBy(r => r.DateOfReading).Select(r => new
+    {
+        r.Systolic,
+        r.Diastolic,
+        r.DateOfReading,
+        SystolicTarget = r.Target == null ? null : r.Target.SystolicTarget,
+        DiastolicTarget = r.Target == null ? null : r.Target.DiastolicTarget
+    }));
+
+    if(Model.BloodPressureReadings.Count() > 0)
+    {
+        var lowDate = Model.BloodPressureReadings.OrderBy(r => r.DateOfReading).First().DateOfReading;
+        var highDate = Model.BloodPressureReadings.OrderBy(r => r.DateOfReading).Last().DateOfReading;
+        
+    }
+}
+<script type="text/javascript">
+    fixHistLinks();
+    //method to fix webgrids moving to top of page onclick
+    function fixHistLinks(){
+        //method to fix webgrids moving to top of page onclick      
+        //$("#BPReadingTable").find('tfoot a').attr("href", "javascript:;")
+        //$("#BPReadingTable").find('thead a').attr("href", "javascript:;")
+    }
+    try{
+        var systolic = @Html.Raw(readings);
+        var seriesOptions = [],sData = [],dData = [],sTData = [],dTData = [];
+
+        $.each(systolic,function(itemIndex,item){        
+            if(item.SystolicTarget!==null){
+                sTData.push([parseInt(item.DateOfReading.substr(6)),parseInt(item.SystolicTarget)]); 
+            } 
+            if(item.DiastolicTarget!==null){
+                dTData.push([parseInt(item.DateOfReading.substr(6)),parseInt(item.DiastolicTarget)]); 
+            }  
+            if(item.Systolic!==null && item.Systolic > 0){
+                sData.push([parseInt(item.DateOfReading.substr(6)),item.Systolic]); 
+            }            
+            if(item.Diastolic!==null && item.Diastolic>0){
+                dData.push([parseInt(item.DateOfReading.substr(6)),item.Diastolic]); 
+            }            
+        });
+
+        seriesOptions[0] = {
+            name: "Systolic Target",
+            color: '#F76E6A',
+            data: sTData
+        };
+        seriesOptions[1] = {
+            name: "Diastolic Target",
+            color: '#85BDFF',
+            data: dTData
+        };
+        seriesOptions[2] = {
+            name: "Systolic Reading",
+            color: '#AA4643',
+            lineWidth: 4,
+            data: sData
+        };
+        seriesOptions[3] = {
+            name: "Diastolic Reading",
+            color: '#4572A7',
+            lineWidth: 4,
+            data: dData
+        };
+        
+        
+        var chart = new Highcharts.StockChart({
+            chart: {
+                renderTo: 'BloodPressureHistoryChart',
+                marginRight: 150,
+                marginBottom: 25,
+                marginLeft: 35
+            },
+            credits: {
+                enabled: 1,
+                text: "NHS Direct",
+                href:"#"
+            },
+            rangeSelector: {            
+		        selected: 0,
+                buttons: [{
+	                type: 'month',
+	                count: 1,
+	                text: '1 month'
+                }, {
+	                type: 'month',
+	                count: 3,
+	                text: '3 months'
+                }, {
+	                type: 'month',
+	                count: 6,
+	                text: '6 months'
+                }, {
+	                type: 'year',
+	                count: 1,
+	                text: '1 year'
+                }, {
+	                type: 'all',
+	                text: 'All'
+                }],
+                buttonSpacing : 0,
+                buttonTheme: { // styles for the buttons
+                    fill: 'none',
+                    stroke: '#91B399',
+                    width: 70,
+                    style: {
+                        color: '#000',
+                        fontWeight: 'bold'
+                    },
+                    states: {
+                        hover: {
+                            fill: '#D8E8DC',
+                            style: {
+                                color: '#000'
+                            }
+                        },
+                        select: {
+                            style: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                },
+                inputStyle: {
+                    color: '#000',
+                    fontWeight: 'bold'
+                },
+                labelStyle: {
+                    color: 'silver',
+                    fontWeight: 'bold'
+                },
+                inputBoxStyle: {
+                    right: '70px'
+                }
+		    },
+            yAxis: {
+                title:{text: " "},
+		        labels: {  
+                    x: -25,
+		    	    formatter: function() {
+		    		    return Highcharts.numberFormat(this.value, 0);
+		    	    }
+		        },                
+		        plotLines: [{
+		    	    value: 0,
+		    	    width: 2,
+		    	    color: 'silver'
+		        }]
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                y: 35,
+                x: 10,
+                floating: true,
+                borderWidth: 0,
+                enabled: true
+            },
+            tooltip: {
+		        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> <br/>',
+		        valueDecimals: 2
+		    },
+            series: seriesOptions
+        }, function(chart){
+            // apply the date pickers
+            setTimeout(function(){
+                $('input.highcharts-range-selector', $('#'+chart.options.chart.renderTo))
+                    .datepicker()
+            },0)
+        });
+
+        chart.redraw();
+    }
+    catch(e){
+        //catch and just suppress error
+    }
+</script> 
+
+<div>
+
+
+@{ 
+    if (@Model.BloodPressureReadings != null && @Model.ValidReadingsCount == 0)
+    {
+       <b>No Blood Pressure readings</b>
+    }
+    else if (@Model.BloodPressureReadings != null && @Model.ValidReadingsCount < 4)
+    {
+        <b>@Model.AverageBPReadingFrequencyText</b>
+        <br />
+        <br />
+        var gridBp = new WebGrid(@Model.BloodPressureReadings.OrderByDescending(m => m.DateOfReading).ToList(), canPage: true, rowsPerPage: 12, ajaxUpdateContainerId: "BPReadingGrid", ajaxUpdateCallback: "fixHistLinks", pageFieldName: "AS");
+        gridBp.Pager(WebGridPagerModes.NextPrevious);
+
+        <div id="BPReadingGrid">
+            @gridBp.GetHtml(
+                tableStyle: "grid",
+                htmlAttributes: new { id = "BPReadingTable" },
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                columns: gridBp.Columns(
+                    gridBp.Column("DateOfReading", "Date and time of reading", item => (item.DateOfReading == null) ? string.Empty : (item.BPHighAndLowReading == null) ? item.DateOfReading.ToShortDateString() : item.DateOfReading, canSort: true),
+                    gridBp.Column("BPHighAndLowReading", "Blood Pressure reading", item => (item.BPHighAndLowReading == null) ? string.Empty : item.BPHighAndLowReading, canSort: true),
+                    gridBp.Column("Status", "Status", item => ((NHSD.ElephantParade.Domain.Models.BPStatus)item.BPStatus).DescriptionAttribute())
+                )
+            )
+        </div>
+    }
+    else
+    {
+        if (Model.AverageSystolicBPReading == string.Empty)
+        {
+            <b>@Model.AverageBPReadingFrequencyText</b>
+        }
+        else
+        {
+        <b>@Model.AverageBPReadingFrequencyText: &nbsp;@Model.AverageSystolicBPReading / @Model.AverageDiastolicBPReading</b>
+        }
+        <br />
+        <br />
+        <div id="BloodPressureHistoryChart" style="min-width: 100px; min-height: 300px; margin: 0 auto"></div>
+        <br />
+        var gridBp = new WebGrid(@Model.BloodPressureReadings.OrderByDescending(m => m.DateOfReading).ToList(), canPage: true, rowsPerPage: 12, ajaxUpdateContainerId: "BPReadingGrid", ajaxUpdateCallback: "fixHistLinks", pageFieldName: "AS");
+        gridBp.Pager(WebGridPagerModes.NextPrevious);
+
+        <div id="BPReadingGrid">
+            @gridBp.GetHtml(
+                tableStyle: "grid",
+                htmlAttributes: new { id = "BPReadingTable" },
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                columns: gridBp.Columns(
+                    gridBp.Column("DateOfReading", "Date and time of reading", item => (item.DateOfReading == null) ? string.Empty : (item.BPHighAndLowReading == null) ? item.DateOfReading.ToShortDateString() : item.DateOfReading, canSort: true),
+                    gridBp.Column("BPHighAndLowReading", "Blood Pressure reading", item => (item.BPHighAndLowReading == null) ? string.Empty : item.BPHighAndLowReading, canSort: true),
+                    gridBp.Column("Status", "Status", item => ((NHSD.ElephantParade.Domain.Models.BPStatus)item.BPStatus).DescriptionAttribute())
+                )
+            )
+        </div>
+    }
+}
+</div>
