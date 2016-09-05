@@ -19,7 +19,7 @@ The service focused on supporting two types of patient interaction, Cardiovascul
 These materials have been developed using certain ‘Living Life to the Full’ materials which are licensed from [Five Areas Limited](http://www.fiveareas.com/). More information on the full range of  Living Life to the Full materials can be found [here](http://www.fiveareas.com/). 
 
 #CVD Content
-All code relating to CVD call handling protocals are not part of this repository. 'For further information about the content of the CVD software, please contact [Prof Hayden Bosworth](hayden.bosworth@duke.edu) at Duke University.
+All code relating to CVD call handling protocals are not part of this repository. 'For further information about the content of the CVD software, please contact Prof Hayden Bosworth at Duke University at hayden.bosworth@duke.edu.
  
 
 #Healthlines Applications
