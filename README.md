@@ -9,11 +9,11 @@ The service focused on supporting two types of patient interaction, Cardiovascul
 
 1) Pateint portal where patient can view previous interactions and add additional information
 
-2) Call handler management system (including call handling protocals for each session)
+2) Call handler management system (including call handling protocals for each patient session, patient management)
 
 3) Administration tools (including importing patients, creating call handler scripts/flow)
 
-4) GP messaging solution 
+4) GP messaging solution (including ability to send patient interactions through to patients GP)
 
 #Depression Content
 These materials have been developed using certain ‘Living Life to the Full’ materials which are licensed from [Five Areas Limited](http://www.fiveareas.com/). More information on the full range of  Living Life to the Full materials can be found [here](http://www.fiveareas.com/). 
