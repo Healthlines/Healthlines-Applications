@@ -3,7 +3,9 @@ THe Healthlines sudy was a five-year research project which aims to develop a ne
 
 The Healthlines Study was designed to help identify potential ways to reach out to more people and promote self-care, self-management and greater independence. To do this, a team of researchers from the Universities of Bristol, Manchester, Sheffield and Southampton, the Royal College of Surgeons in Ireland, NHS Direct and Solent NHS Trust worked together to develop and evaluate a new telehealth service.
 
-This service was initially delivered within the context of NHS Direct. After the closure of NHS Direct in March 2014, Solent NHS Trust became the host service provider. The service was delivered for research purposes and is not being provided currently.
+This service was initially delivered within the context of NHS Direct. After the closure of NHS Direct in March 2014, Solent NHS Trust became the host service provider. The service was delivered for research purposes and is not being provided currently. 
+
+
 
 The service focused on supporting two types of patient interaction, Cardiovascular disease, and depression. This repository contains all the code relating to the following areas:-
 
@@ -21,6 +23,7 @@ These materials have been developed using certain ‘Living Life to the Full’ 
 #CVD Content
 All code relating to CVD call handling protocals are not part of this repository. 'For further information about the content of the CVD software, please contact Prof Hayden Bosworth at Duke University at hayden.bosworth@duke.edu.
  
+For more information on the research can be found at [Bristol University's Healthline site](http://www.bristol.ac.uk/healthlines/)
 
 #Healthlines Applications
 
