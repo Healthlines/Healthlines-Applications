@@ -35,9 +35,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHSD.ElephantParade.Web.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHSD.ElephantParade.DocumentGenerator.Tests", "..\UnitTests\NHSD.ElephantParade.DocumentGenerator.Tests\NHSD.ElephantParade.DocumentGenerator.Tests.csproj", "{F2C9CE7E-2CBD-4A62-80A0-C6A4E025A4B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questionnaire.Core", "..\..\Questionnaire and Queue Management\Questionnaire\QuestionnaireCore\Questionnaire.Core.csproj", "{597703A9-7332-4E4C-B644-7C550337A012}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questionnaire.Core", "Questionnaire\QuestionnaireCore\Questionnaire.Core.csproj", "{597703A9-7332-4E4C-B644-7C550337A012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questionnaire.DAL", "..\..\Questionnaire and Queue Management\Questionnaire\QuestionnaireData\Questionnaire.DAL.csproj", "{92205CAB-4512-49B4-ACDD-43EBF677CBEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Questionnaire.DAL", "Questionnaire\QuestionnaireData\Questionnaire.DAL.csproj", "{92205CAB-4512-49B4-ACDD-43EBF677CBEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
