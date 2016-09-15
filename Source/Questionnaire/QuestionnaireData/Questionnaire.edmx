@@ -1,0 +1,888 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QuestionnaireModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="QuestionnaireModelStoreContainer">
+          <EntitySet Name="AnswerOptions" EntityType="QuestionnaireModel.Store.AnswerOptions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Answers" EntityType="QuestionnaireModel.Store.Answers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AnswerSetHistory" EntityType="QuestionnaireModel.Store.AnswerSetHistory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AnswerSets" EntityType="QuestionnaireModel.Store.AnswerSets" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Conditions" EntityType="QuestionnaireModel.Store.Conditions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="QuestionnaireQuestionSets" EntityType="QuestionnaireModel.Store.QuestionnaireQuestionSets" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Questionnaires" EntityType="QuestionnaireModel.Store.Questionnaires" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Questions" EntityType="QuestionnaireModel.Store.Questions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="QuestionSetQuestions" EntityType="QuestionnaireModel.Store.QuestionSetQuestions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="QuestionSets" EntityType="QuestionnaireModel.Store.QuestionSets" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Answer_AnswerSets" Association="QuestionnaireModel.Store.FK_Answer_AnswerSets">
+            <End Role="AnswerSets" EntitySet="AnswerSets" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_Questions" Association="QuestionnaireModel.Store.FK_Answer_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnswerOptions_Conditions" Association="QuestionnaireModel.Store.FK_AnswerOptions_Conditions">
+            <End Role="Conditions" EntitySet="Conditions" />
+            <End Role="AnswerOptions" EntitySet="AnswerOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnswerOptions_Questions" Association="QuestionnaireModel.Store.FK_AnswerOptions_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="AnswerOptions" EntitySet="AnswerOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnswerSetHistory_AnswerSets" Association="QuestionnaireModel.Store.FK_AnswerSetHistory_AnswerSets">
+            <End Role="AnswerSets" EntitySet="AnswerSets" />
+            <End Role="AnswerSetHistory" EntitySet="AnswerSetHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnswerSetHistory_Questions" Association="QuestionnaireModel.Store.FK_AnswerSetHistory_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="AnswerSetHistory" EntitySet="AnswerSetHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnswerSets_Questions" Association="QuestionnaireModel.Store.FK_AnswerSets_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="AnswerSets" EntitySet="AnswerSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionnaireAnswerSet" Association="QuestionnaireModel.Store.FK_QuestionnaireAnswerSet">
+            <End Role="Questionnaires" EntitySet="Questionnaires" />
+            <End Role="AnswerSets" EntitySet="AnswerSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionnaireQuestionnaireQuestionSets" Association="QuestionnaireModel.Store.FK_QuestionnaireQuestionnaireQuestionSets">
+            <End Role="Questionnaires" EntitySet="Questionnaires" />
+            <End Role="QuestionnaireQuestionSets" EntitySet="QuestionnaireQuestionSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionSetQuestionnaireQuestionSets" Association="QuestionnaireModel.Store.FK_QuestionSetQuestionnaireQuestionSets">
+            <End Role="QuestionSets" EntitySet="QuestionSets" />
+            <End Role="QuestionnaireQuestionSets" EntitySet="QuestionnaireQuestionSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionSetQuestions_Questions" Association="QuestionnaireModel.Store.FK_QuestionSetQuestions_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="QuestionSetQuestions" EntitySet="QuestionSetQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionSetQuestionSetQuestion" Association="QuestionnaireModel.Store.FK_QuestionSetQuestionSetQuestion">
+            <End Role="QuestionSets" EntitySet="QuestionSets" />
+            <End Role="QuestionSetQuestions" EntitySet="QuestionSetQuestions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AnswerOptions">
+          <Key>
+            <PropertyRef Name="AnswerOptionID" />
+          </Key>
+          <Property Name="AnswerOptionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="Label" Type="varchar(max)" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" Nullable="false" MaxLength="500" />
+          <Property Name="DefaultValue" Type="varchar(max)" Nullable="false" />
+          <Property Name="Required" Type="int" />
+          <Property Name="RouteQuestionID" Type="int" />
+          <Property Name="RouteConditionID" Type="int" />
+        </EntityType>
+        <EntityType Name="Answers">
+          <Key>
+            <PropertyRef Name="AnswerID" />
+          </Key>
+          <Property Name="AnswerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AnswerSetID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="OperatorID" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="Page" Type="int" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AnswerSetHistory">
+          <Key>
+            <PropertyRef Name="AnswerSetHistoryID" />
+          </Key>
+          <Property Name="AnswerSetHistoryID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AnswerSetID" Type="int" Nullable="false" />
+          <Property Name="CurrentQuestionID" Type="int" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AnswerSets">
+          <Key>
+            <PropertyRef Name="AnswerSetID" />
+          </Key>
+          <Property Name="AnswerSetID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionnaireID" Type="int" Nullable="false" />
+          <Property Name="OperatorID" Type="varchar(max)" Nullable="false" />
+          <Property Name="ParticipantID" Type="varchar(max)" Nullable="false" />
+          <Property Name="CurrentQuestionID" Type="int" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="Completed" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Conditions">
+          <Key>
+            <PropertyRef Name="ConditionID" />
+          </Key>
+          <Property Name="ConditionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="nchar" Nullable="false" MaxLength="50" />
+          <Property Name="OperatorType" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ValueType" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Value1" Type="varchar(max)" Nullable="false" />
+          <Property Name="Value2" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="QuestionnaireQuestionSets">
+          <Key>
+            <PropertyRef Name="QuestionnaireQuestionSetsID" />
+          </Key>
+          <Property Name="QuestionnaireQuestionSetsID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="QuestionnaireID" Type="int" Nullable="false" />
+          <Property Name="QuestionSetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Questionnaires">
+          <Key>
+            <PropertyRef Name="QuestionnaireID" />
+          </Key>
+          <Property Name="QuestionnaireID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" Nullable="false" MaxLength="250" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Explanation" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="QuestionText" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="QuestionGroup" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Required" Type="bit" Nullable="false" />
+          <Property Name="Label" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="QuestionSetQuestions">
+          <Key>
+            <PropertyRef Name="QuestionSetQuestionID" />
+          </Key>
+          <Property Name="QuestionSetQuestionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionSetID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="Page" Type="int" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestionSets">
+          <Key>
+            <PropertyRef Name="QuestionSetID" />
+          </Key>
+          <Property Name="QuestionSetID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Answer_AnswerSets">
+          <End Role="AnswerSets" Type="QuestionnaireModel.Store.AnswerSets" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Answers" Type="QuestionnaireModel.Store.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnswerSets">
+              <PropertyRef Name="AnswerSetID" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="AnswerSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_Questions">
+          <End Role="Questions" Type="QuestionnaireModel.Store.Questions" Multiplicity="1" />
+          <End Role="Answers" Type="QuestionnaireModel.Store.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnswerOptions_Conditions">
+          <End Role="Conditions" Type="QuestionnaireModel.Store.Conditions" Multiplicity="0..1" />
+          <End Role="AnswerOptions" Type="QuestionnaireModel.Store.AnswerOptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conditions">
+              <PropertyRef Name="ConditionID" />
+            </Principal>
+            <Dependent Role="AnswerOptions">
+              <PropertyRef Name="RouteConditionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnswerOptions_Questions">
+          <End Role="Questions" Type="QuestionnaireModel.Store.Questions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AnswerOptions" Type="QuestionnaireModel.Store.AnswerOptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="AnswerOptions">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnswerSetHistory_AnswerSets">
+          <End Role="AnswerSets" Type="QuestionnaireModel.Store.AnswerSets" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AnswerSetHistory" Type="QuestionnaireModel.Store.AnswerSetHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnswerSets">
+              <PropertyRef Name="AnswerSetID" />
+            </Principal>
+            <Dependent Role="AnswerSetHistory">
+              <PropertyRef Name="AnswerSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnswerSetHistory_Questions">
+          <End Role="Questions" Type="QuestionnaireModel.Store.Questions" Multiplicity="1" />
+          <End Role="AnswerSetHistory" Type="QuestionnaireModel.Store.AnswerSetHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="AnswerSetHistory">
+              <PropertyRef Name="CurrentQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnswerSets_Questions">
+          <End Role="Questions" Type="QuestionnaireModel.Store.Questions" Multiplicity="0..1" />
+          <End Role="AnswerSets" Type="QuestionnaireModel.Store.AnswerSets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="AnswerSets">
+              <PropertyRef Name="CurrentQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionnaireAnswerSet">
+          <End Role="Questionnaires" Type="QuestionnaireModel.Store.Questionnaires" Multiplicity="1" />
+          <End Role="AnswerSets" Type="QuestionnaireModel.Store.AnswerSets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questionnaires">
+              <PropertyRef Name="QuestionnaireID" />
+            </Principal>
+            <Dependent Role="AnswerSets">
+              <PropertyRef Name="QuestionnaireID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionnaireQuestionnaireQuestionSets">
+          <End Role="Questionnaires" Type="QuestionnaireModel.Store.Questionnaires" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="QuestionnaireQuestionSets" Type="QuestionnaireModel.Store.QuestionnaireQuestionSets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questionnaires">
+              <PropertyRef Name="QuestionnaireID" />
+            </Principal>
+            <Dependent Role="QuestionnaireQuestionSets">
+              <PropertyRef Name="QuestionnaireID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionSetQuestionnaireQuestionSets">
+          <End Role="QuestionSets" Type="QuestionnaireModel.Store.QuestionSets" Multiplicity="1" />
+          <End Role="QuestionnaireQuestionSets" Type="QuestionnaireModel.Store.QuestionnaireQuestionSets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionSets">
+              <PropertyRef Name="QuestionSetID" />
+            </Principal>
+            <Dependent Role="QuestionnaireQuestionSets">
+              <PropertyRef Name="QuestionSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionSetQuestions_Questions">
+          <End Role="Questions" Type="QuestionnaireModel.Store.Questions" Multiplicity="1" />
+          <End Role="QuestionSetQuestions" Type="QuestionnaireModel.Store.QuestionSetQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="QuestionSetQuestions">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionSetQuestionSetQuestion">
+          <End Role="QuestionSets" Type="QuestionnaireModel.Store.QuestionSets" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="QuestionSetQuestions" Type="QuestionnaireModel.Store.QuestionSetQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionSets">
+              <PropertyRef Name="QuestionSetID" />
+            </Principal>
+            <Dependent Role="QuestionSetQuestions">
+              <PropertyRef Name="QuestionSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QuestionnaireModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="QuestionnaireEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AnswerOptions" EntityType="QuestionnaireModel.AnswerOption" />
+          <EntitySet Name="Conditions" EntityType="QuestionnaireModel.Condition" />
+          <EntitySet Name="Questions" EntityType="QuestionnaireModel.Question" />
+          <EntitySet Name="QuestionSetQuestions" EntityType="QuestionnaireModel.QuestionSetQuestion" />
+          <EntitySet Name="QuestionSets" EntityType="QuestionnaireModel.QuestionSet" />
+          <AssociationSet Name="FK_AnswerOptions_Conditions" Association="QuestionnaireModel.FK_AnswerOptions_Conditions">
+            <End Role="Condition" EntitySet="Conditions" />
+            <End Role="AnswerOption" EntitySet="AnswerOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnswerOptions_Questions" Association="QuestionnaireModel.FK_AnswerOptions_Questions">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="AnswerOption" EntitySet="AnswerOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionSetQuestions_Questions" Association="QuestionnaireModel.FK_QuestionSetQuestions_Questions">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="QuestionSetQuestion" EntitySet="QuestionSetQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionSetQuestionSetQuestion" Association="QuestionnaireModel.FK_QuestionSetQuestionSetQuestion">
+            <End Role="QuestionSet" EntitySet="QuestionSets" />
+            <End Role="QuestionSetQuestion" EntitySet="QuestionSetQuestions" />
+          </AssociationSet>
+          <EntitySet Name="QuestionnaireQuestionSets" EntityType="QuestionnaireModel.QuestionnaireQuestionSet" />
+          <EntitySet Name="Questionnaires" EntityType="QuestionnaireModel.Questionnaire" />
+          <AssociationSet Name="FK_QuestionnaireQuestionnaireQuestionSets" Association="QuestionnaireModel.FK_QuestionnaireQuestionnaireQuestionSets">
+            <End Role="Questionnaire" EntitySet="Questionnaires" />
+            <End Role="QuestionnaireQuestionSet" EntitySet="QuestionnaireQuestionSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionSetQuestionnaireQuestionSets" Association="QuestionnaireModel.FK_QuestionSetQuestionnaireQuestionSets">
+            <End Role="QuestionSet" EntitySet="QuestionSets" />
+            <End Role="QuestionnaireQuestionSet" EntitySet="QuestionnaireQuestionSets" />
+          </AssociationSet>
+          <EntitySet Name="AnswerSets" EntityType="QuestionnaireModel.AnswerSet" />
+          <AssociationSet Name="FK_AnswerSets_Questions" Association="QuestionnaireModel.FK_AnswerSets_Questions">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="AnswerSet" EntitySet="AnswerSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionnaireAnswerSet" Association="QuestionnaireModel.FK_QuestionnaireAnswerSet">
+            <End Role="Questionnaire" EntitySet="Questionnaires" />
+            <End Role="AnswerSet" EntitySet="AnswerSets" />
+          </AssociationSet>
+          <EntitySet Name="Answers" EntityType="QuestionnaireModel.Answer" />
+          <AssociationSet Name="FK_Answer_AnswerSets" Association="QuestionnaireModel.FK_Answer_AnswerSets">
+            <End Role="AnswerSet" EntitySet="AnswerSets" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_Questions" Association="QuestionnaireModel.FK_Answer_Questions">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <EntitySet Name="AnswerSetHistories" EntityType="QuestionnaireModel.AnswerSetHistory" />
+          <AssociationSet Name="FK_AnswerSetHistory_AnswerSets" Association="QuestionnaireModel.FK_AnswerSetHistory_AnswerSets">
+            <End Role="AnswerSet" EntitySet="AnswerSets" />
+            <End Role="AnswerSetHistory" EntitySet="AnswerSetHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AnswerSetHistory_Questions" Association="QuestionnaireModel.FK_AnswerSetHistory_Questions">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="AnswerSetHistory" EntitySet="AnswerSetHistories" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AnswerOption">
+          <Key>
+            <PropertyRef Name="AnswerOptionID" />
+          </Key>
+          <Property Type="Int32" Name="AnswerOptionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="QuestionID" Nullable="false" />
+          <Property Type="String" Name="Label" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Order" Nullable="false" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DefaultValue" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Required" />
+          <Property Type="Int32" Name="RouteQuestionID" />
+          <Property Type="Int32" Name="RouteConditionID" />
+          <NavigationProperty Name="Condition" Relationship="QuestionnaireModel.FK_AnswerOptions_Conditions" FromRole="AnswerOption" ToRole="Condition" />
+          <NavigationProperty Name="Question" Relationship="QuestionnaireModel.FK_AnswerOptions_Questions" FromRole="AnswerOption" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="Condition">
+          <Key>
+            <PropertyRef Name="ConditionID" />
+          </Key>
+          <Property Type="Int32" Name="ConditionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Label" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="OperatorType" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ValueType" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Value1" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Value2" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AnswerOptions" Relationship="QuestionnaireModel.FK_AnswerOptions_Conditions" FromRole="Condition" ToRole="AnswerOption" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Type="Int32" Name="QuestionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Explanation" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="QuestionText" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="QuestionGroup" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="Required" Nullable="false" />
+          <NavigationProperty Name="AnswerOptions" Relationship="QuestionnaireModel.FK_AnswerOptions_Questions" FromRole="Question" ToRole="AnswerOption" />
+          <NavigationProperty Name="QuestionSetQuestions" Relationship="QuestionnaireModel.FK_QuestionSetQuestions_Questions" FromRole="Question" ToRole="QuestionSetQuestion" />
+          <NavigationProperty Name="AnswerSets" Relationship="QuestionnaireModel.FK_AnswerSets_Questions" FromRole="Question" ToRole="AnswerSet" />
+          <NavigationProperty Name="Answers" Relationship="QuestionnaireModel.FK_Answer_Questions" FromRole="Question" ToRole="Answer" />
+          <Property Type="String" Name="Label" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AnswerSetHistories" Relationship="QuestionnaireModel.FK_AnswerSetHistory_Questions" FromRole="Question" ToRole="AnswerSetHistory" />
+        </EntityType>
+        <EntityType Name="QuestionSetQuestion">
+          <Key>
+            <PropertyRef Name="QuestionSetQuestionID" />
+          </Key>
+          <Property Type="Int32" Name="QuestionSetQuestionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="QuestionSetID" Nullable="false" />
+          <Property Type="Int32" Name="QuestionID" Nullable="false" />
+          <Property Type="Int32" Name="Page" Nullable="false" />
+          <Property Type="Int32" Name="Order" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="QuestionnaireModel.FK_QuestionSetQuestions_Questions" FromRole="QuestionSetQuestion" ToRole="Question" />
+          <NavigationProperty Name="QuestionSet" Relationship="QuestionnaireModel.FK_QuestionSetQuestionSetQuestion" FromRole="QuestionSetQuestion" ToRole="QuestionSet" />
+        </EntityType>
+        <EntityType Name="QuestionSet">
+          <Key>
+            <PropertyRef Name="QuestionSetID" />
+          </Key>
+          <Property Type="Int32" Name="QuestionSetID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreatedBy" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" />
+          <NavigationProperty Name="QuestionSetQuestions" Relationship="QuestionnaireModel.FK_QuestionSetQuestionSetQuestion" FromRole="QuestionSet" ToRole="QuestionSetQuestion" />
+          <NavigationProperty Name="QuestionnaireQuestionSets" Relationship="QuestionnaireModel.FK_QuestionSetQuestionnaireQuestionSets" FromRole="QuestionSet" ToRole="QuestionnaireQuestionSet" />
+        </EntityType>
+        <Association Name="FK_AnswerOptions_Conditions">
+          <End Type="QuestionnaireModel.Condition" Role="Condition" Multiplicity="0..1" />
+          <End Type="QuestionnaireModel.AnswerOption" Role="AnswerOption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Condition">
+              <PropertyRef Name="ConditionID" />
+            </Principal>
+            <Dependent Role="AnswerOption">
+              <PropertyRef Name="RouteConditionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnswerOptions_Questions">
+          <End Type="QuestionnaireModel.Question" Role="Question" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="QuestionnaireModel.AnswerOption" Role="AnswerOption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="AnswerOption">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionSetQuestions_Questions">
+          <End Type="QuestionnaireModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="QuestionnaireModel.QuestionSetQuestion" Role="QuestionSetQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="QuestionSetQuestion">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionSetQuestionSetQuestion">
+          <End Type="QuestionnaireModel.QuestionSet" Role="QuestionSet" Multiplicity="1" />
+          <End Type="QuestionnaireModel.QuestionSetQuestion" Role="QuestionSetQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionSet">
+              <PropertyRef Name="QuestionSetID" />
+            </Principal>
+            <Dependent Role="QuestionSetQuestion">
+              <PropertyRef Name="QuestionSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="QuestionnaireQuestionSet">
+          <Key>
+            <PropertyRef Name="QuestionnaireQuestionSetsID" />
+          </Key>
+          <Property Type="Int32" Name="QuestionnaireQuestionSetsID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Order" Nullable="false" />
+          <Property Type="Int32" Name="QuestionnaireID" Nullable="false" />
+          <Property Type="Int32" Name="QuestionSetID" Nullable="false" />
+          <NavigationProperty Name="Questionnaire" Relationship="QuestionnaireModel.FK_QuestionnaireQuestionnaireQuestionSets" FromRole="QuestionnaireQuestionSet" ToRole="Questionnaire" />
+          <NavigationProperty Name="QuestionSet" Relationship="QuestionnaireModel.FK_QuestionSetQuestionnaireQuestionSets" FromRole="QuestionnaireQuestionSet" ToRole="QuestionSet" />
+        </EntityType>
+        <EntityType Name="Questionnaire">
+          <Key>
+            <PropertyRef Name="QuestionnaireID" />
+          </Key>
+          <Property Type="Int32" Name="QuestionnaireID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CreatedBy" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <NavigationProperty Name="QuestionnaireQuestionSets" Relationship="QuestionnaireModel.FK_QuestionnaireQuestionnaireQuestionSets" FromRole="Questionnaire" ToRole="QuestionnaireQuestionSet" />
+          <NavigationProperty Name="AnswerSets" Relationship="QuestionnaireModel.FK_QuestionnaireAnswerSet" FromRole="Questionnaire" ToRole="AnswerSet" />
+        </EntityType>
+        <Association Name="FK_QuestionnaireQuestionnaireQuestionSets">
+          <End Type="QuestionnaireModel.Questionnaire" Role="Questionnaire" Multiplicity="1" />
+          <End Type="QuestionnaireModel.QuestionnaireQuestionSet" Role="QuestionnaireQuestionSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questionnaire">
+              <PropertyRef Name="QuestionnaireID" />
+            </Principal>
+            <Dependent Role="QuestionnaireQuestionSet">
+              <PropertyRef Name="QuestionnaireID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionSetQuestionnaireQuestionSets">
+          <End Type="QuestionnaireModel.QuestionSet" Role="QuestionSet" Multiplicity="1" />
+          <End Type="QuestionnaireModel.QuestionnaireQuestionSet" Role="QuestionnaireQuestionSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionSet">
+              <PropertyRef Name="QuestionSetID" />
+            </Principal>
+            <Dependent Role="QuestionnaireQuestionSet">
+              <PropertyRef Name="QuestionSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AnswerSet">
+          <Key>
+            <PropertyRef Name="AnswerSetID" />
+          </Key>
+          <Property Type="Int32" Name="AnswerSetID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="QuestionnaireID" Nullable="false" />
+          <Property Type="String" Name="OperatorID" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ParticipantID" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CurrentQuestionID" />
+          <Property Type="DateTime" Name="StartDate" Nullable="false" />
+          <Property Type="DateTime" Name="EndDate" />
+          <Property Type="Boolean" Name="Completed" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="QuestionnaireModel.FK_AnswerSets_Questions" FromRole="AnswerSet" ToRole="Question" />
+          <NavigationProperty Name="Questionnaire" Relationship="QuestionnaireModel.FK_QuestionnaireAnswerSet" FromRole="AnswerSet" ToRole="Questionnaire" />
+          <NavigationProperty Name="Answers" Relationship="QuestionnaireModel.FK_Answer_AnswerSets" FromRole="AnswerSet" ToRole="Answer" />
+          <NavigationProperty Name="AnswerSetHistories" Relationship="QuestionnaireModel.FK_AnswerSetHistory_AnswerSets" FromRole="AnswerSet" ToRole="AnswerSetHistory" />
+        </EntityType>
+        <Association Name="FK_AnswerSets_Questions">
+          <End Type="QuestionnaireModel.Question" Role="Question" Multiplicity="0..1" />
+          <End Type="QuestionnaireModel.AnswerSet" Role="AnswerSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="AnswerSet">
+              <PropertyRef Name="CurrentQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionnaireAnswerSet">
+          <End Type="QuestionnaireModel.Questionnaire" Role="Questionnaire" Multiplicity="1" />
+          <End Type="QuestionnaireModel.AnswerSet" Role="AnswerSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questionnaire">
+              <PropertyRef Name="QuestionnaireID" />
+            </Principal>
+            <Dependent Role="AnswerSet">
+              <PropertyRef Name="QuestionnaireID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="AnswerID" />
+          </Key>
+          <Property Type="Int32" Name="AnswerID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="AnswerSetID" Nullable="false" />
+          <Property Type="Int32" Name="QuestionID" Nullable="false" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="String" Name="OperatorID" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Page" Nullable="false" />
+          <NavigationProperty Name="AnswerSet" Relationship="QuestionnaireModel.FK_Answer_AnswerSets" FromRole="Answer" ToRole="AnswerSet" />
+          <NavigationProperty Name="Question" Relationship="QuestionnaireModel.FK_Answer_Questions" FromRole="Answer" ToRole="Question" />
+          <Property Type="Int32" Name="Order" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Answer_AnswerSets">
+          <End Type="QuestionnaireModel.AnswerSet" Role="AnswerSet" Multiplicity="1" />
+          <End Type="QuestionnaireModel.Answer" Role="Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnswerSet">
+              <PropertyRef Name="AnswerSetID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="AnswerSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_Questions">
+          <End Type="QuestionnaireModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="QuestionnaireModel.Answer" Role="Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AnswerSetHistory">
+          <Key>
+            <PropertyRef Name="AnswerSetHistoryID" />
+          </Key>
+          <Property Type="Int32" Name="AnswerSetHistoryID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="AnswerSetID" Nullable="false" />
+          <Property Type="Int32" Name="CurrentQuestionID" Nullable="false" />
+          <Property Type="DateTime" Name="DateTime" Nullable="false" />
+          <NavigationProperty Name="AnswerSet" Relationship="QuestionnaireModel.FK_AnswerSetHistory_AnswerSets" FromRole="AnswerSetHistory" ToRole="AnswerSet" />
+          <NavigationProperty Name="Question" Relationship="QuestionnaireModel.FK_AnswerSetHistory_Questions" FromRole="AnswerSetHistory" ToRole="Question" />
+        </EntityType>
+        <Association Name="FK_AnswerSetHistory_AnswerSets">
+          <End Type="QuestionnaireModel.AnswerSet" Role="AnswerSet" Multiplicity="1" />
+          <End Type="QuestionnaireModel.AnswerSetHistory" Role="AnswerSetHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnswerSet">
+              <PropertyRef Name="AnswerSetID" />
+            </Principal>
+            <Dependent Role="AnswerSetHistory">
+              <PropertyRef Name="AnswerSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AnswerSetHistory_Questions">
+          <End Type="QuestionnaireModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="QuestionnaireModel.AnswerSetHistory" Role="AnswerSetHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="AnswerSetHistory">
+              <PropertyRef Name="CurrentQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QuestionnaireModelStoreContainer" CdmEntityContainer="QuestionnaireEntities">
+          <EntitySetMapping Name="AnswerOptions">
+            <EntityTypeMapping TypeName="QuestionnaireModel.AnswerOption">
+              <MappingFragment StoreEntitySet="AnswerOptions">
+                <ScalarProperty Name="RouteConditionID" ColumnName="RouteConditionID" />
+                <ScalarProperty Name="RouteQuestionID" ColumnName="RouteQuestionID" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
+                <ScalarProperty Name="DefaultValue" ColumnName="DefaultValue" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="AnswerOptionID" ColumnName="AnswerOptionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Conditions">
+            <EntityTypeMapping TypeName="QuestionnaireModel.Condition">
+              <MappingFragment StoreEntitySet="Conditions">
+                <ScalarProperty Name="Value2" ColumnName="Value2" />
+                <ScalarProperty Name="Value1" ColumnName="Value1" />
+                <ScalarProperty Name="ValueType" ColumnName="ValueType" />
+                <ScalarProperty Name="OperatorType" ColumnName="OperatorType" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="ConditionID" ColumnName="ConditionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="QuestionnaireModel.Question">
+              <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
+                <ScalarProperty Name="QuestionGroup" ColumnName="QuestionGroup" />
+                <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
+                <ScalarProperty Name="Explanation" ColumnName="Explanation" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionSetQuestions">
+            <EntityTypeMapping TypeName="QuestionnaireModel.QuestionSetQuestion">
+              <MappingFragment StoreEntitySet="QuestionSetQuestions">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="QuestionSetID" ColumnName="QuestionSetID" />
+                <ScalarProperty Name="QuestionSetQuestionID" ColumnName="QuestionSetQuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionSets">
+            <EntityTypeMapping TypeName="QuestionnaireModel.QuestionSet">
+              <MappingFragment StoreEntitySet="QuestionSets">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="QuestionSetID" ColumnName="QuestionSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionnaireQuestionSets">
+            <EntityTypeMapping TypeName="QuestionnaireModel.QuestionnaireQuestionSet">
+              <MappingFragment StoreEntitySet="QuestionnaireQuestionSets">
+                <ScalarProperty Name="QuestionSetID" ColumnName="QuestionSetID" />
+                <ScalarProperty Name="QuestionnaireID" ColumnName="QuestionnaireID" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="QuestionnaireQuestionSetsID" ColumnName="QuestionnaireQuestionSetsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questionnaires">
+            <EntityTypeMapping TypeName="QuestionnaireModel.Questionnaire">
+              <MappingFragment StoreEntitySet="Questionnaires">
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="QuestionnaireID" ColumnName="QuestionnaireID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnswerSets">
+            <EntityTypeMapping TypeName="QuestionnaireModel.AnswerSet">
+              <MappingFragment StoreEntitySet="AnswerSets">
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="CurrentQuestionID" ColumnName="CurrentQuestionID" />
+                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
+                <ScalarProperty Name="OperatorID" ColumnName="OperatorID" />
+                <ScalarProperty Name="QuestionnaireID" ColumnName="QuestionnaireID" />
+                <ScalarProperty Name="AnswerSetID" ColumnName="AnswerSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Answers">
+            <EntityTypeMapping TypeName="QuestionnaireModel.Answer">
+              <MappingFragment StoreEntitySet="Answers">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OperatorID" ColumnName="OperatorID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="AnswerSetID" ColumnName="AnswerSetID" />
+                <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnswerSetHistories">
+            <EntityTypeMapping TypeName="QuestionnaireModel.AnswerSetHistory">
+              <MappingFragment StoreEntitySet="AnswerSetHistory">
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="CurrentQuestionID" ColumnName="CurrentQuestionID" />
+                <ScalarProperty Name="AnswerSetID" ColumnName="AnswerSetID" />
+                <ScalarProperty Name="AnswerSetHistoryID" ColumnName="AnswerSetHistoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Questionnaire">
+        <EntityTypeShape EntityType="QuestionnaireModel.AnswerOption" Width="1.5" PointX="7.625" PointY="5.5" Height="2.7427376302083388" />
+        <EntityTypeShape EntityType="QuestionnaireModel.Condition" Width="1.5" PointX="7.5" PointY="9" Height="2.0853483072916674" />
+        <EntityTypeShape EntityType="QuestionnaireModel.Question" Width="1.5" PointX="5.375" PointY="5.375" Height="2.4140429687500022" />
+        <EntityTypeShape EntityType="QuestionnaireModel.QuestionSetQuestion" Width="2" PointX="2.75" PointY="5.75" Height="2.0853483072916674" />
+        <EntityTypeShape EntityType="QuestionnaireModel.QuestionSet" Width="1.5" PointX="0.625" PointY="6" Height="1.921000976562496" />
+        <AssociationConnector Association="QuestionnaireModel.FK_AnswerOptions_Conditions" >
+          <ConnectorPoint PointX="8.3125" PointY="9" />
+          <ConnectorPoint PointX="8.3125" PointY="8.2427376302083388" />
+        </AssociationConnector>
+        <AssociationConnector Association="QuestionnaireModel.FK_AnswerOptions_Questions" >
+          <ConnectorPoint PointX="6.875" PointY="6.8088688151041667" />
+          <ConnectorPoint PointX="7.625" PointY="6.8088688151041667" />
+        </AssociationConnector>
+        <AssociationConnector Association="QuestionnaireModel.FK_QuestionSetQuestions_Questions" >
+          <ConnectorPoint PointX="5.375" PointY="6.7926741536458337" />
+          <ConnectorPoint PointX="4.75" PointY="6.7926741536458337" />
+        </AssociationConnector>
+        <AssociationConnector Association="QuestionnaireModel.FK_QuestionSetQuestionSetQuestion" >
+          <ConnectorPoint PointX="2.125" PointY="6.9176741536458337" />
+          <ConnectorPoint PointX="2.75" PointY="6.9176741536458337" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="QuestionnaireModel.QuestionnaireQuestionSet" Width="2.25" PointX="0.875" PointY="3.375" Height="1.9210009765625067" />
+        <EntityTypeShape EntityType="QuestionnaireModel.Questionnaire" Width="1.5" PointX="0.5" PointY="0.875" Height="1.9210009765625102" />
+        <AssociationConnector Association="QuestionnaireModel.FK_QuestionnaireQuestionnaireQuestionSets" >
+          <ConnectorPoint PointX="1.4375" PointY="2.7960009765625" />
+          <ConnectorPoint PointX="1.4375" PointY="3.375" />
+        </AssociationConnector>
+        <AssociationConnector Association="QuestionnaireModel.FK_QuestionSetQuestionnaireQuestionSets" >
+          <ConnectorPoint PointX="1.5" PointY="6" />
+          <ConnectorPoint PointX="1.5" PointY="5.2960009765625067" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="QuestionnaireModel.AnswerSet" Width="1.5" PointX="4" PointY="0.625" Height="2.7427376302083353" />
+        <AssociationConnector Association="QuestionnaireModel.FK_AnswerSets_Questions" >
+          <ConnectorPoint PointX="5.9062505000000005" PointY="5.375" />
+          <ConnectorPoint PointX="5.9062505000000005" PointY="3.0077929687499996" />
+          <ConnectorPoint PointX="5.5" PointY="3.0077929687499996" />
+        </AssociationConnector>
+        <AssociationConnector Association="QuestionnaireModel.FK_QuestionnaireAnswerSet" >
+          <ConnectorPoint PointX="2" PointY="1.8355004882812551" />
+          <ConnectorPoint PointX="4" PointY="1.8355004882812551" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="QuestionnaireModel.Answer" Width="1.5" PointX="8.625" PointY="1.875" Height="2.7427376302083331" />
+        <AssociationConnector Association="QuestionnaireModel.FK_Answer_AnswerSets" >
+          <ConnectorPoint PointX="5.5" PointY="2.6831469726562496" />
+          <ConnectorPoint PointX="6.541666666666667" PointY="2.6831469726562491" />
+          <ConnectorPoint PointX="6.708333333333333" PointY="2.6831469726562496" />
+          <ConnectorPoint PointX="8.625" PointY="2.6831469726562496" />
+        </AssociationConnector>
+        <AssociationConnector Association="QuestionnaireModel.FK_Answer_Questions" >
+          <ConnectorPoint PointX="6.14062775" PointY="5.375" />
+          <ConnectorPoint PointX="6.14062775" PointY="4.1061612955729165" />
+          <ConnectorPoint PointX="6.541666666666667" PointY="4.1061612955729156" />
+          <ConnectorPoint PointX="6.708333333333333" PointY="4.1061612955729165" />
+          <ConnectorPoint PointX="8.625" PointY="4.1061612955729165" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="QuestionnaireModel.AnswerSetHistory" Width="1.5" PointX="6.375" PointY="0.5" Height="1.9210009765624996" />
+        <AssociationConnector Association="QuestionnaireModel.FK_AnswerSetHistory_AnswerSets" >
+          <ConnectorPoint PointX="5.5" PointY="1.5230004882812498" />
+          <ConnectorPoint PointX="6.375" PointY="1.5230004882812498" />
+        </AssociationConnector>
+        <AssociationConnector Association="QuestionnaireModel.FK_AnswerSetHistory_Questions" >
+          <ConnectorPoint PointX="6.625" PointY="5.375" />
+          <ConnectorPoint PointX="6.625" PointY="2.4210009765624996" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1124,11 +1124,11 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Questionnaire and Queue Management\Questionnaire\QuestionnaireCore\Questionnaire.Core.csproj">
+    <ProjectReference Include="..\Questionnaire\QuestionnaireCore\Questionnaire.Core.csproj">
       <Project>{597703a9-7332-4e4c-b644-7c550337a012}</Project>
       <Name>Questionnaire.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Questionnaire and Queue Management\Questionnaire\QuestionnaireData\Questionnaire.DAL.csproj">
+    <ProjectReference Include="..\Questionnaire\QuestionnaireData\Questionnaire.DAL.csproj">
       <Project>{92205cab-4512-49b4-acdd-43ebf677cbee}</Project>
       <Name>Questionnaire.DAL</Name>
     </ProjectReference>

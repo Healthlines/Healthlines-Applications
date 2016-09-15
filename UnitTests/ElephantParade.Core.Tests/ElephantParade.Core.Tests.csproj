@@ -181,7 +181,7 @@
     <Shadow Include="Test References\NHSD.ElephantParade.Core.accessor" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Questionnaire and Queue Management\Questionnaire\QuestionnaireCore\Questionnaire.Core.csproj">
+    <ProjectReference Include="..\..\Source\Questionnaire\QuestionnaireCore\Questionnaire.Core.csproj">
       <Project>{597703a9-7332-4e4c-b644-7c550337a012}</Project>
       <Name>Questionnaire.Core</Name>
     </ProjectReference>
